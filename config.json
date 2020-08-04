@@ -1,0 +1,12 @@
+{
+	"prefix": "/",
+	"token": "",
+	"commands": {
+		"rank": {
+			"free_ranks": [
+				"Minecraft",
+				"Valorant"
+			]
+		}
+	}
+}

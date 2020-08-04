@@ -1,0 +1,17 @@
+{
+  "name": "custom-discord-bot",
+  "version": "1.0.0",
+  "description": "First attemt at a discord bot",
+  "main": "index.js",
+  "scripts": {
+    "run": "nodemon ."
+  },
+  "author": "Ben Vandenberg",
+  "license": "ISC",
+  "dependencies": {
+    "console-stamp": "^0.2.9",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4"
+  }
+}
