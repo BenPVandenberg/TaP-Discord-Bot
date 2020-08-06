@@ -1,2 +1,2 @@
 # Custom Discord Bot
- First attemt at a discord bot
+ First attempt at a discord bot
