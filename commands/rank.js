@@ -28,12 +28,12 @@ module.exports = {
         // is is a role we can manipulate
         // if member already has the role
         if (message.member.roles.cache.some(role => role.name === arg)) {
-          const role = message.guild.roles.find(t => t.name === arg);
+          const role = message.guild.roles.find(r => r.name === arg);
           message.member.roles.remove(role);
         }
         // if member doesn't have the role
         else {
-          const role = message.guild.roles.find(t => t.name === arg);
+          const role = message.guild.roles.find(r => r.name === arg);
           message.member.roles.add(role);
         }
       }

@@ -29,7 +29,7 @@ bot.on('message', message => {
   if (!bot.commands.has(command)) return;
 
   // log command recived
-  console.log(`Command Recived: ${command} ${args.join('')}`);
+  console.log(`Command Recived: ${command} ${args.join(' ')}`);
 
   try {
     bot.commands.get(command).execute(message, args);
