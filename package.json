@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon .",
     "start": "pm2 start . --attach",
-    "prestart": "git pull && npm install"
+    "prestart": "npm install"
   },
   "author": "Ben Vandenberg & Jake Richardson",
   "license": "ISC",

@@ -1,7 +1,6 @@
 {
 	"prefix": "/",
   "token": "",
-  "github_token": "",
 	"commands": {
 		"rank": {
 			"free_ranks": [
