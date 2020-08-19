@@ -4,7 +4,9 @@
   "description": "First attemt at a discord bot",
   "main": "index.js",
   "scripts": {
-    "run": "nodemon ."
+    "dev": "nodemon .",
+    "prestart": "git pull && npm install",
+    "start": "pm2 start . --attach"
   },
   "author": "Ben Vandenberg & Jake Richardson",
   "license": "ISC",
