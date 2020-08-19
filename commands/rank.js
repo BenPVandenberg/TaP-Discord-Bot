@@ -23,18 +23,22 @@ module.exports = {
     }
 
     // user gave some ranks, lets go through them
-    for (const arg in args) {
+    for (let arg in args) {
+      arg = args[arg].toLowerCase();
+
       if (rank_config.free_ranks.includes(arg)) {
         // is is a role we can manipulate
+        const roleToAdd = message.guild.roles.cache.find(role => role.name.toLowerCase() === arg);
+
         // if member already has the role
-        if (message.member.roles.cache.some(role => role.name === arg)) {
-          const role = message.guild.roles.find(r => r.name === arg);
-          message.member.roles.remove(role);
+        if (message.member.roles.cache.has(roleToAdd.id)) {
+          message.member.roles.remove(roleToAdd);
+          message.reply(`Successfully removed ${ roleToAdd.name } from your ranks!`);
         }
         // if member doesn't have the role
         else {
-          const role = message.guild.roles.find(r => r.name === arg);
-          message.member.roles.add(role);
+          message.member.roles.add(roleToAdd);
+          message.reply(`Successfully added ${ roleToAdd.name } to your ranks!`);
         }
       }
     }

@@ -25,11 +25,11 @@ bot.on('message', message => {
   const args = message.content.slice(config.prefix.length).trim().split(' ');
   const command = args.shift().toLowerCase();
 
-  // if invalid command
+  // check if the bot has the command
   if (!bot.commands.has(command)) return;
 
   // log command recived
-  console.log(`Command Recived: ${command} ${args.join(' ')}`);
+  console.log(`Command Recived from ${message.member.user.username}: ${message.content}`);
 
   try {
     bot.commands.get(command).execute(message, args);
