@@ -13,6 +13,8 @@ for (const file of commandFiles) {
   bot.commands.set(command.name, command);
 }
 
+console.info('Registared Commands: ' + bot.commands);
+
 bot.on('ready', () => {
   console.log('This bot is online!');
 });
