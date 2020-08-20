@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const config = require('../config.json');
-// ranks.js
+// addrank.js
 // ========
 module.exports = {
   name: 'rank',
@@ -15,8 +15,7 @@ module.exports = {
 
       const all_ranks_embeded = new Discord.MessageEmbed()
         .setColor('#0099ff')
-        .addField('All Server Ranks', all_ranks_string, false)
-        .setTimestamp();
+        .addField('All Server Ranks', all_ranks_string, false);
 
       message.reply(all_ranks_embeded);
       return;
@@ -32,8 +31,7 @@ module.exports = {
 
         // if member already has the role
         if (message.member.roles.cache.has(roleToAdd.id)) {
-          message.member.roles.remove(roleToAdd);
-          message.reply(`Successfully removed ${ roleToAdd.name } from your ranks!`);
+          message.reply(`User already has ${ roleToAdd.name } rank!`);
         }
         // if member doesn't have the role
         else {
