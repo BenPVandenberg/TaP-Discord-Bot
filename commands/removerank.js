@@ -3,7 +3,7 @@ const config = require('../config.json');
 // removerank.js
 // ========
 module.exports = {
-  name: 'rank',
+  name: 'removerank',
   description: 'Manage users game ranks',
   execute(message, args) {
     const rank_config = config.commands.rank;

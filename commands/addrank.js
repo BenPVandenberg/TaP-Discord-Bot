@@ -3,7 +3,7 @@ const config = require('../config.json');
 // addrank.js
 // ========
 module.exports = {
-  name: 'rank',
+  name: 'addrank',
   description: 'Manage users game ranks',
   execute(message, args) {
     const rank_config = config.commands.rank;
