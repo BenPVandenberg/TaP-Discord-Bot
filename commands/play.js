@@ -17,6 +17,9 @@ module.exports = {
         return message.reply('please join a voice channel first!');
       }
 
+      message.react('👍');
+
+      // join and play yt audio
       voiceChannel.join().then(connection => {
         const audioLink = play_config[args[0]];
         const stream = ytdl(audioLink, { filter: 'audioonly' });
@@ -28,6 +31,7 @@ module.exports = {
     else {
       let all_sounds = '';
 
+      // get all current sounds
       for (const sound in play_config) {
         all_sounds += '-' + sound + '\n';
       }
