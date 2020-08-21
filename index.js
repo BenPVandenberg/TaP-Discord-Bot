@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 require('console-stamp')(console, { pattern: 'dd/mm/yyyy HH:MM:ss.l' });
 const Discord = require('discord.js');
@@ -49,4 +50,4 @@ process.on('unhandledRejection', error => {
   console.error('Unhandled promise rejection:', error);
 });
 
-bot.login(config.token);
+bot.login(process.env.DISCORD_LOGIN_TOKEN);

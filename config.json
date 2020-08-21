@@ -1,6 +1,5 @@
 {
 	"prefix": "/",
-  "token": "",
 	"commands": {
 		"rank": {
 			"free_ranks": [
@@ -13,7 +12,8 @@
       "retard": "https://www.youtube.com/watch?v=Hds9tFMuU8o",
       "gay": "https://www.youtube.com/watch?v=YaG5SAw1n0c",
       "cheater": "https://youtu.be/Q59hSVb2Wvw",
-      "tryme": "https://www.youtube.com/watch?v=cA-IxpFSRts"
+      "tryme": "https://www.youtube.com/watch?v=cA-IxpFSRts",
+      "ph": "https://www.youtube.com/watch?v=DCmh5fvgqq4"
     }
 	}
 }
