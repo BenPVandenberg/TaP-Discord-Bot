@@ -9,6 +9,7 @@ module.exports = {
     const play_config = config.commands.play; // eslint-disable-line
     if (message.channel.type === 'dm') return;
 
+    // if an argument is given and its valid
     if (args && play_config[args[0]]) {
       const voiceChannel = message.member.voice.channel;
 
@@ -17,7 +18,8 @@ module.exports = {
       }
 
       voiceChannel.join().then(connection => {
-        const stream = ytdl(`${ play_config[args[0]] }`, { filter: 'audioonly' });
+        const audioLink = play_config[args[0]];
+        const stream = ytdl(audioLink, { filter: 'audioonly' });
         const dispatcher = connection.play(stream);
 
         dispatcher.on('finish', () => voiceChannel.leave());
