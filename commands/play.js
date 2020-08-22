@@ -12,8 +12,8 @@ module.exports = {
 
     // if an argument is given and its valid
     if (args && play_config[args[0]]) {
-      const voiceChannel = message.member.voice.channel;
 
+      const voiceChannel = message.member.voice.channel;
       if (!voiceChannel) {
         return message.reply('please join a voice channel first!');
       }
