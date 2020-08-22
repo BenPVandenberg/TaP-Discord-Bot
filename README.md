@@ -1,7 +1,7 @@
 # Custom Discord Bot
   First attempt at a discord bot, it runs on an AWS EC2 Service.
 
-  To connect with .pem key run `ssh -i "AWS_TPBOT_KEY.pem" ubuntu@ec2-3-14-72-109.us-east-2.compute.amazonaws.com`
+  To connect with .pem key run `ssh -i "AWS_BOT_KEY.pem" ubuntu@ec2-3-16-203-154.us-east-2.compute.amazonaws.com`
 
 # Format
 
