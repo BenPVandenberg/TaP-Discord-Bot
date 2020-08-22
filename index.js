@@ -10,8 +10,10 @@ const config = require('./config.json');
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 // add commands to bot
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  bot.commands.set(command.name, command);
+  if (!['top10.js'].includes(file)) {
+    const command = require(`./commands/${file}`);
+    bot.commands.set(command.name, command);
+  }
 }
 
 bot.on('ready', () => {
