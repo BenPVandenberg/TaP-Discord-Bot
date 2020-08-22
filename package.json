@@ -13,15 +13,16 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
+    "bson": "^4.1.0",
     "console-stamp": "^0.2.9",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
-    "pm2": "^4.4.1",
     "ytdl-core": "^3.2.2"
   },
   "devDependencies": {
     "eslint": "^7.6.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "pm2": "^4.4.1"
   }
 }
