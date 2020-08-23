@@ -13,7 +13,7 @@
   ## How to start/stop the service
 
     1. Connect to the service through ssh
-    2. Run "cd tp_bot/Custom-Discord-Bot/"
+    2. Run "cd Custom-Discord-Bot/"
     3. From here run "npm start/stop" respectively
 
   ## How to git pull
