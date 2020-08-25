@@ -7,7 +7,10 @@ module.exports = {
   description: 'plays a audio clip',
   execute(message, args) {
     const play_config = config.commands.play; // eslint-disable-line
-    args[0] = args[0].toLowerCase();
+    try {
+      args[0] = args[0].toLowerCase();
+    }
+    catch {} // eslint-disable-line no-empty
     if (message.channel.type === 'dm') return;
 
     // if an argument is given and its valid
