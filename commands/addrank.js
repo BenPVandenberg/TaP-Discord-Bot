@@ -36,8 +36,8 @@ module.exports = {
         // if member doesn't have the role
         else {
           message.member.roles.add(roleToAdd)
-            .then(message.reply(`Successfully added ${ roleToAdd.name } to your ranks!`))
-            .catch(message.reply(`Unable to add ${ roleToAdd.name } to ${arg}!`));
+            .then(message.reply(`Successfully added ${ roleToAdd.name } to your ranks!`));
+          // .catch(message.reply(`Unable to add ${ roleToAdd.name } to ${arg}!`));
         }
       }
     }

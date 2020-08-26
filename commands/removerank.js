@@ -32,8 +32,8 @@ module.exports = {
         // if member already has the role
         if (message.member.roles.cache.has(roleToAdd.id)) {
           message.member.roles.remove(roleToAdd)
-            .then(message.reply(`Successfully removed ${ roleToAdd.name } from your ranks!`))
-            .catch(message.reply(`Unable to remove ${arg} from ${ roleToAdd.name }`));
+            .then(message.reply(`Successfully removed ${ roleToAdd.name } from your ranks!`));
+          // .catch(message.reply(`Unable to remove ${arg} from ${ roleToAdd.name }`));
         }
         // if member doesn't have the role
         else {
