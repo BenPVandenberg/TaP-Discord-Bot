@@ -34,10 +34,13 @@ module.exports = {
     }
     else {
       let all_sounds = '';
+      const hidden_sounds = [];
 
       // get all current sounds
       for (const sound in play_config) {
-        all_sounds += '-' + sound + '\n';
+        if (!hidden_sounds.includes(sound)) {
+          all_sounds += '-' + sound + '\n';
+        }
       }
 
       message.reply('Available sounds:\n' + all_sounds);
