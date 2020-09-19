@@ -27,7 +27,7 @@
       "https://www.youtube.com/watch?v=nc_LIR5ExIU",
       "https://www.youtube.com/watch?v=CEgh8TUlpQc"
     ],
-    "timeout_config": {
+    "timeout": {
       "music": "https://www.youtube.com/watch?v=jj0ChLVTpaA"
     }
 	}
