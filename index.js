@@ -21,6 +21,11 @@ bot.on('ready', () => {
 });
 
 bot.on('message', message => {
+  // easter egg for dm's
+  if (!message.guild && !message.author.bot) {
+    message.reply('Wow someone actually messaged me... dont like it, fuck off!');
+  }
+
   // check if it is a commannd for us, if not break
   if (!message.content.startsWith(config.prefix) || message.author.bot) {return;}
 
