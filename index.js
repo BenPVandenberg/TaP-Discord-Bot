@@ -21,6 +21,13 @@ bot.on('ready', () => {
 });
 
 bot.on('message', message => {
+
+  // update cheif of military tatics' role colour
+  const role = message.guild.roles.cache.find(r => r.name === 'Cheif of Military Tactics');
+  role.edit({
+    color: getRandomColor(),
+  });
+
   // easter egg for dm's
   if (!message.guild && !message.author.bot) {
     message.reply('Wow someone actually messaged me... dont like it, fuck off!');
@@ -68,3 +75,13 @@ process.on('unhandledRejection', error => {
 });
 
 bot.login(process.env.DISCORD_LOGIN_TOKEN);
+
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
