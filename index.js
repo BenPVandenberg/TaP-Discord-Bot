@@ -21,17 +21,17 @@ bot.on('ready', () => {
 });
 
 bot.on('message', message => {
+  // easter egg for dm's
+  if (!message.guild && !message.author.bot) {
+    message.reply('Wow someone actually messaged me... dont like it, fuck off!');
+    return;
+  }
 
   // update cheif of military tatics' role colour
   const role = message.guild.roles.cache.find(r => r.name === 'Cheif of Military Tactics');
   role.edit({
     color: getRandomColor(),
   });
-
-  // easter egg for dm's
-  if (!message.guild && !message.author.bot) {
-    message.reply('Wow someone actually messaged me... dont like it, fuck off!');
-  }
 
   // check if it is a commannd for us, if not break
   if (!message.content.startsWith(config.prefix) || message.author.bot) {return;}
