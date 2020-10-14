@@ -63,7 +63,14 @@ bot.on('guildMemberAdd', member => {
   // Do nothing if the channel wasn't found on this server
   if (!channel) return;
   // Send the message, mentioning the member
-  channel.send(`Welcome to the server, ${member}`);
+
+  const rules_string = `1. Be wary of the wild Greenlizid + Grim, they DO bite!
+  2. This is NOT a democrocy (RIP ur free will)
+  3. The President is "not racist" -President
+  4. Have fun
+  BONUS: /play gbtm ;)`;
+
+  channel.send(`Welcome to the server, ${member}. \n` + rules_string);
 });
 
 bot.on('shardError', error => {
