@@ -16,6 +16,11 @@ for (const file of commandFiles) {
   }
 }
 
+// create data dir if not present
+if (!fs.existsSync('./data')) {
+  fs.mkdirSync('./data');
+}
+
 bot.on('ready', () => {
   console.log('This bot is online!');
 });

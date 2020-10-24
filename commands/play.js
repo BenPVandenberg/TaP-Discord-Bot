@@ -1,5 +1,6 @@
 const ytdl = require('ytdl-core');
 const config = require('../config.json');
+const fs = require('fs');
 // ranks.js
 // ========
 module.exports = {
@@ -7,6 +8,8 @@ module.exports = {
   description: 'plays a audio clip',
   execute(message, args) {
     const play_config = config.commands.play; // eslint-disable-line
+
+    // put arg to lowercase if it exists
     try {
       args[0] = args[0].toLowerCase();
     }
@@ -31,6 +34,28 @@ module.exports = {
 
         dispatcher.on('finish', () => voiceChannel.leave());
       });
+
+      // sound played successfully, therefore make log
+      const play_data_path = 'data/play.json';
+      if(fs.existsSync(play_data_path)) {
+        let data = JSON.parse(fs.readFileSync(play_data_path));
+
+        if (data[args[0]]) data[args[0]] += 1;
+        else data[args[0]] = 1;
+
+        // update file
+        fs.writeFile(play_data_path, JSON.stringify(data), (err) => {
+          if (err) console.log(err);
+        });
+
+      }
+      else {
+        fs.writeFile(play_data_path, '{}', (err) => {
+          if (err) console.log(err);
+          else console.log(`Successfully created "${ play_data_path }"`);
+        });
+      }
+
     }
     else {
       let all_sounds = '';

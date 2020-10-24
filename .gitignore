@@ -117,3 +117,6 @@ dist
 
 # binary for pulling on aws
 git_pull
+
+# data logging folder
+data/
