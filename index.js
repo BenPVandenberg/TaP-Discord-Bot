@@ -20,7 +20,7 @@ bot.on('ready', () => {
   console.log('This bot is online!');
 });
 
-bot.on('message', message => {
+bot.on('message', async message => {
   // easter egg for dm's
   if (!message.guild && !message.author.bot) {
     message.reply('Wow someone actually messaged me... dont like it, fuck off!');
@@ -32,6 +32,13 @@ bot.on('message', message => {
   role.edit({
     color: getRandomColor(),
   });
+
+  // check if it is a bot command in a non command channel
+  const bot_cmd_channels = ['522935673964199936', '740332251103101048'];
+  if ((message.content.startsWith(config.prefix) || message.content.startsWith('-') || message.author.bot) && !bot_cmd_channels.includes(message.channel.id)) {
+    message.delete();
+    return;
+  }
 
   // check if it is a commannd for us, if not break
   if (!message.content.startsWith(config.prefix) || message.author.bot) {return;}
@@ -65,10 +72,10 @@ bot.on('guildMemberAdd', member => {
   // Send the message, mentioning the member
 
   const rules_string = `1. Be wary of the wild Greenlizid + Grim, they DO bite!
-  2. This is NOT a democrocy (RIP ur free will)
-  3. The President is "not racist" -President
-  4. Have fun
-  BONUS: /play gbtm ;)`;
+2. This is NOT a democrocy (RIP ur free will)
+3. The President is "not racist" -President
+4. Add game ranks by using /ranks
+BONUS: /play gbtm ;)`;
 
   channel.send(`Welcome to the server, ${member}. \n` + rules_string);
 });
