@@ -40,7 +40,10 @@ bot.on('message', async message => {
 
   // check if it is a bot command in a non command channel
   const bot_cmd_channels = ['522935673964199936', '740332251103101048'];
-  if ((message.content.startsWith(config.prefix) || message.content.startsWith('-') || message.author.bot) && !bot_cmd_channels.includes(message.channel.id)) {
+  if ((message.content.startsWith(config.prefix) || message.content.startsWith('-') || message.author.bot)
+      && !bot_cmd_channels.includes(message.channel.id)
+      && message.author.username !== 'T&P Bot') {
+
     message.delete();
     return;
   }
