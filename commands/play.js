@@ -2,7 +2,7 @@ const fs = require('fs');
 // ranks.js
 // ========
 module.exports = {
-  name: 'bplay',
+  name: 'play',
   description: 'plays a audio clip',
   execute(message, args) {
     const all_sounds = fs.readdirSync('./audio');
