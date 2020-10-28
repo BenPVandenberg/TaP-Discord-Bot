@@ -58,7 +58,7 @@ module.exports = {
       // get all current sounds
       for (const sound in all_sounds) {
         if (!hidden_sounds.includes(sound)) {
-          sound_list += '-' + all_sounds[sound] + '\n';
+          sound_list += '-' + all_sounds[sound].slice(0, -4) + '\n';
         }
       }
 
