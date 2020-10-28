@@ -1,44 +1,39 @@
-const ytdl = require('ytdl-core');
-const config = require('../config.json');
 const fs = require('fs');
 // ranks.js
 // ========
 module.exports = {
-  name: 'play',
+  name: 'bplay',
   description: 'plays a audio clip',
   execute(message, args) {
-    const play_config = config.commands.play; // eslint-disable-line
+    const all_sounds = fs.readdirSync('./audio');
 
     // put arg to lowercase if it exists
     try {
       args[0] = args[0].toLowerCase();
-    }
-    catch {} // eslint-disable-line no-empty
-    if (message.channel.type === 'dm') return;
-
-    // if an argument is given and its valid
-    if (args && play_config[args[0]]) {
 
       const voiceChannel = message.member.voice.channel;
       if (!voiceChannel) {
         return message.reply('please join a voice channel first!');
       }
 
-      message.react('👍');
+      // check if file exists
+      if (!fs.existsSync(`./audio/${ args[0] }.mp3`)) {
+        throw 'not a valid sound';
+      }
 
       // join and play yt audio
       voiceChannel.join().then(connection => {
-        const audioLink = play_config[args[0]];
-        const stream = ytdl(audioLink, { filter: 'audioonly' });
-        const dispatcher = connection.play(stream);
+        const dispatcher = connection.play(`./audio/${ args[0] }.mp3`);
 
         dispatcher.on('finish', () => voiceChannel.leave());
       });
 
+      message.react('👍');
+
       // sound played successfully, therefore make log
       const play_data_path = 'data/play.json';
       if(fs.existsSync(play_data_path)) {
-        let data = JSON.parse(fs.readFileSync(play_data_path));
+        const data = JSON.parse(fs.readFileSync(play_data_path));
 
         if (data[args[0]]) data[args[0]] += 1;
         else data[args[0]] = 1;
@@ -55,22 +50,19 @@ module.exports = {
           else console.log(`Successfully created "${ play_data_path }"`);
         });
       }
-
     }
-    else {
-      let all_sounds = '';
+    catch {
+      let sound_list = '';
       const hidden_sounds = [];
 
       // get all current sounds
-      for (const sound in play_config) {
+      for (const sound in all_sounds) {
         if (!hidden_sounds.includes(sound)) {
-          all_sounds += '-' + sound + '\n';
+          sound_list += '-' + sound + '\n';
         }
       }
 
-      message.reply('Available sounds:\n' + all_sounds);
+      message.reply('Available sounds:\n' + sound_list);
     }
-
-    return;
   },
 };
