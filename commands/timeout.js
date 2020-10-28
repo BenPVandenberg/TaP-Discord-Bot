@@ -1,12 +1,9 @@
-const config = require('../config.json');
-const ytdl = require('ytdl-core');
-// ranks.js
+// timeout.js
 // ========
 module.exports = {
   name: 'timeout',
   description: 'Moves the user to their own channel for 1 min',
   execute(message, args) { // eslint-disable-line no-unused-vars
-    const timeout_config = config.commands.timeout;
     const user_to_timeout = message.mentions.members.values().next().value;
 
     // verify the user @'d someone
@@ -45,9 +42,7 @@ module.exports = {
 
     // join and play yt audio
     eligible_channel.join().then(connection => {
-      const audioLink = timeout_config.music;
-      const stream = ytdl(audioLink, { filter: 'audioonly' });
-      const dispatcher = connection.play(stream);
+      const dispatcher = connection.play('./audio/timeout.mp3');
 
       dispatcher.on('finish', () => {
         // return member

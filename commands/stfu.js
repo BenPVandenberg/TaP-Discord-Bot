@@ -1,12 +1,9 @@
-const config = require('../config.json');
-const ytdl = require('ytdl-core');
-// ranks.js
+// stfu.js
 // ========
 module.exports = {
   name: 'stfu',
   description: 'Lets a user know they really need to stfu',
   execute(message, args) { // eslint-disable-line no-unused-vars
-    const stfu_config = config.commands.stfu;
     const user_to_stfu = message.mentions.members.values().next().value;
 
     // verify the user @'d someone
@@ -45,10 +42,8 @@ module.exports = {
 
     // join and play yt audio
     eligible_channel.join().then(connection => {
-      const random_index = Math.floor(Math.random() * stfu_config.length);
-      const audioLink = stfu_config[random_index];
-      const stream = ytdl(audioLink, { filter: 'audioonly' });
-      const dispatcher = connection.play(stream);
+      const random_index = Math.floor(Math.random() * 3);
+      const dispatcher = connection.play(`./audio/stfu${ random_index }.mp3`);
 
       dispatcher.on('finish', () => {
         // return member

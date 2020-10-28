@@ -53,12 +53,14 @@ module.exports = {
     }
     catch {
       let sound_list = '';
-      const hidden_sounds = [];
+      const hidden_sounds = ['stfu0', 'stfu1', 'stfu2', 'timeout'];
 
       // get all current sounds
       for (const sound in all_sounds) {
-        if (!hidden_sounds.includes(sound)) {
-          sound_list += '-' + all_sounds[sound].slice(0, -4) + '\n';
+        const cur_sound = all_sounds[sound].slice(0, -4);
+
+        if (!hidden_sounds.includes(cur_sound)) {
+          sound_list += '-' + cur_sound + '\n';
         }
       }
 
