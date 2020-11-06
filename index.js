@@ -45,7 +45,6 @@ bot.on('message', async message => {
       && message.author.username !== 'T&P Bot') {
 
     message.delete();
-    return;
   }
 
   // check if it is a commannd for us, if not break
