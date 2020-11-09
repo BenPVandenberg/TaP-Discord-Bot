@@ -1,9 +1,13 @@
+/* eslint-disable no-unreachable */
 // secretsanta.js
 // ========
 module.exports = {
   name: 'secretsanta',
   description: 'adds or removes sombody from secret santa',
   execute(message, args) { // eslint-disable-line no-unused-vars
+
+    message.reply('Sorry its too late to enter/leave!');
+    return;
 
     const roleToAdd = message.guild.roles.cache.get('770707823629697025'); // secret santa role
 
