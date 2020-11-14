@@ -14,10 +14,10 @@ module.exports = {
 
     let roles_display;
     try {
-      roles_display = rMember._roles.map(r => `${message.guild.roles.cache.get(r).name}`).join(' | ');
+      roles_display = rMember._roles.map(r => `${message.guild.roles.cache.get(r).name}`).join(' | ') || '\u200B';
     }
     catch (e) {
-      roles_display = 'No Roles';
+      roles_display = '\u200B';
     }
 
     const memberembed = new Discord.MessageEmbed()
