@@ -5,11 +5,18 @@ module.exports = {
   name: 'info',
   description: 'gets info of a user',
   execute(message, args) { // eslint-disable-line no-unused-vars
-    const rMember = message.guild.member(message.mentions.users.first()); // Takes the user mentioned, or the ID of a user
+    let rMember; // Takes the user mentioned, or the ID of a user
+
+    try {
+      rMember = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+    }
+    catch (e) {
+      return message.reply('usage: /info <@user | userid>');
+    }
 
     if(!rMember) {return message.reply('Who that user? I dunno him.');} // if there is no user mentioned, or provided, it will say this
 
-    const rUser = message.mentions.users.first();
+    const rUser = rMember.user;
     const micon = `https://cdn.discordapp.com/avatars/${ rMember.id }/${ rUser.avatar }.jpg`;
 
     let roles_display;
