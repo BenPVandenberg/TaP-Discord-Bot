@@ -12,6 +12,14 @@ module.exports = {
     const rUser = message.mentions.users.first();
     const micon = `https://cdn.discordapp.com/avatars/${ rMember.id }/${ rUser.avatar }.jpg`;
 
+    let roles_display;
+    try {
+      roles_display = rMember._roles.map(r => `${message.guild.roles.cache.get(r).name}`).join(' | ');
+    }
+    catch (e) {
+      roles_display = 'No Roles';
+    }
+
     const memberembed = new Discord.MessageEmbed()
       .setDescription('__**Member Information**__')
       .setColor(rMember.displayHexColor)
@@ -20,7 +28,7 @@ module.exports = {
       .addField('ID', rMember.id) // Their ID
       .addField('Status', rUser.presence.status)
       .addField('Joined at', rMember.joinedAt) // When they joined
-      .addField('Roles', rMember._roles.map(r => `${message.guild.roles.cache.get(r).name}`).join(' | '));
+      .addField('Roles', roles_display);
 
     message.channel.send(memberembed);
   },
