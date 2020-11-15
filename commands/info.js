@@ -27,7 +27,7 @@ module.exports = {
       roles_display = '\u200B';
     }
 
-    const memberembed = new Discord.MessageEmbed()
+    const member_embed = new Discord.MessageEmbed()
       .setDescription('__**Member Information**__')
       .setColor(rMember.displayHexColor)
       .setThumbnail(micon) // Their icon
@@ -37,6 +37,6 @@ module.exports = {
       .addField('Joined at', rMember.joinedAt) // When they joined
       .addField('Roles', roles_display);
 
-    message.channel.send(memberembed);
+    message.channel.send(member_embed);
   },
 };

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Discord = require('discord.js');
 // ranks.js
 // ========
 module.exports = {
@@ -24,7 +25,6 @@ module.exports = {
       // join and play yt audio
       voiceChannel.join().then(connection => {
         const dispatcher = connection.play(`./audio/${ args[0] }.mp3`);
-
         dispatcher.on('finish', () => voiceChannel.leave());
       });
 
@@ -44,6 +44,7 @@ module.exports = {
         });
 
       }
+      // file doesnt exist yet
       else {
         fs.writeFile(play_data_path, '{}', (err) => {
           if (err) console.log(err);
@@ -64,7 +65,13 @@ module.exports = {
         }
       }
 
-      message.reply('Available sounds:\n' + sound_list);
+      const member_embed = new Discord.MessageEmbed()
+        .setTitle('__**Available sounds**__')
+        .setDescription(sound_list)
+        .setColor(message.member.displayHexColor)
+        .setThumbnail('https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png'); // Their icon
+
+      message.channel.send(member_embed);
     }
   },
 };
