@@ -22,10 +22,16 @@ if (!fs.existsSync('./data')) {
   fs.mkdirSync('./data');
 }
 
+// ready
+/* Emitted when the client becomes ready to start working.    */
 bot.on('ready', () => {
   console.log('This bot is online!');
 });
 
+// message
+/* Emitted whenever a message is created.
+PARAMETER      TYPE           DESCRIPTION
+message        Message        The created message    */
 bot.on('message', async message => {
   // easter egg for dm's
   if (!message.guild && !message.author.bot) {
@@ -87,6 +93,95 @@ bot.on('guildMemberAdd', member => {
 BONUS: /play gbtm ;)`;
 
   channel.send(`Welcome to the server, ${member}.` + rules_string);
+});
+
+// voiceStateUpdate
+/* Emitted whenever a user changes voice state - e.g. joins/leaves a channel, mutes/unmutes.
+PARAMETER    TYPE             DESCRIPTION
+oldMember    GuildMember      The member before the voice state update
+newMember    GuildMember      The member after the voice state update    */
+bot.on('voiceStateUpdate', async function(oldMember, newMember) {
+  const voice_data_path = 'data/voice.json';
+  if(fs.existsSync(voice_data_path)) {
+    const data = JSON.parse(fs.readFileSync(voice_data_path));
+    const sessionID = newMember.sessionID || oldMember.sessionID;
+    const today = new Date().toISOString().split('T');
+    const date = today[0];
+    const time = today[1].split('.')[0];
+
+    // if the bot
+    if (newMember.id === '738903340011749378') return;
+
+    // make new entry if user not existing
+    if (!data[newMember.id]) {
+      data[newMember.id] = {};
+      data[newMember.id].identity = {};
+      data[newMember.id].sessions = [];
+    }
+
+    // update data
+    data[newMember.id].identity.displayName = newMember.member.displayName;
+    data[newMember.id].identity.username = newMember.member.user.username;
+    data[newMember.id].identity.discriminator = newMember.member.user.discriminator;
+
+    const sessions_list = data[newMember.id].sessions;
+    // check if this session has an entry already
+    if (sessions_list.length === 0 || sessions_list[sessions_list.length - 1].sessionID !== sessionID) {
+      sessions_list.push({
+        'sessionID': sessionID,
+        'events': [],
+      });
+    }
+
+    const events = sessions_list[sessions_list.length - 1].events;
+
+    if (oldMember.channelID != null && newMember.channelID == null) {
+      // leave event
+      events.push({
+        'type': 'leave',
+        'timestamp': date + ' ' + time,
+        'channelID': oldMember.channelID,
+        'channelName': oldMember.channel.name,
+      });
+    }
+    else if (oldMember.channelID == null && newMember.channelID != null) {
+      // Join event
+      events.push({
+        'type': 'join',
+        'timestamp': date + ' ' + time,
+        'channelID': newMember.channelID,
+        'channelName': newMember.channel.name,
+      });
+    }
+    else if (oldMember.channelID != null && newMember.channelID != null && oldMember.channelID !== newMember.channelID) {
+      // switch channels event
+      events.push({
+        'type': 'leave',
+        'timestamp': date + ' ' + time,
+        'channelID': oldMember.channelID,
+        'channelName': oldMember.channel.name,
+      });
+      events.push({
+        'type': 'join',
+        'timestamp': date + ' ' + time,
+        'channelID': newMember.channelID,
+        'channelName': newMember.channel.name,
+      });
+    }
+
+    // update file
+    fs.writeFile(voice_data_path, JSON.stringify(data), (err) => {
+      if (err) console.log(err);
+    });
+
+  }
+  // file doesnt exist yet
+  else {
+    fs.writeFile(voice_data_path, '{}', (err) => {
+      if (err) console.log(err);
+      else console.log(`Successfully created "${ voice_data_path }"`);
+    });
+  }
 });
 
 bot.on('shardError', error => {
