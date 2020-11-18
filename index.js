@@ -200,8 +200,15 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
     // if the bot
     if (['738903340011749378', '234395307759108106'].includes(newMember.userID)) return;
 
-    // ensure its a game event
-    if (!newMember || !oldMember || newMember.activities.length === oldMember.activities.length) return;
+    // check that both members are valid
+    if (!newMember || !oldMember) return;
+
+    // remove any activities that arn't a game
+    const new_activities = newMember.activities.filter(act => act.type === 'PLAYING');
+    const old_activities = oldMember.activities.filter(act => act.type === 'PLAYING');
+
+    // ensure its a change in activities
+    if (new_activities.length === old_activities.length) return;
 
     // make new entry if user not existing
     if (!data[newMember.userID]) {
@@ -215,9 +222,9 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
     data[newMember.userID].identity.username = newMember.member.user.username;
     data[newMember.userID].identity.discriminator = newMember.member.user.discriminator;
 
-    const application = newMember.activities[0] || oldMember.activities[0];
+    const application = new_activities[0] || old_activities[0];
 
-    if (!(application.applicationID in data[newMember.userID].gameLogs) || !(application.name in data[newMember.userID].gameLogs)) {
+    if (!(application.applicationID in data[newMember.userID].gameLogs) && !(application.name in data[newMember.userID].gameLogs)) {
       data[newMember.userID].gameLogs[application.applicationID || application.name] = {
         'name': application.name,
         'events': [],
@@ -226,14 +233,14 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
 
     const events = data[newMember.userID].gameLogs[application.applicationID || application.name].events;
 
-    if (oldMember.activities.length !== 0 && newMember.activities.length === 0) {
+    if (old_activities.length !== 0 && new_activities.length === 0) {
       // leave event
       events.push({
         'type': 'stop',
         'timestamp': date + ' ' + time,
       });
     }
-    else if (oldMember.activities.length === 0 && newMember.activities.length !== 0) {
+    else if (old_activities.length === 0 && new_activities.length !== 0) {
       // Join event
       events.push({
         'type': 'start',
