@@ -105,12 +105,12 @@ bot.on('voiceStateUpdate', async function(oldMember, newMember) {
   if(fs.existsSync(voice_data_path)) {
     const data = JSON.parse(fs.readFileSync(voice_data_path));
     const sessionID = newMember.sessionID || oldMember.sessionID;
-    const today = new Date().toISOString().split('T');
+    const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
     const date = today[0];
     const time = today[1].split('.')[0];
 
     // if the bot
-    if (newMember.id === '738903340011749378') return;
+    if (['738903340011749378', '234395307759108106'].includes(newMember.id)) return;
 
     // make new entry if user not existing
     if (!data[newMember.id]) {
