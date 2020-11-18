@@ -184,6 +184,78 @@ bot.on('voiceStateUpdate', async function(oldMember, newMember) {
   }
 });
 
+// presenceUpdate
+/* Emitted whenever a guild member's presence changes, or they change one of their details.
+PARAMETER    TYPE               DESCRIPTION
+oldMember    GuildMember        The member before the presence update
+newMember    GuildMember        The member after the presence update    */
+bot.on('presenceUpdate', function(oldMember, newMember) {
+  const game_data_path = 'data/game.json';
+  if(fs.existsSync(game_data_path)) {
+    const data = JSON.parse(fs.readFileSync(game_data_path));
+    const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
+    const date = today[0];
+    const time = today[1].split('.')[0];
+
+    // if the bot
+    if (['738903340011749378', '234395307759108106'].includes(newMember.userID)) return;
+
+    // ensure its a game event
+    if (!newMember || !oldMember || newMember.activities.length === oldMember.activities.length) return;
+
+    // make new entry if user not existing
+    if (!data[newMember.userID]) {
+      data[newMember.userID] = {};
+      data[newMember.userID].identity = {};
+      data[newMember.userID].gameLogs = {};
+    }
+
+    // update data
+    data[newMember.userID].identity.displayName = newMember.member.displayName;
+    data[newMember.userID].identity.username = newMember.member.user.username;
+    data[newMember.userID].identity.discriminator = newMember.member.user.discriminator;
+
+    const application = newMember.activities[0] || oldMember.activities[0];
+
+    if (!(application.applicationID in data[newMember.userID].gameLogs) || !(application.name in data[newMember.userID].gameLogs)) {
+      data[newMember.userID].gameLogs[application.applicationID || application.name] = {
+        'name': application.name,
+        'events': [],
+      };
+    }
+
+    const events = data[newMember.userID].gameLogs[application.applicationID || application.name].events;
+
+    if (oldMember.activities.length !== 0 && newMember.activities.length === 0) {
+      // leave event
+      events.push({
+        'type': 'stop',
+        'timestamp': date + ' ' + time,
+      });
+    }
+    else if (oldMember.activities.length === 0 && newMember.activities.length !== 0) {
+      // Join event
+      events.push({
+        'type': 'start',
+        'timestamp': date + ' ' + time,
+      });
+    }
+
+    // update file
+    fs.writeFile(game_data_path, JSON.stringify(data), (err) => {
+      if (err) console.log(err);
+    });
+
+  }
+  // file doesnt exist yet
+  else {
+    fs.writeFile(game_data_path, '{}', (err) => {
+      if (err) console.log(err);
+      else console.log(`Successfully created "${ game_data_path }"`);
+    });
+  }
+});
+
 bot.on('shardError', error => {
   console.error('A websocket connection encountered an error:', error);
 });
