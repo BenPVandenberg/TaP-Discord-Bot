@@ -223,6 +223,7 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
     data[newMember.userID].identity.discriminator = newMember.member.user.discriminator;
 
     const application = new_activities[0] || old_activities[0];
+    application.applicationID = application.applicationID === '356869127241072640' ? '401518684763586560' : application.applicationID;
 
     if (!(application.applicationID in data[newMember.userID].gameLogs) && !(application.name in data[newMember.userID].gameLogs)) {
       data[newMember.userID].gameLogs[application.applicationID || application.name] = {
