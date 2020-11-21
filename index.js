@@ -103,7 +103,13 @@ newMember    GuildMember      The member after the voice state update    */
 bot.on('voiceStateUpdate', async function(oldMember, newMember) {
   const voice_data_path = 'data/voice.json';
   if(fs.existsSync(voice_data_path)) {
-    const data = JSON.parse(fs.readFileSync(voice_data_path));
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(voice_data_path));
+    }
+    catch (e) {
+      console.error(e);
+    }
     const sessionID = newMember.sessionID || oldMember.sessionID;
     const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
     const date = today[0];
@@ -178,7 +184,7 @@ bot.on('voiceStateUpdate', async function(oldMember, newMember) {
   // file doesnt exist yet
   else {
     fs.writeFile(voice_data_path, '{}', (err) => {
-      if (err) console.log(err);
+      if (err) console.error(err);
       else console.log(`Successfully created "${ voice_data_path }"`);
     });
   }
@@ -192,7 +198,13 @@ newMember    GuildMember        The member after the presence update    */
 bot.on('presenceUpdate', function(oldMember, newMember) {
   const game_data_path = 'data/game.json';
   if(fs.existsSync(game_data_path)) {
-    const data = JSON.parse(fs.readFileSync(game_data_path));
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(game_data_path));
+    }
+    catch (e) {
+      console.error(e);
+    }
     const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
     const date = today[0];
     const time = today[1].split('.')[0];
