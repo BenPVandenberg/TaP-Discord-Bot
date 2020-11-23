@@ -87,7 +87,7 @@ bot.on('guildMemberAdd', member => {
 
   const rules_string = `
 1. Be wary of the wild Greenlizid + Grim, they DO bite!
-2. This is NOT a democrocy (RIP ur free will)
+2. This is NOT a democracy (RIP ur free will)
 3. The President is "not racist" -President
 4. Add game ranks by using /ranks
 BONUS: /play gbtm ;)`;
