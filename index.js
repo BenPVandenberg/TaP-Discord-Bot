@@ -109,6 +109,7 @@ bot.on('voiceStateUpdate', async function(oldMember, newMember) {
     }
     catch (e) {
       console.error(e);
+      return;
     }
     const sessionID = newMember.sessionID || oldMember.sessionID;
     const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
@@ -177,7 +178,7 @@ bot.on('voiceStateUpdate', async function(oldMember, newMember) {
 
     // update file
     fs.writeFile(voice_data_path, JSON.stringify(data), (err) => {
-      if (err) console.log(err);
+      if (err) console.error(err);
     });
 
   }
@@ -204,6 +205,7 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
     }
     catch (e) {
       console.error(e);
+      return;
     }
     const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
     const date = today[0];
@@ -263,7 +265,7 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
 
     // update file
     fs.writeFile(game_data_path, JSON.stringify(data), (err) => {
-      if (err) console.log(err);
+      if (err) console.error(err);
     });
 
   }
