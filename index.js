@@ -159,6 +159,16 @@ bot.on('voiceStateUpdate', async function(oldMember, newMember) {
         'channelID': newMember.channelID,
         'channelName': newMember.channel.name,
       });
+
+      // play heyrollin if its rollin
+      if (newMember.id === '142668923660140544') {
+        newMember.channel.join().then(connection => {
+          const dispatcher = connection.play('./audio/heyrollin.mp3');
+          dispatcher.on('finish', () => newMember.channel.leave());
+        });
+      }
+
+
     }
     else if (oldMember.channelID != null && newMember.channelID != null && oldMember.channelID !== newMember.channelID) {
       // switch channels event
@@ -239,7 +249,9 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
     const application = new_activities[0] || old_activities[0];
     application.applicationID = application.applicationID === '356869127241072640' ? '401518684763586560' : application.applicationID;
 
+
     if (!(application.applicationID in data[newMember.userID].gameLogs) && !(application.name in data[newMember.userID].gameLogs)) {
+
       data[newMember.userID].gameLogs[application.applicationID || application.name] = {
         'name': application.name,
         'events': [],

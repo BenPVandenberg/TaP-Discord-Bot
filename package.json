@@ -4,7 +4,7 @@
   "description": "First attemt at a discord bot",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon .",
+    "dev": "node .",
     "start": "pm2 start . --attach",
     "stop": "pm2 kill",
     "prestart": "npm install"
