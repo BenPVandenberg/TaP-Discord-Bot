@@ -1,7 +1,7 @@
 {
   "name": "custom-discord-bot",
   "version": "1.0.0",
-  "description": "First attemt at a discord bot",
+  "description": "First attempt at a discord bot",
   "main": "index.js",
   "scripts": {
     "dev": "node .",
