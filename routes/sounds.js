@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 
   // send contents of sounds folder
   const raw_data = fs.readdirSync(process.env.SOUNDS_DIR);
-  res.send(raw_data);
+  res.status(200).send(raw_data);
 });
 
 router.post('/upload', function(req, res, next) {
