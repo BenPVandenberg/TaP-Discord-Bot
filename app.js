@@ -9,6 +9,7 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var soundsRouter = require('./routes/sounds');
+var dataRouter = require('./routes/data');
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/sounds', soundsRouter);
+app.use('/data', dataRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

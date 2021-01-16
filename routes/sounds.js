@@ -18,7 +18,6 @@ router.post('/upload', function(req, res, next) {
 
   // accessing the file
   const myFile = req.files.file;
-  console.debug(myFile);
 
   // verify the file is valid
   if (!myFile.name.endsWith('.mp3') || myFile.mimetype !== 'audio/mpeg') {
