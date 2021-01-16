@@ -5,7 +5,7 @@ import { FaHome, FaMusic } from "react-icons/fa"
 import { ImDatabase } from 'react-icons/im'
 
 
-function navBar() {
+function NavBar() {
     return (
         <div className="navWrapper">
             <img src={logo} className="App-logo" alt="logo" />
@@ -32,4 +32,4 @@ function navBar() {
     );
 }
 
-export default navBar;
+export default NavBar;

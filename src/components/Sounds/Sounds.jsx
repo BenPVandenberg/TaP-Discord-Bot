@@ -1,7 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import FileUpload from "../FileUpload"
 
-function App() {
+function Sounds() {
+    const getSounds = () => {
+        let sounds = axios.get('/sounds')
+    }
+
     return (
         <div className="App">
             <header className="App-header">
@@ -12,4 +17,4 @@ function App() {
     );
 }
 
-export default App;
+export default Sounds;

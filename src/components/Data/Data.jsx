@@ -1,6 +1,6 @@
 import React from 'react';
 
-function App() {
+function Data() {
   return (
     <div className="App">
       <header className="App-header">
@@ -12,4 +12,4 @@ function App() {
   );
 }
 
-export default App;
+export default Data;
