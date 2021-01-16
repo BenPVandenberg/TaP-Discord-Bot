@@ -28,4 +28,5 @@ body {
     color: white;
     /* text-align: center; */
     margin-left: 132.48px; /* SAME AS .navWrapper width */
+    margin-top: 20px; /* SAME AS .navWrapper width */
 }
