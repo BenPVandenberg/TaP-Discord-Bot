@@ -9,7 +9,9 @@ import NavBar from './components/NavBar/NavBar.jsx';
 ReactDOM.render(
     <div>
         {/* navbar and pageWrapper side by side */}
-        <NavBar />
+        <div className="navWrapper">
+            <NavBar />
+        </div>
         <div className="pageWrapper">
             <Router>
                 <Route exact path="/" component={App} />

@@ -9,6 +9,15 @@ body {
     background-color: #282c34;
 }
 
+/* navbar CSS */
+.navWrapper {
+    position: fixed;
+    width: 132.48px; /* SAME AS .pageWrapper margin-left */
+    height: 100%;
+    float: left;
+    background: #1b1e21;
+}
+
 /* CSS for anything that isn't the nav bar */
 .pageWrapper {
     display: flex;
@@ -17,5 +26,6 @@ body {
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
-    text-align: center;
+    /* text-align: center; */
+    margin-left: 132.48px; /* SAME AS .navWrapper width */
 }
