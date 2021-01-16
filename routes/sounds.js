@@ -29,7 +29,7 @@ router.post('/upload', function(req, res, next) {
   myFile.mv(`${process.env.SOUNDS_DIR}${myFile.name}`, function (err) {
     if (err) {
       console.log(err);
-      return res.status(500).send({ msg: "Error occurred: Unable to " });
+      return res.status(500).send({ msg: "Error occurred: Unable to move file to bot dir" });
     }
     // returning the response with file path and name
     return res.status(201).send({ name: myFile.name});
