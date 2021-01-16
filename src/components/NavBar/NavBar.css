@@ -1,4 +1,15 @@
 .App-logo {
     height: 10vmin;
     pointer-events: none;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.navEntry {
+    padding-top: 10px;
+}
+
+.navEntry:hover {
+    background: rgba(98,100,167,.7);
+    cursor: pointer;
 }
