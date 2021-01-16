@@ -1,22 +1,16 @@
 {
   "name": "discord-bot-admin-backend",
-  "version": "0.1.0",
-  "description": "Backend for Discord Bot Admin site Frontend",
-  "main": "app.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "start": "node ."
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BenPVandenberg/Discord-Bot-Admin-Backend.git"
-  },
-  "author": "Ben Vandenberg",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/BenPVandenberg/Discord-Bot-Admin-Backend/issues"
-  },
-  "homepage": "https://github.com/BenPVandenberg/Discord-Bot-Admin-Backend#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   }
 }
