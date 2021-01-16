@@ -13,9 +13,13 @@ ReactDOM.render(
             <NavBar />
         </div>
         <div className="pageWrapper">
-            <Router>
-                <Route exact path="/" component={App} />
-            </Router>
+            <div className="contentWrapper">
+                <Router>
+                    <Route exact path="/" component={App} />
+                    <Route path="/sounds" component={App} />
+                    <Route path="/data" component={App} />
+                </Router>
+            </div>
         </div>
     </div>,
     document.getElementById("root")

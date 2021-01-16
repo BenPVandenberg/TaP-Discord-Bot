@@ -30,3 +30,14 @@ body {
     margin-left: 132.48px; /* SAME AS .navWrapper width */
     padding-top: 20px;
 }
+
+/* Wrapper for the actual content */
+.contentWrapper {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    width: 95%;
+    background: rgba(0, 0, 0, 0.54);
+    border-radius: 0.75rem 0.75rem 0.75rem 0.75rem;
+}
