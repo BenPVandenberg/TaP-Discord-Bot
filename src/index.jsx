@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import App from './components/App.jsx';
 import NavBar from './components/NavBar/NavBar.jsx';
+import Home from './components/Home/Home.jsx';
+import Sounds from './components/Sounds/Sounds.jsx';
+import Data from './components/Data/Data.jsx';
 
 ReactDOM.render(
     <div>
@@ -15,9 +17,9 @@ ReactDOM.render(
         <div className="pageWrapper">
             <div className="contentWrapper">
                 <Router>
-                    <Route exact path="/" component={App} />
-                    <Route path="/sounds" component={App} />
-                    <Route path="/data" component={App} />
+                    <Route exact path="/" component={Home} />
+                    <Route path="/sounds" component={Sounds} />
+                    <Route path="/data" component={Data} />
                 </Router>
             </div>
         </div>
