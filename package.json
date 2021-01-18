@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "node .",
     "start": "pm2 start . --attach",
-    "stop": "pm2 kill",
-    "prestart": "npm install"
+    "stop": "pm2 kill"
   },
   "author": "Ben Vandenberg & Jake Richardson",
   "license": "ISC",
@@ -18,6 +17,8 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
+    "node-opus": "^0.3.3",
+    "opusscript": "0.0.7",
     "ytdl-core": "^3.2.2"
   },
   "devDependencies": {
