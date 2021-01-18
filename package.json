@@ -4,8 +4,8 @@
   "description": "First attempt at a discord bot",
   "main": "index.js",
   "scripts": {
-    "dev": "node .",
-    "start": "pm2 start . --attach",
+    "pm2": "pm2 start --name Discord_Bot npm -- start",
+    "start": "node .",
     "stop": "pm2 kill"
   },
   "author": "Ben Vandenberg & Jake Richardson",
