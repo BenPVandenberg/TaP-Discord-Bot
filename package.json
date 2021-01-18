@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./bin/www --attach",
+    "pm2": "pm2 start --name Discord_BackEnd npm -- start",
+    "start": "node ./bin/www",
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
