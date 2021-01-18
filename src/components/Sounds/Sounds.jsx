@@ -27,7 +27,7 @@ function Sounds() {
         })
 
         // sort by highest frequency
-        newAllSounds.sort((a, b) => b[0] - a[0])
+        newAllSounds.sort((a, b) => b[0] - a[0]);
 
         // console.log(newAllSounds);
         setAllSounds(newAllSounds);
