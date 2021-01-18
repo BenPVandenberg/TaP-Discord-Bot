@@ -15,40 +15,45 @@ function Home() {
               bot/website suggestions, and upload your own sound clips!
           </p>
           <p>
-              This project is a WIP so expect it to change frequently. Please report bugs to Rollin on discord.
+              This project is a WIP so expect it to change frequently. Please
+              report bugs to Rollin on discord.
           </p>
-          <Table className="text-white w-25" size="sm">
+          <Table className="text-white w-50" size="sm">
               <thead>
+                  <td><AiFillCheckCircle size={25} /></td>
                   <td>View sound data</td>
-                  <td><AiFillCheckCircle size={35}/></td>
               </thead>
               <thead>
+                  <td><AiFillCheckCircle size={25} /></td>
                   <td>Upload sound clips</td>
-                  <td><AiFillCheckCircle size={35}/></td>
               </thead>
               <thead>
+                  <td></td>
+                  <td>Better error handling (pop ups)</td>
+              </thead>
+              <thead>
+                  <td></td>
                   <td>View bot collected data</td>
-                  <td></td>
               </thead>
               <thead>
+                  <td></td>
                   <td>Submit suggestions (for now msg Rollin)</td>
-                  <td></td>
               </thead>
               <thead>
+                  <td></td>
                   <td>Polish the looks</td>
-                  <td></td>
               </thead>
               <thead>
+                  <td></td>
                   <td>Add Discord Auth (following will req this)</td>
-                  <td></td>
               </thead>
               <thead>
+                  <td></td>
                   <td>Profile page where you can edit how the bot interacts with you</td>
-                  <td></td>
               </thead>
               <thead>
-                  <td>Permissions for features</td>
                   <td></td>
+                  <td>Permissions for features</td>
               </thead>
           </Table>
       </div>
