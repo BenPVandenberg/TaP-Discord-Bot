@@ -21,6 +21,7 @@
     "eslint": "^7.17.0"
   },
   "scripts": {
+    "pm2": "pm2 start --name Discord_React npm -- start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
