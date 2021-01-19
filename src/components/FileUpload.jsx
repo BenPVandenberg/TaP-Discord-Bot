@@ -39,7 +39,7 @@ function FileUpload() {
         <Fragment>
             <form onSubmit={onSubmit}>
                 <div className="form-custom-file">
-                    <input type="file" className="form-file-input" id="customFile" onChange={onChange}/>
+                    <input type="file" className="form-file-input" id="customFile" accept=".mp3" onChange={onChange}/>
                 </div>
                 <input type="submit" value="Upload"/>
             </form>
