@@ -17,7 +17,7 @@ function FileUpload() {
 
         // try post request
         try {
-            axios.post('/sounds/upload', formData, { 
+            axios.post('http://52.152.174.99:5000/sounds/upload', formData, { 
                 headers: { 'Content-Type': 'multipart/form-data'}
 
             }).then((res) => {
