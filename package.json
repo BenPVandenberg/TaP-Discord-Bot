@@ -35,7 +35,12 @@
       "rules": {
           "semi": "warn",
           "quotes": ["warn", "single"],
-          "no-trailing-spaces": "warn"
+          "no-trailing-spaces": "warn",
+          "camelcase": "warn",
+          "eol-last": "warn",
+          "no-var": "warn",
+          "prefer-const": "warn",
+          "consistent-return":"error"
       }
     },
     "browserslist": {

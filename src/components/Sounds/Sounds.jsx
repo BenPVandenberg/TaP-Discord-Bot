@@ -8,7 +8,7 @@ function Sounds() {
     const [allSounds, setAllSounds] = useState([]);
 
     const updateSounds = async () => {
-        let newAllSounds = [];
+        const newAllSounds = [];
         let sounds;
         let soundData;
 
