@@ -1,7 +1,7 @@
 const express = require('express');
+const fs = require('fs');
 
 const router = express.Router();
-const fs = require('fs');
 
 /* GET sounds listing. */
 router.get('/', (req, res, next) => {
@@ -23,10 +23,15 @@ router.post('/upload', (req, res, next) => {
     return res.status(400).send({ msg: 'File uploaded isn\'t a correct format. Must be a .mp3 file' });
   }
 
-  // TODO: Check if the file already exists
+  const fullFilePath = `${process.env.SOUNDS_DIR}${myFile.name}`;
+
+  // check if file already exists
+  if (fs.existsSync(fullFilePath)) {
+    return res.status(400).send({ msg: 'That file already exists' });
+  }
 
   //  mv() method places the file inside public directory
-  myFile.mv(`${process.env.SOUNDS_DIR}${myFile.name}`, (err) => {
+  myFile.mv(fullFilePath, (err) => {
     if (err) {
       return res.status(500).send({ msg: 'Error occurred: Unable to move file to bot dir' });
     }
