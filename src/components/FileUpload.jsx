@@ -1,13 +1,13 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react';
 import axios from 'axios';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
 
 function FileUpload() {
     const [file, setFile] = useState('');
-    
+
     const onChange = e => {
-        setFile(e.target.files[0])
-    }
+        setFile(e.target.files[0]);
+    };
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -17,14 +17,14 @@ function FileUpload() {
 
         // try post request
         try {
-            axios.post('http://52.152.174.99:5000/sounds/upload', formData, { 
+            axios.post('http://52.152.174.99:5000/sounds/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data'}
 
             }).then((res) => {
                 // notify user of success
                 swal.fire({
                     title: `${res.data.name} was uploaded!`,
-                    icon: "success",
+                    icon: 'success',
                 }).then(() => {
                     // refresh list to show new sound
                     window.location = '/sounds/';
@@ -37,9 +37,9 @@ function FileUpload() {
                 // notify user of issue uploading
                 if (err.response) {
                     swal.fire({
-                        title: "Error with the server",
+                        title: 'Error with the server',
                         text: err.response.data.msg || `HTTP Response: ${err.response.status}`,
-                        icon: "error",
+                        icon: 'error',
                     });
                 }
             });
@@ -47,12 +47,12 @@ function FileUpload() {
         } catch (e) {
             // print error to console for now
             if (e.response) {
-                console.warn(e.response.data.msg)
+                console.warn(e.response.data.msg);
             } else {
-                console.warn('There was a problem with the upload server')
+                console.warn('There was a problem with the upload server');
             }
         }
-    }
+    };
 
     return (
         <Fragment>
@@ -63,7 +63,7 @@ function FileUpload() {
                 <input type="submit" value="Upload"/>
             </form>
         </Fragment>
-    )
+    );
 }
 
-export default FileUpload
+export default FileUpload;

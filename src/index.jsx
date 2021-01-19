@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import NavBar from './components/NavBar/NavBar.jsx';
@@ -24,5 +24,5 @@ ReactDOM.render(
             </div>
         </div>
     </div>,
-    document.getElementById("root")
+    document.getElementById('root')
 );

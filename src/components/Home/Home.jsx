@@ -1,6 +1,6 @@
 import React from 'react';
-import Table from 'react-bootstrap/Table'
-import { AiFillCheckCircle } from 'react-icons/ai'
+import Table from 'react-bootstrap/Table';
+import { AiFillCheckCircle } from 'react-icons/ai';
 
 
 function Home() {
