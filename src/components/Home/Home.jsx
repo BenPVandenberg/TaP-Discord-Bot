@@ -28,7 +28,7 @@ function Home() {
                   <td>Upload sound clips</td>
               </thead>
               <thead>
-                  <td></td>
+                  <td><AiFillCheckCircle size={25} /></td>
                   <td>Better error handling (pop ups)</td>
               </thead>
               <thead>
