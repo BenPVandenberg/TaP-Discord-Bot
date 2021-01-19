@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import swal from 'sweetalert2'
 import Table from 'react-bootstrap/Table'
 import FileUpload from "../FileUpload"
 
@@ -12,25 +13,43 @@ function Sounds() {
         let soundData;
 
         // get /play statistics
-        await axios.get('/data/play').then(res => {
-            soundData = res.data;
+        await axios.get('/data/plays').then(res => {
+            soundData = res.data;            
+        }).catch(err => {
+            swal.fire({
+                title: "Error with the server: GET /data/plays",
+                text: err.response.data.msg || `HTTP Code ${err.response.status}`,
+                icon: "error",
+            });
         });
+
         // get all available sounds
         await axios.get('/sounds').then(res => {
             sounds = res.data;
+        }).catch(err => {
+            swal.fire({
+                title: "Error with the server: GET /sounds",
+                text: err.response.data.msg || `HTTP Code ${err.response.status}`,
+                icon: "error",
+            });
         });
 
-        // if we have data for a song then update allSounds
-        sounds.forEach(sound => {
-            sound = sound.slice(0,-4);
-            newAllSounds.push([soundData[sound] || 0, sound]);
-        })
+        try {
+            // if we have data for a song then update allSounds
+            sounds.forEach(sound => {
+                sound = sound.slice(0,-4);
+                newAllSounds.push([soundData[sound] || 0, sound]);
+            })
 
-        // sort by highest frequency
-        newAllSounds.sort((a, b) => b[0] - a[0]);
+            // sort by highest frequency
+            newAllSounds.sort((a, b) => b[0] - a[0]);
 
-        // console.log(newAllSounds);
-        setAllSounds(newAllSounds);
+            // console.log(newAllSounds);
+            setAllSounds(newAllSounds);
+
+        } catch (err) {
+            // main errors are handled elsewhere
+        }
     }
 
     // run on mount

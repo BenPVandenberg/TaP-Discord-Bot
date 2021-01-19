@@ -2,6 +2,8 @@
     "cSpell.words": [
         "browserslist",
         "noopener",
-        "noreferrer"
+        "noreferrer",
+        "swal",
+        "sweetalert"
     ]
 }

@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from 'react'
 import axios from 'axios';
+import swal from 'sweetalert2'
 
 function FileUpload() {
     const [file, setFile] = useState('');
-    const [uploadedFile, setUploadedFile] = useState('');
     
     const onChange = e => {
         setFile(e.target.files[0])
@@ -17,17 +17,36 @@ function FileUpload() {
 
         // try post request
         try {
-            const res = await axios.post('/sounds/upload', formData, { 
+            axios.post('/sounds/upload', formData, { 
                 headers: { 'Content-Type': 'multipart/form-data'}
+
+            }).then((res) => {
+                // notify user of success
+                swal.fire({
+                    title: `${res.data.name} was uploaded!`,
+                    icon: "success",
+                }).then(() => {
+                    // refresh list to show new sound
+                    window.location = '/sounds/';
+                });
+
+                // reset file value (no longer needed with the refresh)
+                // setFile('');
+
+            }).catch(err => {
+                // notify user of issue uploading
+                if (err.response) {
+                    swal.fire({
+                        title: "Error with the server",
+                        text: err.response.data.msg || `HTTP Response: ${err.response.status}`,
+                        icon: "error",
+                    });
+                }
             });
-
-            const { name } = res.data;
-
-            setUploadedFile(`${name} Uploaded!`)
 
         } catch (e) {
             // print error to console for now
-            if (e.response.data) {
+            if (e.response) {
                 console.warn(e.response.data.msg)
             } else {
                 console.warn('There was a problem with the upload server')
@@ -43,7 +62,6 @@ function FileUpload() {
                 </div>
                 <input type="submit" value="Upload"/>
             </form>
-            <p>{ uploadedFile }</p>
         </Fragment>
     )
 }
