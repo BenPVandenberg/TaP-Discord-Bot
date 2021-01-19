@@ -13,11 +13,11 @@ function Sounds() {
         let soundData;
 
         // get /play statistics
-        await axios.get('/data/plays').then(res => {
+        await axios.get('/data/play').then(res => {
             soundData = res.data;            
         }).catch(err => {
             swal.fire({
-                title: "Error with the server: GET /data/plays",
+                title: "Error with the server: GET /data/play",
                 text: err.response.data.msg || `HTTP Code ${err.response.status}`,
                 icon: "error",
             });
