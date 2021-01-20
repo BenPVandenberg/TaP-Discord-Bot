@@ -1,12 +1,12 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-import NavBar from './components/NavBar/NavBar.jsx';
-import Home from './components/Home/Home.jsx';
-import Sounds from './components/Sounds/Sounds.jsx';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Data from './components/Data/Data.jsx';
+import Home from './components/Home/Home.jsx';
+import NavBar from './components/NavBar/NavBar.jsx';
+import Sounds from './components/Sounds/Sounds.jsx';
+import './index.css';
 
 ReactDOM.render(
     <div>

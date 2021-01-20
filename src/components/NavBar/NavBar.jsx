@@ -1,8 +1,8 @@
 import React from 'react';
-import './NavBar.css';
-import logo from '../../assets/logo.svg';
 import { FaHome, FaMusic } from 'react-icons/fa';
 import { ImDatabase } from 'react-icons/im';
+import logo from '../../assets/logo.svg';
+import './NavBar.css';
 
 
 function NavBar() {

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import swal from 'sweetalert2';
+import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import swal from 'sweetalert2';
 import FileUpload from '../FileUpload';
 
 function Sounds() {
