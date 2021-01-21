@@ -28,8 +28,6 @@ export default class Data extends React.Component{
     }
 
     getDataJSON = async (userID) => {
-        console.log(userID);
-
         if (!Object.keys(this.state.allGameData).length) {
             await this.updateAllData();
         }
@@ -72,8 +70,6 @@ export default class Data extends React.Component{
 
         // if we have game data, display it
         if (Object.keys(this.state.gameData).length) {
-            console.log('here');
-            // gameDataView = <Form.Control as="textarea" defaultValue={JSON.stringify(this.state.gameData, null, 2)} />;
             gameDataView = <ReactJson src={this.state.gameData} theme="twilight" name={this.state.userID} collapsed={ 2 }/>;
         }
 
