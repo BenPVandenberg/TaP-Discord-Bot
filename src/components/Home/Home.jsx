@@ -20,19 +20,27 @@ function Home() {
           </p>
           <Table className="text-white w-50" size="sm">
               <thead>
-                  <td><AiFillCheckCircle size={25} /></td>
+                  <td>
+                      <AiFillCheckCircle size={25} />
+                  </td>
                   <td>View sound data</td>
               </thead>
               <thead>
-                  <td><AiFillCheckCircle size={25} /></td>
+                  <td>
+                      <AiFillCheckCircle size={25} />
+                  </td>
                   <td>Upload sound clips</td>
               </thead>
               <thead>
-                  <td><AiFillCheckCircle size={25} /></td>
+                  <td>
+                      <AiFillCheckCircle size={25} />
+                  </td>
                   <td>Better error handling (pop ups)</td>
               </thead>
               <thead>
-                  <td></td>
+                  <td>
+                      <AiFillCheckCircle size={25} />
+                  </td>
                   <td>View bot collected data</td>
               </thead>
               <thead>
@@ -49,7 +57,10 @@ function Home() {
               </thead>
               <thead>
                   <td></td>
-                  <td>Profile page where you can edit how the bot interacts with you</td>
+                  <td>
+                      Profile page where you can edit how the bot interacts with
+                      you
+                  </td>
               </thead>
               <thead>
                   <td></td>
