@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import FileUpload from '../FileUpload';
 
 function Sounds() {
@@ -16,7 +16,7 @@ function Sounds() {
         await axios.get('http://52.152.174.99:5000/data/play').then(res => {
             soundData = res.data;
         }).catch(err => {
-            swal.fire({
+            Swal.fire({
                 title: 'Error with the server: GET /data/play',
                 text: err.response.data.msg || `HTTP Code ${err.response.status}`,
                 icon: 'error',
@@ -27,7 +27,7 @@ function Sounds() {
         await axios.get('http://52.152.174.99:5000/sounds').then(res => {
             sounds = res.data;
         }).catch(err => {
-            swal.fire({
+            Swal.fire({
                 title: 'Error with the server: GET /sounds',
                 text: err.response.data.msg || `HTTP Code ${err.response.status}`,
                 icon: 'error',
