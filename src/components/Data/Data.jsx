@@ -34,10 +34,10 @@ export default class Data extends React.Component{
 
         const allGameData = this.state.allGameData;
 
-        // TODO Make it also possible to search by user name
-
         // check if user is in rawData
         if (!allGameData[userID]) {
+            // TODO Make it also possible to search by user name
+
             Swal.fire({
                 title: 'Invalid User ID',
                 text: 'This user doesn\'t exist or isn\'t in T&P',
