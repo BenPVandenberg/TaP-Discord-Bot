@@ -70,7 +70,7 @@ export default class Data extends React.Component{
 
         // if we have game data, display it
         if (Object.keys(this.state.gameData).length) {
-            gameDataView = <ReactJson src={this.state.gameData} theme="twilight" name={this.state.userID} collapsed={ 2 }/>;
+            gameDataView = <ReactJson src={this.state.gameData} theme="twilight" name={this.state.userID} collapsed={ 2 } style={{background:  'rgb(18, 20, 24)'}}/>;
         }
 
         return (
