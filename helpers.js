@@ -22,10 +22,40 @@ module.exports = {
       g = hue2rgb(p, q, h);
       b = hue2rgb(p, q, h - 1 / 3);
     }
-    const toHex = x => {
+    const toHex = (x) => {
       const hex = Math.round(x * 255).toString(16);
       return hex.length === 1 ? '0' + hex : hex;
     };
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  },
+
+  makeSQLQuery(query) {
+    const mysql = require('mysql');
+
+    const con = mysql.createConnection({
+      host: 'discordbot-db.cnc9sfn08jc5.us-east-2.rds.amazonaws.com',
+      user: 'admin',
+      password: process.env.DB_PASSWORD,
+      database: 'Discord_Bot',
+      timezone: 'EST',
+    });
+
+    con.query('SET time_zone = "EST";', function(err) {
+      if (err) throw err;
+
+      con.query(query, function(err) {
+        if (err) throw err;
+      });
+    });
+  },
+
+  dbMakeSoundLog(soundName, requestor) {
+    try {
+      this.makeSQLQuery(`INSERT IGNORE INTO Sound (Name) VALUES ('${soundName}');`);
+      this.makeSQLQuery(`INSERT IGNORE INTO PlayLog (Requestor, Sound) VALUES (${requestor}, '${soundName}');`);
+    }
+    catch (e) {
+      console.error(e);
+    }
   },
 };

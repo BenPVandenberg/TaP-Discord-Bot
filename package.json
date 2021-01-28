@@ -16,14 +16,17 @@
     "console-stamp": "^0.2.9",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "ffmpeg-static": "^4.2.7",
-    "node-opus": "^0.3.3",
-    "opusscript": "0.0.7",
+    "mysql": "^2.18.1",
     "ytdl-core": "^3.2.2"
   },
   "devDependencies": {
     "eslint": "^7.6.0",
     "nodemon": "^2.0.4",
     "pm2": "^4.4.1"
+  },
+  "optionalDependencies": {
+    "ffmpeg-static": "^4.2.7",
+    "node-opus": "^0.3.3",
+    "opusscript": "0.0.7"
   }
 }
