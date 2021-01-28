@@ -29,7 +29,7 @@ module.exports = {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   },
 
-  makeSQLQuery(query) {
+  makeSQLQuery(query, callback) {
     const mysql = require('mysql');
 
     const con = mysql.createConnection({
@@ -45,14 +45,95 @@ module.exports = {
 
       con.query(query, function(err) {
         if (err) throw err;
+        return callback();
       });
     });
   },
 
+  verifyUser(user, callback) {
+    try {
+      this.makeSQLQuery(`INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, '${user.displayName}', '${user.user.username}', ${user.user.discriminator});`, () => {callback();});
+    }
+    catch (e) {
+      console.error(e);
+    }
+  },
+
   dbMakeSoundLog(soundName, requestor) {
     try {
-      this.makeSQLQuery(`INSERT IGNORE INTO Sound (Name) VALUES ('${soundName}');`);
-      this.makeSQLQuery(`INSERT IGNORE INTO PlayLog (Requestor, Sound) VALUES (${requestor}, '${soundName}');`);
+      this.verifyUser(requestor, () => {
+        this.makeSQLQuery(`INSERT IGNORE INTO Sound (SoundName) VALUES ('${soundName}');`, () => {
+          this.makeSQLQuery(`INSERT IGNORE INTO PlayLog (Requestor, SoundName) VALUES (${requestor.id}, '${soundName}');`, () => {return;});
+        });
+      });
+    }
+    catch (e) {
+      console.error(e);
+    }
+  },
+  dbMakeGameLog(user, game) {
+    try {
+      this.verifyUser(user, () => {
+        this.makeSQLQuery(`INSERT IGNORE INTO Game (Title, GameID) VALUES ('${game.name}', ${game.applicationID});`, () => {
+          this.makeSQLQuery(`INSERT IGNORE INTO GameLog (UserID, Game) VALUES (${user.id}, '${game.name}');`, () => {return;});
+        });
+      });
+    }
+    catch (e) {
+      console.error(e);
+    }
+  },
+  dbCloseGameLog(user, game) {
+    try {
+      this.verifyUser(user, () => {
+        this.makeSQLQuery(`
+        UPDATE GameLog
+        SET End = NOW()
+        WHERE ID =
+        (
+        SELECT ID FROM
+          (SELECT * FROM GameLog
+          WHERE (UserID = ${user.id}) AND
+          (Game = '${game.name}')
+          ORDER BY Start DESC LIMIT 1) AS Sub
+        WHERE (End IS NULL)
+        );`, () => {return;});
+      });
+    }
+    catch (e) {
+      console.error(e);
+    }
+  },
+  dbMakeVoiceLog(user, channelID, channelName, sessionID) {
+    try {
+      this.verifyUser(user, () => {
+        this.makeSQLQuery(`INSERT IGNORE INTO VoiceSession (SessionID, UserID) VALUES ('${sessionID}', ${user.id});`, () => {
+          this.makeSQLQuery(`INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) VALUES (${channelID}, '${channelName}');`, () => {
+            this.makeSQLQuery(`INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) VALUES ('${sessionID}', ${channelID});`, () => {return;});
+          });
+        });
+      });
+    }
+    catch (e) {
+      console.error(e);
+    }
+  },
+  dbCloseVoiceLog(user, channelID, sessionID) {
+    try {
+      this.verifyUser(user, () => {
+        this.makeSQLQuery(`
+        UPDATE VoiceLog
+        SET End = NOW()
+        WHERE ID =
+        (
+        SELECT ID FROM
+          (SELECT * FROM VoiceLog
+          WHERE (SessionID = '${sessionID}') AND
+          (ChannelID = ${channelID})
+          ORDER BY Start DESC LIMIT 1) AS Sub
+        WHERE (End IS NULL)
+        )`, () => {return;});
+      });
     }
     catch (e) {
       console.error(e);

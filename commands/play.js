@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
+const helpers = require('../helpers.js');
 // ranks.js
 // ========
 module.exports = {
@@ -30,29 +31,10 @@ module.exports = {
 
       message.react('👍');
 
-      // sound played successfully, therefore make log
-      const play_data_path = 'data/play.json';
-      if(fs.existsSync(play_data_path)) {
-        const data = JSON.parse(fs.readFileSync(play_data_path));
-
-        if (data[args[0]]) data[args[0]] += 1;
-        else data[args[0]] = 1;
-
-        // update file
-        fs.writeFile(play_data_path, JSON.stringify(data), (err) => {
-          if (err) console.log(err);
-        });
-
-      }
-      // file doesnt exist yet
-      else {
-        fs.writeFile(play_data_path, '{}', (err) => {
-          if (err) console.log(err);
-          else console.log(`Successfully created "${ play_data_path }"`);
-        });
-      }
+      // sound played successfully, therefore update database
+      helpers.dbMakeSoundLog(args[0], message.member);
     }
-    catch {
+    catch (e) {
       let sound_list = '';
       const hidden_sounds = ['stfu0', 'stfu1', 'stfu2', 'timeout'];
 

@@ -101,103 +101,31 @@ PARAMETER    TYPE             DESCRIPTION
 oldMember    GuildMember      The member before the voice state update
 newMember    GuildMember      The member after the voice state update    */
 bot.on('voiceStateUpdate', async function(oldMember, newMember) {
-  const voice_data_path = 'data/voice.json';
-  if(fs.existsSync(voice_data_path)) {
-    let data;
-    try {
-      data = JSON.parse(fs.readFileSync(voice_data_path));
-    }
-    catch (e) {
-      console.error(e);
-      return;
-    }
-    const sessionID = newMember.sessionID || oldMember.sessionID;
-    const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
-    const date = today[0];
-    const time = today[1].split('.')[0];
+  const sessionID = newMember.sessionID || oldMember.sessionID;
 
-    // if the bot
-    if (['738903340011749378', '234395307759108106'].includes(newMember.id)) return;
+  // if the bot
+  if (['738903340011749378', '234395307759108106'].includes(newMember.id)) return;
 
-    // make new entry if user not existing
-    if (!data[newMember.id]) {
-      data[newMember.id] = {};
-      data[newMember.id].identity = {};
-      data[newMember.id].sessions = [];
-    }
-
-    // update data
-    data[newMember.id].identity.displayName = newMember.member.displayName;
-    data[newMember.id].identity.username = newMember.member.user.username;
-    data[newMember.id].identity.discriminator = newMember.member.user.discriminator;
-
-    const sessions_list = data[newMember.id].sessions;
-    // check if this session has an entry already
-    if (sessions_list.length === 0 || sessions_list[sessions_list.length - 1].sessionID !== sessionID) {
-      sessions_list.push({
-        'sessionID': sessionID,
-        'events': [],
-      });
-    }
-
-    const events = sessions_list[sessions_list.length - 1].events;
-
-    if (oldMember.channelID != null && newMember.channelID == null) {
-      // leave event
-      events.push({
-        'type': 'leave',
-        'timestamp': date + ' ' + time,
-        'channelID': oldMember.channelID,
-        'channelName': oldMember.channel.name,
-      });
-    }
-    else if (oldMember.channelID == null && newMember.channelID != null) {
-      // Join event
-      events.push({
-        'type': 'join',
-        'timestamp': date + ' ' + time,
-        'channelID': newMember.channelID,
-        'channelName': newMember.channel.name,
-      });
-
-      // play heyrollin if its rollin
-      if (newMember.id === '142668923660140544') {
-        newMember.channel.join().then(connection => {
-          const dispatcher = connection.play('./audio/heyrollin.mp3');
-          dispatcher.on('finish', () => newMember.channel.leave());
-        });
-      }
-
-
-    }
-    else if (oldMember.channelID != null && newMember.channelID != null && oldMember.channelID !== newMember.channelID) {
-      // switch channels event
-      events.push({
-        'type': 'leave',
-        'timestamp': date + ' ' + time,
-        'channelID': oldMember.channelID,
-        'channelName': oldMember.channel.name,
-      });
-      events.push({
-        'type': 'join',
-        'timestamp': date + ' ' + time,
-        'channelID': newMember.channelID,
-        'channelName': newMember.channel.name,
-      });
-    }
-
-    // update file
-    fs.writeFile(voice_data_path, JSON.stringify(data), (err) => {
-      if (err) console.error(err);
-    });
-
+  if (oldMember.channelID != null && newMember.channelID == null) {
+    // leave event
+    helpers.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
   }
-  // file doesnt exist yet
-  else {
-    fs.writeFile(voice_data_path, '{}', (err) => {
-      if (err) console.error(err);
-      else console.log(`Successfully created "${ voice_data_path }"`);
-    });
+  else if (oldMember.channelID == null && newMember.channelID != null) {
+    // Join event
+    helpers.dbMakeVoiceLog(newMember.member, newMember.channelID, newMember.channel.name, sessionID);
+
+    // play heyrollin if its rollin
+    if (newMember.id === '142668923660140544') {
+      newMember.channel.join().then(connection => {
+        const dispatcher = connection.play('./audio/heyrollin.mp3');
+        dispatcher.on('finish', () => newMember.channel.leave());
+      });
+    }
+  }
+  else if (oldMember.channelID != null && newMember.channelID != null && oldMember.channelID !== newMember.channelID) {
+    // switch channels event
+    helpers.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+    helpers.dbMakeVoiceLog(newMember.member, newMember.channelID, newMember.channel.name, sessionID);
   }
 });
 
@@ -207,87 +135,34 @@ PARAMETER    TYPE               DESCRIPTION
 oldMember    GuildMember        The member before the presence update
 newMember    GuildMember        The member after the presence update    */
 bot.on('presenceUpdate', function(oldMember, newMember) {
-  const game_data_path = 'data/game.json';
-  if(fs.existsSync(game_data_path)) {
-    let data;
-    try {
-      data = JSON.parse(fs.readFileSync(game_data_path));
-    }
-    catch (e) {
-      console.error(e);
-      return;
-    }
-    const today = (new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }))).toISOString().split('T');
-    const date = today[0];
-    const time = today[1].split('.')[0];
 
-    // if the bot
-    if (['738903340011749378', '234395307759108106'].includes(newMember.userID)) return;
+  // if the bot
+  if (['738903340011749378', '234395307759108106'].includes(newMember.userID)) return;
 
-    // check that both members are valid
-    if (!newMember || !oldMember) return;
+  // check that both members are valid
+  if (!newMember || !oldMember) return;
 
-    // remove any activities that arn't a game
-    const new_activities = newMember.activities.filter(act => act.type === 'PLAYING');
-    const old_activities = oldMember.activities.filter(act => act.type === 'PLAYING');
+  // remove any activities that arn't a game
+  const new_activities = newMember.activities.filter(act => act.type === 'PLAYING');
+  const old_activities = oldMember.activities.filter(act => act.type === 'PLAYING');
 
-    // ensure its a change in activities
-    if (new_activities.length === old_activities.length) return;
+  // ensure its a change in activities
+  if (new_activities.length === old_activities.length) return;
 
-    // make new entry if user not existing
-    if (!data[newMember.userID]) {
-      data[newMember.userID] = {};
-      data[newMember.userID].identity = {};
-      data[newMember.userID].gameLogs = {};
-    }
+  const application = new_activities[0] || old_activities[0];
 
-    // update data
-    data[newMember.userID].identity.displayName = newMember.member.displayName;
-    data[newMember.userID].identity.username = newMember.member.user.username;
-    data[newMember.userID].identity.discriminator = newMember.member.user.discriminator;
+  // TODO: Replace with dictionaries of equivalent game ID's
+  application.applicationID = application.applicationID === '356869127241072640' ? '401518684763586560' : application.applicationID;
 
-    const application = new_activities[0] || old_activities[0];
-    application.applicationID = application.applicationID === '356869127241072640' ? '401518684763586560' : application.applicationID;
-
-
-    if (!(application.applicationID in data[newMember.userID].gameLogs) && !(application.name in data[newMember.userID].gameLogs)) {
-
-      data[newMember.userID].gameLogs[application.applicationID || application.name] = {
-        'name': application.name,
-        'events': [],
-      };
-    }
-
-    const events = data[newMember.userID].gameLogs[application.applicationID || application.name].events;
-
-    if (old_activities.length !== 0 && new_activities.length === 0) {
-      // leave event
-      events.push({
-        'type': 'stop',
-        'timestamp': date + ' ' + time,
-      });
-    }
-    else if (old_activities.length === 0 && new_activities.length !== 0) {
-      // Join event
-      events.push({
-        'type': 'start',
-        'timestamp': date + ' ' + time,
-      });
-    }
-
-    // update file
-    fs.writeFile(game_data_path, JSON.stringify(data), (err) => {
-      if (err) console.error(err);
-    });
-
+  if (old_activities.length !== 0 && new_activities.length === 0) {
+    // leave event
+    helpers.dbCloseGameLog(newMember.member, application);
   }
-  // file doesnt exist yet
-  else {
-    fs.writeFile(game_data_path, '{}', (err) => {
-      if (err) console.log(err);
-      else console.log(`Successfully created "${ game_data_path }"`);
-    });
+  else if (old_activities.length === 0 && new_activities.length !== 0) {
+    // Join event
+    helpers.dbMakeGameLog(newMember.member, application);
   }
+
 });
 
 bot.on('shardError', error => {
