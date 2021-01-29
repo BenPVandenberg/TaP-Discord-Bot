@@ -17,11 +17,6 @@ for (const file of commandFiles) {
   }
 }
 
-// create data dir if not present
-if (!fs.existsSync('./data')) {
-  fs.mkdirSync('./data');
-}
-
 // ready
 /* Emitted when the client becomes ready to start working.    */
 bot.on('ready', () => {
@@ -33,13 +28,13 @@ bot.on('ready', () => {
 PARAMETER      TYPE           DESCRIPTION
 message        Message        The created message    */
 bot.on('message', async message => {
-  // easter egg for dm's
+  // easter egg for dms
   if (!message.guild && !message.author.bot) {
-    message.reply('Wow someone actually messaged me... dont like it, fuck off!');
+    message.reply('Wow someone actually messaged me... don\'t like it, fuck off!');
     return;
   }
 
-  // update cheif of military tatics' role colour
+  // update chief of military tactics' role colour
   const role = message.guild.roles.cache.get('674039470084849691');
   role.edit({
     color: helpers.getRandomColor(),
@@ -54,7 +49,7 @@ bot.on('message', async message => {
     message.delete();
   }
 
-  // check if it is a commannd for us, if not break
+  // check if it is a command for us, if not break
   if (!message.content.startsWith(config.prefix) || message.author.bot) {return;}
 
   // isolate command and args
@@ -64,8 +59,8 @@ bot.on('message', async message => {
   // check if the bot has the command
   if (!bot.commands.has(command)) return;
 
-  // log command recived
-  console.log(`Command Recived from ${message.member.user.username}: ${message.content}`);
+  // log command received
+  console.log(`Command Received from ${message.member.user.username}: ${message.content}`);
 
   try {
     bot.commands.get(command).execute(message, args);
@@ -96,7 +91,7 @@ BONUS: /play gbtm ;)`;
 });
 
 // voiceStateUpdate
-/* Emitted whenever a user changes voice state - e.g. joins/leaves a channel, mutes/unmutes.
+/* Emitted whenever a user changes voice state - e.g. joins/leaves a channel, mute/unmute.
 PARAMETER    TYPE             DESCRIPTION
 oldMember    GuildMember      The member before the voice state update
 newMember    GuildMember      The member after the voice state update    */
@@ -142,7 +137,7 @@ bot.on('presenceUpdate', function(oldMember, newMember) {
   // check that both members are valid
   if (!newMember || !oldMember) return;
 
-  // remove any activities that arn't a game
+  // remove any activities that aren't a game
   const new_activities = newMember.activities.filter(act => act.type === 'PLAYING');
   const old_activities = oldMember.activities.filter(act => act.type === 'PLAYING');
 
