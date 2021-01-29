@@ -10,7 +10,7 @@ module.exports = {
 
     // give user list of ranks
     // make string of ranks
-    const all_ranks_string = '-' + rank_config.free_ranks.join('\n-') + '\nUse with:\n/addrank or /removerank';
+    const all_ranks_string = '-' + rank_config.free_ranks.join('\n-') + '\n\nUse with:\n/addrank or /removerank';
 
     const all_ranks_embeded = new Discord.MessageEmbed()
       .setColor('#0099ff')
