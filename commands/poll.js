@@ -14,7 +14,7 @@ module.exports = {
     const pollDescription = args.join(' ');
 
     const poll_embed = new Discord.MessageEmbed()
-      .setDescription(`**${pollDescription}**`)
+      .setTitle(`**${pollDescription}**`)
       .setColor(message.member.displayHexColor)
       .setFooter(`Asked By: ${message.member.displayName}`);
 
