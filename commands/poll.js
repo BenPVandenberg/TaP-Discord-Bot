@@ -13,12 +13,12 @@ module.exports = {
 
     const pollDescription = args.join(' ');
 
-    const member_embed = new Discord.MessageEmbed()
-      .setTitle(`**${pollDescription}**`)
+    const poll_embed = new Discord.MessageEmbed()
+      .setDescription(`**${pollDescription}**`)
       .setColor(message.member.displayHexColor)
       .setFooter(`Asked By: ${message.member.displayName}`);
 
-    return message.channel.send(member_embed).then(async (pollMessage) => {
+    return message.channel.send(poll_embed).then(async (pollMessage) => {
       await pollMessage.react('👍');
       await pollMessage.react('👎');
     });
