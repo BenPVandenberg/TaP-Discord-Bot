@@ -17,11 +17,6 @@
     2. Run "cd Custom-Discord-Bot/"
     3. From here run "npm start/stop" respectively
 
-### How to git pull
-
-    Due to the repo being private "git pull" itself isn't enough
-    Follow the steps 1 & 2 on the prev section and run "./git_pull"
-
 ## Security
 
   Due to security purposes we are using dotenv to keep our login tokens off the repo if we ever want to make it public.
