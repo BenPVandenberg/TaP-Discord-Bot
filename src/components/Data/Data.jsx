@@ -5,9 +5,9 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
+import ReactJson from 'react-json-view';
 import Swal from 'sweetalert2';
 import './Data.css';
-import ReactJson from 'react-json-view';
 
 
 
@@ -28,6 +28,7 @@ export default class Data extends React.Component{
     }
 
     getDataJSON = async (userID) => {
+        // only need to get all the data once on first search
         if (!Object.keys(this.state.allGameData).length) {
             await this.updateAllData();
         }
