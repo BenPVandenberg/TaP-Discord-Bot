@@ -16,8 +16,8 @@ export default class Data extends React.Component{
         super(props);
         this.state = {
             userID: '', // Text input value
-            allGameData: {}, // all game data from backend
-            gameData: {}, // user specific game data from allGameData
+            allGameData: [], // all game data from backend
+            gameData: [], // user specific game data from allGameData
         };
     }
 
@@ -28,15 +28,15 @@ export default class Data extends React.Component{
 
     generateUserData = async (userID) => {
         // only need to get all the data once on first search
-        if (!Object.keys(this.state.allGameData).length) {
+        if (!this.state.allGameData.length) {
             await this.pullAllData();
         }
-
-        const allGameData = this.state.allGameData;
+        // TODO Make it also possible to search by user name
+        // eslint-disable-next-line eqeqeq
+        const userData = this.state.allGameData.filter(e => e.userID == userID);
 
         // check if user is in rawData
-        if (!allGameData[userID]) {
-            // TODO Make it also possible to search by user name
+        if (!userData.length) {
 
             Swal.fire({
                 title: 'Invalid User ID',
@@ -46,7 +46,7 @@ export default class Data extends React.Component{
             return;
         }
 
-        this.setState({ gameData: allGameData[userID] });
+        this.setState({ gameData: userData });
     }
 
     pullAllData = async () => {
