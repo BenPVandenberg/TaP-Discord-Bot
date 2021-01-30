@@ -24,6 +24,7 @@ router.get('/:file', (req, res, next) => {
           'SELECT SoundName, Count(*) AS Occurrences FROM Discord_Bot.PlayLog GROUP BY SoundName;',
           (err, result) => {
             if (err) res.status(400).send({ msg: err.message });
+            if (result === undefined) res.status(400).send({ msg: 'DB reporting no sounds' });
 
             result.forEach((element) => {
               rtnDataDict[element.SoundName] = element.Occurrences;
