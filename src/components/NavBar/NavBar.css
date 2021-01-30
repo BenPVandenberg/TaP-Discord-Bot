@@ -3,6 +3,7 @@
     pointer-events: none;
     margin-top: 10px;
     margin-bottom: 30px;
+    border-radius: 50%;
 }
 
 .navEntry {

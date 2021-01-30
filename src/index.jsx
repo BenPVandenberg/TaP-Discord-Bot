@@ -6,6 +6,7 @@ import Data from './components/Data/Data.jsx';
 import Home from './components/Home/Home.jsx';
 import NavBar from './components/NavBar/NavBar.jsx';
 import Sounds from './components/Sounds/Sounds.jsx';
+import Suggest from './components/Suggest/Suggest.jsx';
 import './index.css';
 
 ReactDOM.render(
@@ -20,6 +21,7 @@ ReactDOM.render(
                     <Route exact path="/" component={Home} />
                     <Route path="/sounds" component={Sounds} />
                     <Route path="/data" component={Data} />
+                    <Route path="/suggest" component={Suggest} />
                 </Router>
             </div>
         </div>
