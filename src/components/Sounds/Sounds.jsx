@@ -13,7 +13,7 @@ function Sounds() {
         let soundData;
 
         // get /play statistics
-        await axios.get('http://localhost:5000/data/play').then(res => {
+        await axios.get('http://52.152.174.99:5000/data/play').then(res => {
             soundData = res.data;
         }).catch(err => {
             Swal.fire({
