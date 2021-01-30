@@ -40,8 +40,8 @@
       "no-var": "warn",
       "prefer-const": "warn",
       "consistent-return": "off",
-      "no-unused-vars":"off",
-      "no-use-before-define":"off",
+      "no-unused-vars": "off",
+      "no-use-before-define": "off",
       "import/order": "off"
     },
     "env": {
