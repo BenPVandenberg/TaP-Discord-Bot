@@ -10,7 +10,6 @@ import Swal from 'sweetalert2';
 import './Data.css';
 
 
-
 export default class Data extends React.Component{
 
     constructor(props) {
@@ -24,13 +23,13 @@ export default class Data extends React.Component{
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.getDataJSON(this.state.userID);
+        this.generateUserData(this.state.userID);
     }
 
-    getDataJSON = async (userID) => {
+    generateUserData = async (userID) => {
         // only need to get all the data once on first search
         if (!Object.keys(this.state.allGameData).length) {
-            await this.updateAllData();
+            await this.pullAllData();
         }
 
         const allGameData = this.state.allGameData;
@@ -50,7 +49,7 @@ export default class Data extends React.Component{
         this.setState({ gameData: allGameData[userID] });
     }
 
-    updateAllData= async () => {
+    pullAllData = async () => {
         await axios.get('http://52.152.174.99:5000/data/game').then((res) => {
             this.setState({ allGameData: res.data });
             return true;
