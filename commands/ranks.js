@@ -12,11 +12,11 @@ module.exports = {
     // make string of ranks
     const all_ranks_string = '-' + rank_config.free_ranks.join('\n-') + '\n\nUse with:\n/addrank or /removerank';
 
-    const all_ranks_embeded = new Discord.MessageEmbed()
+    const all_ranks_embedded = new Discord.MessageEmbed()
       .setColor('#0099ff')
       .addField('All Server Ranks', all_ranks_string, false);
 
-    message.reply(all_ranks_embeded);
+    message.reply(all_ranks_embedded);
     return;
   },
 };
