@@ -45,8 +45,8 @@ router.get('/:file', (req, res, next) => {
                 userID: element.UserID,
                 username: element.Username,
                 game: element.Game,
-                start: element.Start,
-                end: element.End,
+                start: element.Start.toLocaleString(),
+                end: element.End ? element.End.toLocaleString() : element.End,
               });
             });
 
