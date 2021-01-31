@@ -4,7 +4,8 @@ const router = express.Router();
 const fs = require('fs');
 const mysql = require('mysql');
 
-const con = mysql.createConnection({
+const con = mysql.createPool({
+  connectionLimit : 10,
   host: process.env.DB_ADDRESS,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -14,6 +15,7 @@ const con = mysql.createConnection({
 
 /* GET data listing. */
 router.get('/:file', (req, res, next) => {
+  console.log(`"${req.params.file}"`)
   // send contents of data file
   const rtnDataDict = {};
   const rtnDataArr = [];
