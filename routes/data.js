@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const fs = require('fs');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const con = mysql.createPool({
   connectionLimit: 10,
