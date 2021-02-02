@@ -7,5 +7,6 @@
         "noreferrer",
         "swal",
         "sweetalert"
-    ]
+    ],
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
 }
