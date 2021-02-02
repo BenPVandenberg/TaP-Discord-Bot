@@ -21,13 +21,17 @@ router.get('/:file', (req, res, next) => {
   switch (req.params.file) {
     case 'play':
       con.query(
-        'SELECT SoundName, Count(*) AS Occurrences FROM Discord_Bot.PlayLog GROUP BY SoundName;',
+        'SELECT SoundName, Count(*) AS Occurrences, UserID as OwnerID, Username as OwnerName FROM PlayLog natural join Sound left join User on Owner = UserID GROUP BY SoundName;',
         (err, result) => {
           if (err) res.status(400).send({ msg: err.message });
           if (result === undefined) res.status(400).send({ msg: 'DB reporting no sounds' });
 
           result.forEach((element) => {
-            rtnDataDict[element.SoundName] = element.Occurrences;
+            rtnDataDict[element.SoundName] = {
+              occurrences: element.Occurrences,
+              ownerID: element.OwnerID,
+              ownerName: element.OwnerName,
+            };
           });
 
           res.status(200).send(rtnDataDict);
