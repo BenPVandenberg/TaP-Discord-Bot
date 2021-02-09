@@ -23,7 +23,12 @@ router.post('/upload', (req, res, next) => {
     return res.status(400).send({ msg: 'File uploaded isn\'t a correct format. Must be a .mp3 file' });
   }
 
-  const fullFilePath = `${process.env.SOUNDS_DIR}${myFile.name}`;
+  // check for spaces (it breaks the bot)
+  if (myFile.name.indexOf(' ') !== -1) {
+    return res.status(400).send({ msg: 'Spaces aren\'t permitted in the filename' });
+  }
+
+  const fullFilePath = `${process.env.SOUNDS_DIR}${myFile.name.toLowerCase()}`;
 
   // check if file already exists
   if (fs.existsSync(fullFilePath)) {
@@ -36,7 +41,10 @@ router.post('/upload', (req, res, next) => {
       return res.status(500).send({ msg: 'Error occurred: Unable to move file to bot dir' });
     }
     // returning the response with file path and name
-    return res.status(201).send({ name: myFile.name });
+    return res.status(201).send({
+      fileName: myFile.name.toLowerCase(),
+      name: myFile.name.slice(0, -4).toLowerCase(),
+    });
   });
 });
 
