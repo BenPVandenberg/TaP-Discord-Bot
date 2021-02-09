@@ -2,5 +2,5 @@
     "cSpell.words": [
         "camelcase"
     ],
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
 }

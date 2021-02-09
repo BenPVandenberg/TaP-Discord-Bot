@@ -26,9 +26,7 @@
     "nodemon": "^2.0.7"
   },
   "eslintConfig": {
-    "extends": [
-      "airbnb-base"
-    ],
+    "extends": "airbnb-base",
     "rules": {
       "semi": "warn",
       "quotes": [
@@ -43,7 +41,10 @@
       "consistent-return": "off",
       "no-unused-vars": "off",
       "no-use-before-define": "off",
-      "import/order": "off"
+      "indent": [
+        "error",
+        4
+      ]
     },
     "env": {
       "es6": true,
