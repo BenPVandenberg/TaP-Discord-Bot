@@ -47,7 +47,11 @@
       "eol-last": "warn",
       "no-var": "warn",
       "prefer-const": "warn",
-      "consistent-return": "error"
+      "consistent-return": "error",
+      "indent": [
+        "error",
+        4
+      ]
     }
   },
   "browserslist": {

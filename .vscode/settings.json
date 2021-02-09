@@ -1,12 +1,11 @@
 {
-    "cSpell.words": [
-        "browserslist",
-        "camelcase",
-        "eqeqeq",
-        "noopener",
-        "noreferrer",
-        "swal",
-        "sweetalert"
-    ],
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "cSpell.words": [
+    "browserslist",
+    "camelcase",
+    "eqeqeq",
+    "noopener",
+    "noreferrer",
+    "swal",
+    "sweetalert"
+  ]
 }

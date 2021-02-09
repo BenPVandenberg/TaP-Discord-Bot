@@ -1,10 +1,19 @@
+import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import FileUpload from '../FileUpload';
 import SoundTable from './SoundTable';
+import SoundUpload from './SoundUpload';
 
-function Sounds() {
+const useStyles = makeStyles({
+    pageHeader: {
+        textAlign: 'center',
+        paddingBottom: '10px',
+    },
+});
+
+export default function Sounds() {
     const [allSounds, setAllSounds] = useState([]);
 
     const updateSounds = async () => {
@@ -17,7 +26,6 @@ function Sounds() {
             .get('http://52.152.174.99:5000/data/play')
             .then((res) => {
                 soundData = res.data;
-                console.log(soundData);
             })
             .catch((err) => {
                 Swal.fire({
@@ -45,28 +53,23 @@ function Sounds() {
                 });
             });
 
-        try {
-            // if we have data for a song then update allSounds
-            sounds.forEach((sound) => {
-                sound = sound.slice(0, -4);
-                // newAllSounds.push([soundData[sound] || 0, sound]);
-                newAllSounds.push(
-                    {
-                        name: sound,
-                        occurrences: soundData[sound]['occurrences'] || 0,
-                        ownerID: soundData[sound]['ownerID'] || null,
-                        ownerName: soundData[sound]['ownerName'] || ''
-                    });
+        // if we have data for a song then update allSounds
+        sounds.forEach((sound) => {
+            sound = sound.slice(0, -4);
+            if (soundData[sound] === undefined) soundData[sound] = {};
+
+            newAllSounds.push({
+                name: sound,
+                occurrences: soundData[sound]['occurrences'] || 0,
+                ownerID: soundData[sound]['ownerID'] || null,
+                ownerName: soundData[sound]['ownerName'] || '',
             });
+        });
 
-            // sort by highest frequencyFF
-            newAllSounds.sort((a, b) => b.occurrences - a.occurrences);
+        // sort by highest frequency
+        newAllSounds.sort((a, b) => b.occurrences - a.occurrences);
 
-            // console.log(newAllSounds);
-            setAllSounds(newAllSounds);
-        } catch (err) {
-            // main errors are handled elsewhere
-        }
+        setAllSounds(newAllSounds);
     };
 
     // run on mount
@@ -75,15 +78,21 @@ function Sounds() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // * This empty array makes useEffect act like componentDidMount
 
+    const classes = useStyles();
+
     return (
-        <div className="App">
-            <h1 className="page-header">
+        <div className='App'>
+            <h1 className={classes.pageHeader}>
                 <p>Sounds</p>
             </h1>
-            <SoundTable sounds={allSounds} />
-            <FileUpload />
+            <Grid container direction='row' justify='center' spacing={5}>
+                <Grid item>
+                    <SoundTable sounds={allSounds} />
+                </Grid>
+                <Grid item>
+                    <SoundUpload />
+                </Grid>
+            </Grid>
         </div>
     );
 }
-
-export default Sounds;
