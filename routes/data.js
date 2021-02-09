@@ -10,7 +10,6 @@ const con = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: 'Discord_Bot',
-    timezone: 'CST',
 });
 
 /* GET data listing. */
@@ -65,7 +64,7 @@ router.get('/:file', (req, res, next) => {
         return;
 
     default:
-        return res.status(404);
+        return res.status(404).send();
     }
 });
 
