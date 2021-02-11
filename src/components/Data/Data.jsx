@@ -40,24 +40,24 @@ export default class Data extends React.Component{
             Swal.fire({
                 title: 'Invalid User ID',
                 text: 'This user doesn\'t exist or isn\'t in T&P',
-                icon: 'warning'
+                icon: 'warning',
             });
             return;
         }
 
-        this.setState({ gameData: userData });
+        this.setState({ gameData: userData, });
     }
 
     pullAllData = async () => {
         await axios.get('http://52.152.174.99:5000/data/game').then((res) => {
-            this.setState({ allGameData: res.data });
+            this.setState({ allGameData: res.data, });
             return true;
 
         }).catch((err) => {
             Swal.fire({
                 title: 'Error with the server: GET /data/game',
                 text: err.response.data.msg || `HTTP Code ${err.response.status}`,
-                icon: 'error'
+                icon: 'error',
             });
 
             return false;
@@ -69,7 +69,7 @@ export default class Data extends React.Component{
 
         // if we have game data, display it
         if (Object.keys(this.state.gameData).length) {
-            gameDataView = <ReactJson src={this.state.gameData} theme="twilight" name={this.state.userID} collapsed={ 2 } style={{background:  'rgb(18, 20, 24)'}}/>;
+            gameDataView = <ReactJson src={this.state.gameData} theme="twilight" name={this.state.userID} collapsed={ 2 } style={{background:  'rgb(18, 20, 24)', }}/>;
         }
 
         return (
@@ -93,7 +93,7 @@ export default class Data extends React.Component{
                                     type="text"
                                     placeholder="User ID"
                                     value={this.state.userID}
-                                    onChange={e => this.setState({ userID: e.target.value })}
+                                    onChange={e => this.setState({ userID: e.target.value, })}
                                 />
                             </InputGroup>
                         </Col>

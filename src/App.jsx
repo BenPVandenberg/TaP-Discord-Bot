@@ -12,7 +12,7 @@ import Suggest from './components/Suggest/Suggest.jsx';
 const lightTheme = createMuiTheme({
     type: 'light',
     primary: {
-        main: 'rgb(165,61,57)',
+        main: 'rgba(207,72,68,255)',
     },
     secondary: {
         main: 'rgb(253,205,94)',
