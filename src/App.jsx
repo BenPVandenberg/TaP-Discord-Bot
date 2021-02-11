@@ -17,6 +17,11 @@ const lightTheme = createMuiTheme({
         secondary: {
             main: '#82b1ff'
         }
+    },
+    custom: {
+        navBackgroundColor: '#1b1e21',
+        pageBackgroundColor: '#282c34',
+        contentBackgroundColor: 'rgba(0, 0, 0, 0.54)',
     }
 });
 
