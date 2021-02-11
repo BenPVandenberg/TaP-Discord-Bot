@@ -7,7 +7,6 @@ import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ReactJson from 'react-json-view';
 import Swal from 'sweetalert2';
-import './Data.css';
 
 
 export default class Data extends React.Component{

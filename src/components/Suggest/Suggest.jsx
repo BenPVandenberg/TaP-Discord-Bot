@@ -19,6 +19,7 @@ const useStyles = makeStyles({
 });
 
 export default function Suggest() {
+    // values in form
     const [suggestionText, setSuggestionText] = useState('');
     const [suggestionOwner, setSuggestionOwner] = useState('');
 
@@ -28,7 +29,6 @@ export default function Suggest() {
         console.log(suggestionOwner);
     };
 
-    // eslint-disable-next-line no-unused-vars
     const classes = useStyles();
 
     return (
@@ -37,6 +37,7 @@ export default function Suggest() {
                 <p>Suggestion Page</p>
             </h1>
             <form onSubmit={onSubmit}>
+                {/* the actual suggestion text */}
                 <div className={useStyles.rowDiv}>
                     <TextField
                         component={Paper}
@@ -48,6 +49,7 @@ export default function Suggest() {
                         onChange={(event) => setSuggestionText(event.target.value)}
                     />
                 </div>
+                {/* an optional field, the user's ID */}
                 <div className={useStyles.rowDiv}>
                     <TextField
                         component={Paper}
@@ -59,6 +61,7 @@ export default function Suggest() {
 
                     />
                 </div>
+                {/* submit button */}
                 <div className={useStyles.rowDiv}>
                     <Button color="secondary" variant="contained" type="submit">Submit</Button>
                 </div>

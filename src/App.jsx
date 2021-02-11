@@ -8,6 +8,7 @@ import NavBar from './components/NavBar/NavBar.jsx';
 import Sounds from './components/Sounds/Sounds.jsx';
 import Suggest from './components/Suggest/Suggest.jsx';
 
+// light theme, dark theme to come
 const lightTheme = createMuiTheme({
     palette: {
         primary: {
