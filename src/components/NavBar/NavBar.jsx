@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => {
         navEntry: {
             paddingTop: '10px',
             color: theme.palette.getContrastText(theme.custom.navBackgroundColor),
-            textDecoration: 'none',
             '&:hover': {
                 background: theme.palette.primary.main,
                 color: theme.palette.getContrastText(theme.palette.primary.main),
