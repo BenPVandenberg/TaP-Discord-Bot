@@ -1,13 +1,21 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { AiFillCheckCircle } from 'react-icons/ai';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    wrapper: {
+        textAlign: 'center',
+        margin: 'auto',
+        width: '75%'
+    }
+});
 
 function Home() {
+    const classes = useStyles();
     return (
-        <div className='App'>
-            <h1 className='App-header'>
-                <p>Home</p>
-            </h1>
+        <div className={classes.wrapper}>
+            <h1>Home</h1>
             <p>
                 Welcome to the T&P bot admin site. This is where you can preform
                 certain actions such as looking at play and game data, make
@@ -17,7 +25,7 @@ function Home() {
                 This project is a WIP so expect it to change frequently. Please
                 report bugs to Rollin on discord.
             </p>
-            <Table className='text-white w-50' size='sm'>
+            <Table className='text-white w-50' size='sm' style={{ margin: 'auto' }}>
                 <thead>
                     <td>
                         <AiFillCheckCircle size={25} />
