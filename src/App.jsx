@@ -10,34 +10,23 @@ import Suggest from './components/Suggest/Suggest.jsx';
 
 // light theme, dark theme to come
 const lightTheme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#f4511e'
-        },
-        secondary: {
-            main: '#82b1ff'
-        }
+    type: 'light',
+    primary: {
+        main: 'rgb(165,61,57)',
+    },
+    secondary: {
+        main: 'rgb(253,205,94)',
     },
     custom: {
+        rootBackgroundColor: '#282c34',
         navBackgroundColor: '#1b1e21',
-        pageBackgroundColor: '#282c34',
+        navHoverColor: 'rgba(98,100,167,.7)',
         contentBackgroundColor: 'rgba(0, 0, 0, 0.54)',
-    }
+    },
 });
 
-const useStyles = makeStyles({
-    navWrapper: {
-        background: '#1b1e21',
-        height: '100%',
-        width: '132.48px', /* SAME AS .pageWrapper margin-left */
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        transition: '.5s ease',
-        display: 'flex',
-        flexDirection: 'column',
-        textAlign: 'center'
-    },
+const useStyles = makeStyles(theme => ({
+    root: {},
     pageWrapper: {
         display: 'flex',
         flexDirection: 'column',
@@ -47,22 +36,37 @@ const useStyles = makeStyles({
         marginLeft: '132.48px', /* SAME AS .navWrapper width */
         paddingTop: '20px',
     },
+    navWrapper: {
+        background: lightTheme.custom.navBackgroundColor,
+        height: '100%',
+        width: '132.48px', /* SAME AS .pageWrapper margin-left */
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: 'center',
+    },
     contentWrapper: {
+        textAlign: 'center',
+        margin: 'auto',
         paddingLeft: '5%',
         paddingRight: '5%',
         paddingTop: '2%',
-        paddingBottom: '2%',
+        paddingBottom: '25px',
         width: '95%',
-        background: 'rgba(0, 0, 0, 0.54)',
         borderRadius: '0.75rem 0.75rem 0.75rem 0.75rem',
-    }
-});
+        background: lightTheme.custom.contentBackgroundColor,
+        color: lightTheme.palette.getContrastText(lightTheme.custom.contentBackgroundColor),
+    },
+}));
 
 export default function App() {
-    const classes = useStyles();
+    const classes = useStyles(lightTheme);
+    document.body.style = `background: ${lightTheme.custom.rootBackgroundColor}`;
 
     return (
-        <div>
+        <div className={classes.root}>
             <ThemeProvider theme={lightTheme}>
                 {/* navbar and pageWrapper side by side */}
                 <div className={classes.navWrapper}>

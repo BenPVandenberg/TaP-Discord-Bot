@@ -7,21 +7,20 @@ import React, { useState } from 'react';
 
 const useStyles = makeStyles({
     wrapper: {
-        textAlign: 'center'
     },
     input: {
         width: '50%',
         minWidth: '280px',
     },
     idInput: {
-        width: '280px'
-    }
+        width: '280px',
+    },
 });
 
 export default function Suggest() {
     // values in form
-    const [suggestionText, setSuggestionText] = useState('');
-    const [suggestionOwner, setSuggestionOwner] = useState('');
+    const [suggestionText, setSuggestionText,] = useState('');
+    const [suggestionOwner, setSuggestionOwner,] = useState('');
 
     const onSubmit = (e) => {
         e.preventDefault();

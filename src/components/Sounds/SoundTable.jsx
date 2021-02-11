@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     table: {
         minWidth: '310px',
         maxWidth: '340px',
-        textAlign: 'center',
     },
 });
 
@@ -33,9 +32,9 @@ export default function SoundTable(props) {
         <TableContainer className={classes.table} component={Paper}>
             <Table size='small'>
                 <colgroup>
-                    <col style={{ width: '50%' }} />
-                    <col style={{ width: '15%' }} />
-                    <col style={{ width: '20%' }} />
+                    <col style={{ width: '50%', }} />
+                    <col style={{ width: '15%', }} />
+                    <col style={{ width: '20%', }} />
                     {/* <col style={{ width: '15%' }}/> */}
                 </colgroup>
                 <TableHead>

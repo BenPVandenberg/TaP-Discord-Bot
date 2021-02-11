@@ -8,13 +8,12 @@ import SoundUpload from './SoundUpload';
 
 const useStyles = makeStyles({
     pageHeader: {
-        textAlign: 'center',
         paddingBottom: '10px',
     },
 });
 
 export default function Sounds() {
-    const [allSounds, setAllSounds] = useState([]);
+    const [allSounds, setAllSounds,] = useState([]);
 
     const updateSounds = async () => {
         const newAllSounds = [];
@@ -81,10 +80,8 @@ export default function Sounds() {
     const classes = useStyles();
 
     return (
-        <div className='App'>
-            <h1 className={classes.pageHeader}>
-                <p>Sounds</p>
-            </h1>
+        <div>
+            <h1 className={classes.pageHeader}>Sounds</h1>
             <Grid container direction='row' justify='center' spacing={5}>
                 <Grid item>
                     <SoundTable sounds={allSounds} />

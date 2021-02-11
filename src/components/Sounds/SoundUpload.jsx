@@ -23,7 +23,7 @@ const uploadSound = async (sound) => {
 
     return await axios
         .post('http://52.152.174.99:5000/sounds/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+            headers: { 'Content-Type': 'multipart/form-data', },
         })
         .then((response) => {
             return response;
@@ -56,7 +56,7 @@ export default function SoundUpload() {
             confirmButtonText: 'Send It!',
             showDenyButton: true,
             reverseButtons: true,
-        }).then(({ isConfirmed }) => {
+        }).then(({ isConfirmed, }) => {
             if (isConfirmed) {
                 // show loading screen while uploading sound
                 Swal.fire({

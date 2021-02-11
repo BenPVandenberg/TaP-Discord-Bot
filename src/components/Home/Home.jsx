@@ -5,10 +5,12 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     wrapper: {
+        // Following need to be specified to center correctly
         textAlign: 'center',
         margin: 'auto',
-        width: '75%'
-    }
+        // end of required values
+        width: '75%',
+    },
 });
 
 function Home() {
@@ -25,54 +27,72 @@ function Home() {
                 This project is a WIP so expect it to change frequently. Please
                 report bugs to Rollin on discord.
             </p>
-            <Table className='text-white w-50' size='sm' style={{ margin: 'auto' }}>
-                <thead>
-                    <td>
-                        <AiFillCheckCircle size={25} />
-                    </td>
-                    <td>View sound data</td>
-                </thead>
-                <thead>
-                    <td>
-                        <AiFillCheckCircle size={25} />
-                    </td>
-                    <td>Upload sound clips</td>
-                </thead>
-                <thead>
-                    <td>
-                        <AiFillCheckCircle size={25} />
-                    </td>
-                    <td>Better error handling (pop ups)</td>
-                </thead>
-                <thead>
-                    <td>
-                        <AiFillCheckCircle size={25} />
-                    </td>
-                    <td>View bot collected data</td>
-                </thead>
-                <thead>
-                    <td></td>
-                    <td>Submit suggestions (for now msg Rollin)</td>
-                </thead>
-                <thead>
-                    <td></td>
-                    <td>Polish the looks</td>
-                </thead>
-                <thead>
-                    <td></td>
-                    <td>Add Discord Auth (following will req this)</td>
-                </thead>
-                <thead>
-                    <td></td>
-                    <td>
+            <Table className='text-white w-50' size='sm' style={{ margin: 'auto', }}>
+                <tbody>
+                    <tr>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
+                        <td>View sound data</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
+                        <td>Upload sound clips</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
+                        <td>Better error handling (pop ups)</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
+                        <td>View bot collected data</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>Submit suggestions (for now msg Rollin)</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>Polish the looks</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>Add Discord Auth (following will req this)</td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>
                         Profile page where you can edit how the bot interacts
                         with you
-                    </td>
-                </thead>
-                <thead>
-                    <td></td>
-                    <td>Permissions for features</td>
-                </thead>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>Permissions for features</td>
+                    </tr>
+                </tbody>
             </Table>
         </div>
     );
