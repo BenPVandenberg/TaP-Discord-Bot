@@ -9,35 +9,3 @@ body {
     background-color: #282c34;
     color: white;
 }
-
-/* navbar CSS */
-.navWrapper {
-    position: fixed;
-    width: 132.48px; /* SAME AS .pageWrapper margin-left */
-    height: 100%;
-    float: left;
-    background: #1b1e21;
-    text-align: center;
-}
-
-/* CSS for anything that isn't the nav bar */
-.pageWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(2vmin);
-    margin-left: 132.48px; /* SAME AS .navWrapper width */
-    padding-top: 20px;
-}
-
-/* Wrapper for the actual content */
-.contentWrapper {
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    width: 95%;
-    background: rgba(0, 0, 0, 0.54);
-    border-radius: 0.75rem 0.75rem 0.75rem 0.75rem;
-}

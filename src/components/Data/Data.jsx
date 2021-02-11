@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+import Button from '@material-ui/core/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
@@ -99,7 +99,7 @@ export default class Data extends React.Component{
                             </InputGroup>
                         </Col>
                         <Col xs="auto">
-                            <Button type="submit" className="mb-2">
+                            <Button color="secondary" type="submit" variant='contained'>
                                 Search
                             </Button>
                         </Col>

@@ -135,7 +135,7 @@ export default function SoundUpload() {
             <label htmlFor='sound-file'>
                 <Button
                     variant='contained'
-                    color='default'
+                    color="secondary"
                     startIcon={<MdCloudUpload />}
                     component='span'
                 >

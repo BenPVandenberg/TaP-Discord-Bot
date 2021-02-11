@@ -60,7 +60,7 @@ export default function Suggest() {
                     />
                 </div>
                 <div className={useStyles.rowDiv}>
-                    <Button color="primary" variant="contained" type="submit">Submit</Button>
+                    <Button color="secondary" variant="contained" type="submit">Submit</Button>
                 </div>
             </form>
         </div>
