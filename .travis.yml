@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t BenPVandenberg/Discord-Bot-Admin -f Dockerfile.dev .
+  - docker build -t benpvandenberg/discord-bot-admin -f Dockerfile.dev .
 
 script:
-  - docker run -e CI=true BenPVandenberg/Discord-Bot-Admin npm run test
+  - docker run -e CI=true benpvandenberg/discord-bot-admin npm run test
