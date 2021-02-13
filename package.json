@@ -16,7 +16,7 @@
     "console-stamp": "^0.2.9",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "ytdl-core": "^3.2.2"
   },
   "devDependencies": {

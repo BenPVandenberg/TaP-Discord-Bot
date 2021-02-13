@@ -30,11 +30,12 @@ module.exports = {
   },
 
   makeSQLQuery(query, callback) {
-    const mysql = require('mysql');
+    const mysql = require('mysql2');
 
-    const con = mysql.createConnection({
-      host: 'discordbot-db.cnc9sfn08jc5.us-east-2.rds.amazonaws.com',
-      user: 'admin',
+    const con = mysql.createPool({
+      connectionLimit: 10,
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: 'Discord_Bot',
     });
@@ -54,7 +55,9 @@ module.exports = {
       this.makeSQLQuery(
         `INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, '${user.displayName}', '${user.user.username}', ${user.user.discriminator});`,
         () => {
-          callback();
+          this.makeSQLQuery(`UPDATE User SET DisplayName = '${user.displayName}', UserName = '${user.user.username}', Discriminator = ${user.user.discriminator} WHERE UserID = ${user.id}`, () => {
+            callback();
+          });
         },
       );
     }
