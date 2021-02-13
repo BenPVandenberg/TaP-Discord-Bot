@@ -88,6 +88,8 @@ bot.on('guildMemberAdd', member => {
 BONUS: /play gbtm ;)`;
 
   channel.send(`Welcome to the server, ${member}.` + rules_string);
+
+  helpers.verifyUser(member, () => {return;});
 });
 
 // voiceStateUpdate
