@@ -37,7 +37,6 @@ module.exports = {
       user: 'admin',
       password: process.env.DB_PASSWORD,
       database: 'Discord_Bot',
-      timezone: 'EST',
     });
 
     con.query('SET time_zone = "EST";', function(err) {
@@ -52,7 +51,12 @@ module.exports = {
 
   verifyUser(user, callback) {
     try {
-      this.makeSQLQuery(`INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, '${user.displayName}', '${user.user.username}', ${user.user.discriminator});`, () => {callback();});
+      this.makeSQLQuery(
+        `INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, '${user.displayName}', '${user.user.username}', ${user.user.discriminator});`,
+        () => {
+          callback();
+        },
+      );
     }
     catch (e) {
       console.error(e);
@@ -62,9 +66,17 @@ module.exports = {
   dbMakeSoundLog(soundName, requestor) {
     try {
       this.verifyUser(requestor, () => {
-        this.makeSQLQuery(`INSERT IGNORE INTO Sound (SoundName) VALUES ('${soundName}');`, () => {
-          this.makeSQLQuery(`INSERT IGNORE INTO PlayLog (Requestor, SoundName) VALUES (${requestor.id}, '${soundName}');`, () => {return;});
-        });
+        this.makeSQLQuery(
+          `INSERT IGNORE INTO Sound (SoundName) VALUES ('${soundName}');`,
+          () => {
+            this.makeSQLQuery(
+              `INSERT IGNORE INTO PlayLog (Requestor, SoundName) VALUES (${requestor.id}, '${soundName}');`,
+              () => {
+                return;
+              },
+            );
+          },
+        );
       });
     }
     catch (e) {
@@ -74,9 +86,17 @@ module.exports = {
   dbMakeGameLog(user, game) {
     try {
       this.verifyUser(user, () => {
-        this.makeSQLQuery(`INSERT IGNORE INTO Game (Title, GameID) VALUES ('${game.name}', ${game.applicationID});`, () => {
-          this.makeSQLQuery(`INSERT IGNORE INTO GameLog (UserID, Game) VALUES (${user.id}, '${game.name}');`, () => {return;});
-        });
+        this.makeSQLQuery(
+          `INSERT IGNORE INTO Game (Title, GameID) VALUES ('${game.name}', ${game.applicationID});`,
+          () => {
+            this.makeSQLQuery(
+              `INSERT IGNORE INTO GameLog (UserID, Game) VALUES (${user.id}, '${game.name}');`,
+              () => {
+                return;
+              },
+            );
+          },
+        );
       });
     }
     catch (e) {
@@ -86,7 +106,8 @@ module.exports = {
   dbCloseGameLog(user, game) {
     try {
       this.verifyUser(user, () => {
-        this.makeSQLQuery(`
+        this.makeSQLQuery(
+          `
         UPDATE GameLog
         SET End = NOW()
         WHERE ID =
@@ -97,7 +118,11 @@ module.exports = {
           (Game = '${game.name}')
           ORDER BY Start DESC LIMIT 1) AS Sub
         WHERE (End IS NULL)
-        );`, () => {return;});
+        );`,
+          () => {
+            return;
+          },
+        );
       });
     }
     catch (e) {
@@ -107,11 +132,22 @@ module.exports = {
   dbMakeVoiceLog(user, channelID, channelName, sessionID) {
     try {
       this.verifyUser(user, () => {
-        this.makeSQLQuery(`INSERT IGNORE INTO VoiceSession (SessionID, UserID) VALUES ('${sessionID}', ${user.id});`, () => {
-          this.makeSQLQuery(`INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) VALUES (${channelID}, '${channelName}');`, () => {
-            this.makeSQLQuery(`INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) VALUES ('${sessionID}', ${channelID});`, () => {return;});
-          });
-        });
+        this.makeSQLQuery(
+          `INSERT IGNORE INTO VoiceSession (SessionID, UserID) VALUES ('${sessionID}', ${user.id});`,
+          () => {
+            this.makeSQLQuery(
+              `INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) VALUES (${channelID}, '${channelName}');`,
+              () => {
+                this.makeSQLQuery(
+                  `INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) VALUES ('${sessionID}', ${channelID});`,
+                  () => {
+                    return;
+                  },
+                );
+              },
+            );
+          },
+        );
       });
     }
     catch (e) {
@@ -121,7 +157,8 @@ module.exports = {
   dbCloseVoiceLog(user, channelID, sessionID) {
     try {
       this.verifyUser(user, () => {
-        this.makeSQLQuery(`
+        this.makeSQLQuery(
+          `
         UPDATE VoiceLog
         SET End = NOW()
         WHERE ID =
@@ -132,7 +169,11 @@ module.exports = {
           (ChannelID = ${channelID})
           ORDER BY Start DESC LIMIT 1) AS Sub
         WHERE (End IS NULL)
-        )`, () => {return;});
+        )`,
+          () => {
+            return;
+          },
+        );
       });
     }
     catch (e) {

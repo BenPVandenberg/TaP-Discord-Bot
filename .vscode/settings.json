@@ -1,12 +1,14 @@
 {
-    "cSpell.words": [
-        "BOPON",
-        "Greenlizid",
-        "bson",
-        "discordjs",
-        "gbtm",
-        "opusscript",
-        "prestart",
-        "ytdl"
-    ]
+  "cSpell.words": [
+    "BOPON",
+    "Greenlizid",
+    "bson",
+    "discordjs",
+    "embeded",
+    "gbtm",
+    "opusscript",
+    "prestart",
+    "ytdl"
+  ],
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
 }

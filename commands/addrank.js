@@ -27,16 +27,23 @@ module.exports = {
 
       if (rank_config.free_ranks.includes(arg)) {
         // is is a role we can manipulate
-        const roleToAdd = message.guild.roles.cache.find(role => role.name.toLowerCase() === arg);
+        const roleToAdd = message.guild.roles.cache.find(
+          (role) => role.name.toLowerCase() === arg,
+        );
 
         // if member already has the role
         if (message.member.roles.cache.has(roleToAdd.id)) {
-          message.reply(`User already has ${ roleToAdd.name } rank!`);
+          message.reply(`User already has ${roleToAdd.name} rank!`);
         }
         // if member doesn't have the role
         else {
-          message.member.roles.add(roleToAdd)
-            .then(message.reply(`Successfully added ${ roleToAdd.name } to your ranks!`));
+          message.member.roles
+            .add(roleToAdd)
+            .then(
+              message.reply(
+                `Successfully added ${roleToAdd.name} to your ranks!`,
+              ),
+            );
           // .catch(message.reply(`Unable to add ${ roleToAdd.name } to ${arg}!`));
         }
       }
