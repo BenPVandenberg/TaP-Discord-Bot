@@ -53,9 +53,9 @@ module.exports = {
   verifyUser(user, callback) {
     try {
       this.makeSQLQuery(
-        `INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, '${user.displayName}', '${user.user.username}', ${user.user.discriminator});`,
+        `INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, "${user.displayName}", "${user.user.username}", ${user.user.discriminator});`,
         () => {
-          this.makeSQLQuery(`UPDATE User SET DisplayName = '${user.displayName}', UserName = '${user.user.username}', Discriminator = ${user.user.discriminator} WHERE UserID = ${user.id}`, () => {
+          this.makeSQLQuery(`UPDATE User SET DisplayName = "${user.displayName}", UserName = "${user.user.username}", Discriminator = ${user.user.discriminator} WHERE UserID = ${user.id}`, () => {
             callback();
           });
         },
@@ -90,10 +90,10 @@ module.exports = {
     try {
       this.verifyUser(user, () => {
         this.makeSQLQuery(
-          `INSERT IGNORE INTO Game (Title, GameID) VALUES ('${game.name}', ${game.applicationID});`,
+          `INSERT IGNORE INTO Game (Title, GameID) VALUES ("${game.name}", ${game.applicationID});`,
           () => {
             this.makeSQLQuery(
-              `INSERT IGNORE INTO GameLog (UserID, Game) VALUES (${user.id}, '${game.name}');`,
+              `INSERT IGNORE INTO GameLog (UserID, Game) VALUES (${user.id}, "${game.name}");`,
               () => {
                 return;
               },
@@ -118,7 +118,7 @@ module.exports = {
         SELECT ID FROM
           (SELECT * FROM GameLog
           WHERE (UserID = ${user.id}) AND
-          (Game = '${game.name}')
+          (Game = "${game.name}")
           ORDER BY Start DESC LIMIT 1) AS Sub
         WHERE (End IS NULL)
         );`,
