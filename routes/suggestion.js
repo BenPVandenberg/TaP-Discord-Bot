@@ -46,7 +46,7 @@ router.post('/', (req, res, next) => {
     }
 
     con.query(
-        'INSERT INTO Suggestion (Author, Message) VALUES (?, ?);', [text || 'NULL', text.trim()],
+        'INSERT INTO Suggestion (Author, Message) VALUES (?, ?);', [author || 'NULL', text.trim()],
         (err, result) => {
             if (err && err.code === 'ER_NO_REFERENCED_ROW') {
                 res.status(400).send({ msg: 'Invalid Author ID' });
