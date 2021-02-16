@@ -2,7 +2,7 @@ FROM node:latest
 
 WORKDIR /app
 
-COPY .. .
+COPY . .
 RUN npm install --​quiet
 
 EXPOSE 5000
