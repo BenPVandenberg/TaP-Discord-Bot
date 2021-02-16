@@ -12,7 +12,6 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3
-    env_file: .env
     ports:
       - "80:5000"
     healthcheck:
