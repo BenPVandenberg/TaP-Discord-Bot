@@ -5,10 +5,8 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "pm2": "pm2 start npm --name Discord_React -- start",
-        "serve": "PORT=80 serve -s build"
+        "test": "react-scripts test --watchAll=false --passWithNoTests",
+        "pm2": "pm2 start npm --name Discord_React -- start"
     },
     "dependencies": {
         "@material-ui/core": "^4.11.3",
