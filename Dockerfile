@@ -3,7 +3,7 @@ FROM node:latest
 WORKDIR /app
 
 COPY .. .
-RUN npm install
+RUN npm install --​quiet
 
 EXPOSE 5000
 
