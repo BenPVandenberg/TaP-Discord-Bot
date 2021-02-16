@@ -9,7 +9,6 @@ COPY package.json ./
 
 RUN npm install --​quiet
 RUN npm i -g serve
-RUN npm i -g react-scripts
 
 # add app
 COPY . .
