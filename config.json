@@ -6,6 +6,9 @@
 				"minecraft",
 				"valorant"
 			]
-    }
+    	},
+		"secret_santa": {
+			"active": false
+		}
 	}
 }
