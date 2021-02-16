@@ -7,7 +7,8 @@ WORKDIR /app
 # install app dependencies
 COPY package.json ./
 
-RUN npm install
+RUN npm install --​quiet
+RUN npm i -g serve
 
 # add app
 COPY . .
@@ -15,7 +16,6 @@ COPY . .
 # build app
 RUN npm run build
 
-RUN npm i -g serve
 # RUN serve -s build
 
 # build with "docker build -t benpv/bot-frontend:latest ."

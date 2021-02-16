@@ -7,4 +7,4 @@ before_install:
   - docker build -t benpv/bot-frontend:latest .
 
 script:
-  - docker-compose up -e CI=true
+  - docker-compose up
