@@ -1,5 +1,5 @@
 # pull the base image
-FROM node:alpine
+FROM node:14.15.5-alpine3.10
 
 # set the working direction
 WORKDIR /app
@@ -13,8 +13,9 @@ RUN npm install
 COPY . .
 
 # build app
-RUN ["npm","run", "build"]
+RUN npm run build
 
-FROM nginx
-EXPOSE 80
-COPY --from=0 /app/build /usr/share/nginx/html
+RUN npm i -g serve
+# RUN serve -s build
+
+# build with "docker build -t benpv/bot-frontend:latest ."
