@@ -1,0 +1,54 @@
+{
+  "name": "discord-bot-admin-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "pm2": "pm2 start --name Discord_BackEnd npm -- start",
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "express": "~4.16.1",
+    "express-fileupload": "^1.2.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1",
+    "mysql2": "^2.2.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "rules": {
+      "semi": "warn",
+      "quotes": [
+        "warn",
+        "single"
+      ],
+      "no-trailing-spaces": "warn",
+      "camelcase": "warn",
+      "eol-last": "warn",
+      "no-var": "warn",
+      "prefer-const": "warn",
+      "consistent-return": "off",
+      "no-unused-vars": "off",
+      "no-use-before-define": "off",
+      "indent": [
+        "error",
+        4
+      ]
+    },
+    "env": {
+      "es6": true,
+      "browser": true
+    }
+  }
+}

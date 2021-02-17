@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: benpv/bot-backend
+    container_name: discordbot-backend
+    command: npm start
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    env_file: .env
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
