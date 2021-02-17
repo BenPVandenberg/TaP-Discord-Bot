@@ -1,0 +1,21 @@
+version: '3.3'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: benpv/bot-frontend
+    container_name: discordbot-frontend
+    command: serve -s build
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    ports:
+      - "80:5000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
