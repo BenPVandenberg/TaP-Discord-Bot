@@ -1,27 +1,24 @@
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import React, { useState } from 'react';
+import React from 'react';
+import { SiGithub } from 'react-icons/si';
 
 const useStyles = makeStyles({
     wrapper: {},
     githubButton: {
-        width: '100px',
+        background: 'black',
+        borderRadius: 3,
+        border: 0,
+        color: 'white',
+        height: 48,
+        padding: '0 30px',
+        '&:hover': {
+            background: '#5c5c5c',
+        },
     },
 });
 
 export default function Suggest() {
-    // values in form
-    const [suggestionText, setSuggestionText,] = useState('');
-    const [suggestionOwner, setSuggestionOwner,] = useState('');
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-        console.log(suggestionText);
-        console.log(suggestionOwner);
-    };
-
     const classes = useStyles();
 
     return (
@@ -29,41 +26,12 @@ export default function Suggest() {
             <h1>
                 <p>Suggestion Page</p>
             </h1>
-            <form onSubmit={onSubmit}>
-                {/* the actual suggestion text */}
-                <div className={useStyles.rowDiv}>
-                    <TextField
-                        component={Paper}
-                        multiline
-                        variant='outlined'
-                        className={classes.input}
-                        placeholder='Suggestion'
-                        value={suggestionText}
-                        onChange={(event) =>
-                            setSuggestionText(event.target.value)
-                        }
-                    />
-                </div>
-                {/* an optional field, the user's ID */}
-                <div className={useStyles.rowDiv}>
-                    <TextField
-                        component={Paper}
-                        variant='outlined'
-                        className={classes.idInput}
-                        placeholder='Discord UserID (optional)'
-                        value={suggestionOwner}
-                        onChange={(event) =>
-                            setSuggestionOwner(event.target.value)
-                        }
-                    />
-                </div>
-                {/* submit button */}
-                <div className={useStyles.rowDiv}>
-                    <Button color='secondary' variant='contained' type='submit'>
-                        Submit
-                    </Button>
-                </div>
-            </form>
+            {/* GitHub button */}
+            <a style={{textDecoration: 'none',}} href="https://github.com/BenPVandenberg/TaP-Discord-Bot/issues">
+                <IconButton className={classes.githubButton}>
+                    <SiGithub style={{marginRight: '10px',}} size={36}/> Issue/Suggestion Submission
+                </IconButton>
+            </a>
         </div>
     );
 }

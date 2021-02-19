@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     },
 });
 
-function Home() {
+export default function Home() {
     const classes = useStyles();
     return (
         <div className={classes.wrapper}>
@@ -62,8 +62,8 @@ function Home() {
                 </tbody>
                 <tbody>
                     <tr>
-                        <td></td>
-                        <td>Submit suggestions (for now msg Rollin)</td>
+                        <td><AiFillCheckCircle size={25} /></td>
+                        <td>Submit suggestions</td>
                     </tr>
                 </tbody>
                 <tbody>
@@ -97,5 +97,3 @@ function Home() {
         </div>
     );
 }
-
-export default Home;
