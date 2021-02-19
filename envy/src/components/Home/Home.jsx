@@ -30,33 +30,25 @@ export default function Home() {
             <Table className='text-white w-50' size='sm' style={{ margin: 'auto', }}>
                 <tbody>
                     <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
+                        <td><AiFillCheckCircle size={25} /></td>
                         <td>View sound data</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
+                        <td><AiFillCheckCircle size={25} /></td>
                         <td>Upload sound clips</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
+                        <td><AiFillCheckCircle size={25} /></td>
                         <td>Better error handling (pop ups)</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
+                        <td><AiFillCheckCircle size={25} /></td>
                         <td>View bot collected data</td>
                     </tr>
                 </tbody>
