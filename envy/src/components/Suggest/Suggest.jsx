@@ -4,16 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React, { useState } from 'react';
 
-
 const useStyles = makeStyles({
-    wrapper: {
-    },
-    input: {
-        width: '50%',
-        minWidth: '280px',
-    },
-    idInput: {
-        width: '280px',
+    wrapper: {},
+    githubButton: {
+        width: '100px',
     },
 });
 
@@ -41,28 +35,33 @@ export default function Suggest() {
                     <TextField
                         component={Paper}
                         multiline
-                        variant="outlined"
+                        variant='outlined'
                         className={classes.input}
-                        placeholder="Suggestion"
+                        placeholder='Suggestion'
                         value={suggestionText}
-                        onChange={(event) => setSuggestionText(event.target.value)}
+                        onChange={(event) =>
+                            setSuggestionText(event.target.value)
+                        }
                     />
                 </div>
                 {/* an optional field, the user's ID */}
                 <div className={useStyles.rowDiv}>
                     <TextField
                         component={Paper}
-                        variant="outlined"
+                        variant='outlined'
                         className={classes.idInput}
-                        placeholder="Discord UserID (optional)"
+                        placeholder='Discord UserID (optional)'
                         value={suggestionOwner}
-                        onChange={(event) => setSuggestionOwner(event.target.value)}
-
+                        onChange={(event) =>
+                            setSuggestionOwner(event.target.value)
+                        }
                     />
                 </div>
                 {/* submit button */}
                 <div className={useStyles.rowDiv}>
-                    <Button color="secondary" variant="contained" type="submit">Submit</Button>
+                    <Button color='secondary' variant='contained' type='submit'>
+                        Submit
+                    </Button>
                 </div>
             </form>
         </div>
