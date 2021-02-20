@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import SoundTable from "./SoundTable";
-import SoundUpload from "./SoundUpload";
+import SoundTable from "../Components/SoundTable";
+import SoundUpload from "../Components/SoundUpload";
 
 type Sound = {
     name: string;

@@ -5,11 +5,11 @@ import {
 } from "@material-ui/core/styles";
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Data from "./components/Data/Data";
-import Home from "./components/Home/Home";
+import Data from "./components/Pages/Data";
+import Home from "./components/Pages/Home";
 import NavBar from "./components/NavBar/NavBar";
-import Sounds from "./components/Sounds/Sounds";
-import Suggest from "./components/Suggest/Suggest";
+import Sounds from "./components/Pages/Sounds";
+import Suggest from "./components/Pages/Suggest";
 
 // light theme, dark theme to come
 const lightTheme = createMuiTheme({

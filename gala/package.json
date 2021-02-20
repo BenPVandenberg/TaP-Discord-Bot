@@ -3,9 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "pm2": "pm2 start --name Discord_BackEnd npm -- start",
         "start": "node ./bin/www",
-        "dev": "nodemon ./bin/www"
+        "dev": "nodemon ./bin/www",
+        "pm2": "pm2 start --name Site_BackEnd npm -- start"
     },
     "dependencies": {
         "cookie-parser": "~1.4.4",

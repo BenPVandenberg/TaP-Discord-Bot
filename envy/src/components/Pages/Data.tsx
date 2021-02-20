@@ -32,6 +32,7 @@ export default class Data extends React.Component {
         // TODO Make it also possible to search by user name
         // eslint-disable-next-line eqeqeq
         const userData = this.state.allGameData.filter(
+            // eslint-disable-next-line eqeqeq
             (e) => e.userID == userID,
         );
 
