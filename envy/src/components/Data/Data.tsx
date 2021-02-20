@@ -1,3 +1,4 @@
+// @ts-nocheck
 import axios from 'axios';
 import React from 'react';
 import Button from '@material-ui/core/Button';
@@ -7,6 +8,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ReactJson from 'react-json-view';
 import Swal from 'sweetalert2';
+
 
 
 export default class Data extends React.Component{

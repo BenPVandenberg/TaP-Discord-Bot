@@ -6,6 +6,13 @@ import Swal from 'sweetalert2';
 import SoundTable from './SoundTable';
 import SoundUpload from './SoundUpload';
 
+type Sound = {
+    name: string,
+    occurrences: number,
+    ownerID: number | null,
+    ownerName: string,
+}
+
 const useStyles = makeStyles({
     pageHeader: {
         paddingBottom: '10px',
@@ -13,12 +20,12 @@ const useStyles = makeStyles({
 });
 
 export default function Sounds() {
-    const [allSounds, setAllSounds,] = useState([]);
+    const [allSounds, setAllSounds,] = useState<Sound[]>([]);
 
     const updateSounds = async () => {
-        const newAllSounds = [];
-        let sounds;
-        let soundData;
+        const newAllSounds: Sound[] = [];
+        let sounds: any;
+        let soundData: any; // res responce
 
         // get /play statistics
         await axios
@@ -30,8 +37,8 @@ export default function Sounds() {
                 Swal.fire({
                     title: 'Error with the server: GET /data/play',
                     text:
-                        err.response.data.msg ||
-                        `HTTP Code ${err.response.status}`,
+                    err.response.data.msg ||
+                    `HTTP Code ${err.response.status}`,
                     icon: 'error',
                 });
             });
@@ -46,14 +53,14 @@ export default function Sounds() {
                 Swal.fire({
                     title: 'Error with the server: GET /sounds',
                     text:
-                        err.response.data.msg ||
-                        `HTTP Code ${err.response.status}`,
+                    err.response.data.msg ||
+                    `HTTP Code ${err.response.status}`,
                     icon: 'error',
                 });
             });
 
         // if we have data for a song then update allSounds
-        sounds.forEach((sound) => {
+        sounds.forEach((sound: string) => {
             sound = sound.slice(0, -4);
             if (soundData[sound] === undefined) soundData[sound] = {};
 
@@ -74,7 +81,7 @@ export default function Sounds() {
     // run on mount
     useEffect(() => {
         updateSounds();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // * This empty array makes useEffect act like componentDidMount
 
     const classes = useStyles();

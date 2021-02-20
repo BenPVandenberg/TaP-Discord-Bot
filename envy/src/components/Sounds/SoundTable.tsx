@@ -8,6 +8,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+type Sound = {
+    name: string,
+    occurrences: number,
+    ownerID: number | null,
+    ownerName: string,
+}
+
 const useStyles = makeStyles({
     table: {
         minWidth: '310px',
@@ -16,7 +23,7 @@ const useStyles = makeStyles({
 });
 
 // TODO With Auth, be able to determine if the user is the owner of a song
-const isOwner = (song) => {
+const isOwner = (song: string) => {
     return false;
 };
 
@@ -25,7 +32,7 @@ const isAdmin = () => {
     return false;
 };
 
-export default function SoundTable(props) {
+export default function SoundTable(props: {sounds: Sound[]}) {
     const classes = useStyles();
 
     return (

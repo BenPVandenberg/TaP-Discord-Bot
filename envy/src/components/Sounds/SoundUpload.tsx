@@ -11,13 +11,14 @@ const useStyles = makeStyles({
     },
 });
 
-const isCorrectSoundName = (name) => {
+const isCorrectSoundName = (name: string) => {
     // name valid if no spaces
     return name.indexOf(' ') === -1;
 };
 
 // eslint-disable-next-line no-unused-vars
-const uploadSound = async (sound) => {
+const uploadSound = async (sound: any) => {
+    console.log({sound,});
     const formData = new FormData();
     formData.append('file', sound);
 
@@ -35,9 +36,10 @@ const uploadSound = async (sound) => {
 
 export default function SoundUpload() {
     // called when a file is selected for upload
-    const fileSelected = async (e) => {
+    const fileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        // files could be null leading to index error
+        if (e.target.files === null) return;
         const file = e.target.files[0];
-        if (file === undefined) return;
 
         // verify sound name is correct
         const name = file.name.split('.')[0].toLowerCase();
@@ -120,6 +122,7 @@ export default function SoundUpload() {
                 window.location.reload();
             }
         });
+
     };
 
     const classes = useStyles();

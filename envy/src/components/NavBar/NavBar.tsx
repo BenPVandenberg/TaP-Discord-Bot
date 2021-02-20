@@ -5,8 +5,6 @@ import { IoSend } from 'react-icons/io5';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => {
-    // used for exporing the theme
-    console.log({theme,});
     return ({
         appLogo: {
             height: '93.688px',
@@ -20,7 +18,7 @@ const useStyles = makeStyles(theme => {
         },
         navEntry: {
             paddingTop: '10px',
-            color: theme.palette.getContrastText(theme.custom.navBackgroundColor),
+            color: theme.palette.getContrastText('#1b1e21'),
             '&:hover': {
                 background: theme.palette.primary.main,
                 color: theme.palette.getContrastText(theme.palette.primary.main),
