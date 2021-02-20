@@ -33,43 +33,10 @@
     "devDependencies": {
         "@types/react-router-dom": "^5.1.7",
         "css-loader": "^5.0.1",
+        "eslint": "^7.20.0",
         "style-loader": "^2.0.0",
         "ts-loader": "^8.0.14",
         "webpack-cli": "^4.4.0"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest",
-            "eslint:recommended"
-        ],
-        "rules": {
-            "semi": "warn",
-            "quotes": [
-                "warn",
-                "single"
-            ],
-            "no-trailing-spaces": "warn",
-            "camelcase": "warn",
-            "eol-last": "warn",
-            "no-var": "warn",
-            "prefer-const": "warn",
-            "consistent-return": "error",
-            "indent": [
-                "error",
-                4
-            ],
-            "comma-dangle": [
-                "error",
-                {
-                    "arrays": "always",
-                    "objects": "always",
-                    "imports": "never",
-                    "exports": "never",
-                    "functions": "never"
-                }
-            ]
-        }
     },
     "browserslist": {
         "production": [
