@@ -1,15 +1,15 @@
-import React from 'react';
-import Table from 'react-bootstrap/Table';
-import { AiFillCheckCircle } from 'react-icons/ai';
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import Table from "react-bootstrap/Table";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
     wrapper: {
         // Following need to be specified to center correctly
-        textAlign: 'center',
-        margin: 'auto',
+        textAlign: "center",
+        margin: "auto",
         // end of required values
-        width: '75%',
+        width: "75%",
     },
 });
 
@@ -27,34 +27,48 @@ export default function Home() {
                 This project is a WIP so expect it to change frequently. Please
                 report bugs to Rollin on discord.
             </p>
-            <Table className='text-white w-50' size='sm' style={{ margin: 'auto', }}>
+            <Table
+                className="text-white w-50"
+                size="sm"
+                style={{ margin: "auto" }}
+            >
                 <tbody>
                     <tr>
-                        <td><AiFillCheckCircle size={25} /></td>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
                         <td>View sound data</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td><AiFillCheckCircle size={25} /></td>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
                         <td>Upload sound clips</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td><AiFillCheckCircle size={25} /></td>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
                         <td>Better error handling (pop ups)</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td><AiFillCheckCircle size={25} /></td>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
                         <td>View bot collected data</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td><AiFillCheckCircle size={25} /></td>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
                         <td>Submit suggestions</td>
                     </tr>
                 </tbody>
@@ -74,8 +88,8 @@ export default function Home() {
                     <tr>
                         <td></td>
                         <td>
-                        Profile page where you can edit how the bot interacts
-                        with you
+                            Profile page where you can edit how the bot
+                            interacts with you
                         </td>
                     </tr>
                 </tbody>

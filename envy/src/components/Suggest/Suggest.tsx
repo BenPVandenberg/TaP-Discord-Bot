@@ -1,19 +1,19 @@
-import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
-import { SiGithub } from 'react-icons/si';
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import { SiGithub } from "react-icons/si";
 
 const useStyles = makeStyles({
     wrapper: {},
     githubButton: {
-        background: 'black',
+        background: "black",
         borderRadius: 3,
         border: 0,
-        color: 'white',
+        color: "white",
         height: 48,
-        padding: '0 30px',
-        '&:hover': {
-            background: '#5c5c5c',
+        padding: "0 30px",
+        "&:hover": {
+            background: "#5c5c5c",
         },
     },
 });
@@ -27,9 +27,13 @@ export default function Suggest() {
                 <p>Suggestion Page</p>
             </h1>
             {/* GitHub button */}
-            <a style={{textDecoration: 'none',}} href="https://github.com/BenPVandenberg/TaP-Discord-Bot/issues">
+            <a
+                style={{ textDecoration: "none" }}
+                href="https://github.com/BenPVandenberg/TaP-Discord-Bot/issues"
+            >
                 <IconButton className={classes.githubButton}>
-                    <SiGithub style={{marginRight: '10px',}} size={36}/> Issue/Suggestion Submission
+                    <SiGithub style={{ marginRight: "10px" }} size={36} />{" "}
+                    Issue/Suggestion Submission
                 </IconButton>
             </a>
         </div>
