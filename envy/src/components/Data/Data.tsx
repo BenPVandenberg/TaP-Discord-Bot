@@ -50,7 +50,7 @@ export default class Data extends React.Component {
 
     pullAllData = async () => {
         await axios
-            .get("http://52.152.174.99:5000/data/game")
+            .get("http://18.219.56.43:5000/data/game")
             .then((res) => {
                 this.setState({ allGameData: res.data });
                 return true;
