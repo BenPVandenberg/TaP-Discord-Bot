@@ -44,10 +44,13 @@ module.exports = {
                                 `Successfully added ${roleToAdd.name} to your ranks!`,
                             ),
                         )
-                        .catch(message.reply(`Unable to add ${ roleToAdd.name } to ${arg}!`));
+                        .catch( (err) =>{
+                            console.error(err)
+                            message.reply(`Unable to add ${ roleToAdd.name } to ${message.member.nickname}.`)
+                        });
                 }
             } else {
-                message.reply(`${arg} is not a role I can assign!`);
+                message.reply(`${arg} is not a role I can assign.`);
             }
         }
     },
