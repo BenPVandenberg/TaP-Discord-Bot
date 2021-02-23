@@ -1,11 +1,12 @@
 require("dotenv").config();
-const fs = require("fs");
+import fs from "fs";
 require("console-stamp")(console, { pattern: "dd/mm/yyyy HH:MM:ss.l" });
-const Discord = require("discord.js");
+import Discord from "discord.js";
 const bot = new Discord.Client();
+// @ts-ignore
 bot.commands = new Discord.Collection();
-const config = require("./config.json");
-const helpers = require("./helpers");
+import config from "./config.json";
+import helpers from "./helpers";
 
 // find all commands
 const commandFiles = fs

@@ -1,48 +1,47 @@
 {
-  "name": "custom-discord-bot",
-  "version": "1.0.0",
-  "description": "First attempt at a discord bot",
-  "main": "index.js",
-  "scripts": {
-    "pm2": "pm2 start --name Discord_Bot npm -- start",
-    "start": "node .",
-    "stop": "pm2 kill"
-  },
-  "author": "Ben Vandenberg & Jake Richardson",
-  "license": "ISC",
-  "dependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "bson": "^4.1.0",
-    "console-stamp": "^0.2.9",
-    "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0",
-    "mysql2": "^2.2.5",
-    "ytdl-core": "^3.2.2"
-  },
-  "devDependencies": {
-    "eslint": "^7.6.0",
-    "nodemon": "^2.0.4",
-    "pm2": "^4.4.1"
-  },
-  "optionalDependencies": {
-    "ffmpeg-static": "^4.2.7",
-    "node-opus": "^0.3.3",
-    "opusscript": "0.0.7"
-  },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "env": {
-      "node": true,
-      "es6": true
+    "name": "custom-discord-bot",
+    "version": "1.0.0",
+    "description": "First attempt at a discord bot",
+    "main": "index.js",
+    "scripts": {
+        "pm2": "pm2 start --name Discord_Bot npm -- start",
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "stop": "pm2 kill"
     },
-    "parserOptions": {
-      "ecmaVersion": 2019
+    "author": "Ben Vandenberg & Jake Richardson",
+    "license": "ISC",
+    "dependencies": {
+        "@discordjs/opus": "^0.3.2",
+        "console-stamp": "^0.2.9",
+        "discord.js": "^12.5.1",
+        "dotenv": "^8.2.0",
+        "mysql2": "^2.2.5",
+        "ytdl-core": "^3.2.2"
     },
-    "rules": {
-      "indent": [
-        "error",
-        4
-      ]
+    "devDependencies": {
+        "eslint": "^7.6.0",
+        "nodemon": "^2.0.4"
+    },
+    "optionalDependencies": {
+        "ffmpeg-static": "^4.2.7",
+        "node-opus": "^0.3.3",
+        "opusscript": "0.0.7"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "env": {
+            "node": true,
+            "es6": true
+        },
+        "parserOptions": {
+            "ecmaVersion": 2019
+        },
+        "rules": {
+            "indent": [
+                "error",
+                4
+            ]
+        }
     }
-  }
 }
