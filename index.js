@@ -11,6 +11,7 @@ const helpers = require("./helpers");
 const commandFiles = fs
     .readdirSync("./commands")
     .filter((file) => file.endsWith(".js"));
+
 // add commands to bot
 for (const file of commandFiles) {
     if (!["top10.js"].includes(file)) {
@@ -45,12 +46,11 @@ bot.on("message", async (message) => {
     });
 
     // check if it is a bot command in a non command channel
-    const bot_cmd_channels = ["522935673964199936", "740332251103101048"];
     if (
         (message.content.startsWith(config.prefix) ||
             message.content.startsWith("-") ||
             message.author.bot) &&
-        !bot_cmd_channels.includes(message.channel.id) &&
+        !config.command_channels.includes(message.channel.id) &&
         message.author.username !== "T&P Bot"
     ) {
         message.delete();
@@ -100,9 +100,7 @@ bot.on("guildMemberAdd", (member) => {
 
     channel.send(`Welcome to the server, ${member}.` + rules_string);
 
-    helpers.verifyUser(member, () => {
-        return;
-    });
+    helpers.verifyUser(member, () => {});
 });
 
 // voiceStateUpdate
@@ -157,9 +155,8 @@ PARAMETER    TYPE               DESCRIPTION
 oldMember    GuildMember        The member before the presence update
 newMember    GuildMember        The member after the presence update    */
 bot.on("presenceUpdate", function (oldMember, newMember) {
-    // if the bot
-    if (["738903340011749378", "234395307759108106"].includes(newMember.userID))
-        return;
+    // if a bot
+    if (newMember.member.user.bot) return;
 
     // check that both members are valid
     if (!newMember || !oldMember) return;

@@ -1,15 +1,12 @@
 {
-	"prefix": "/",
-	"commands": {
-		"rank": {
-			"free_ranks": [
-				"minecraft",
-				"valorant",
-				"valheim"
-			]
-    	},
-		"secret_santa": {
-			"active": false
-		}
-	}
+    "prefix": "/",
+    "command_channels": ["522935673964199936", "740332251103101048"],
+    "commands": {
+        "rank": {
+            "free_ranks": ["minecraft", "valorant", "valheim"]
+        },
+        "secret_santa": {
+            "active": false
+        }
+    }
 }

@@ -6,8 +6,7 @@ module.exports = {
         let r, g, b;
         if (s === 0) {
             r = g = b = l; // achromatic
-        }
-        else {
+        } else {
             const hue2rgb = (p, q, t) => {
                 if (t < 0) t += 1;
                 if (t > 1) t -= 1;
@@ -24,26 +23,26 @@ module.exports = {
         }
         const toHex = (x) => {
             const hex = Math.round(x * 255).toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
+            return hex.length === 1 ? "0" + hex : hex;
         };
         return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     },
 
     makeSQLQuery(query, callback) {
-        const mysql = require('mysql2');
+        const mysql = require("mysql2");
 
         const con = mysql.createPool({
             connectionLimit: 10,
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
-            database: 'Discord_Bot',
+            database: "Discord_Bot",
         });
 
-        con.query('SET time_zone = "EST";', function(err) {
+        con.query('SET time_zone = "EST";', function (err) {
             if (err) throw err;
 
-            con.query(query, function(err) {
+            con.query(query, function (err) {
                 if (err) throw err;
                 return callback();
             });
@@ -55,13 +54,15 @@ module.exports = {
             this.makeSQLQuery(
                 `INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, "${user.displayName}", "${user.user.username}", ${user.user.discriminator});`,
                 () => {
-                    this.makeSQLQuery(`UPDATE User SET DisplayName = "${user.displayName}", UserName = "${user.user.username}", Discriminator = ${user.user.discriminator} WHERE UserID = ${user.id}`, () => {
-                        callback();
-                    });
+                    this.makeSQLQuery(
+                        `UPDATE User SET DisplayName = "${user.displayName}", UserName = "${user.user.username}", Discriminator = ${user.user.discriminator} WHERE UserID = ${user.id}`,
+                        () => {
+                            callback();
+                        },
+                    );
                 },
             );
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     },
@@ -81,8 +82,7 @@ module.exports = {
                     },
                 );
             });
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     },
@@ -101,8 +101,7 @@ module.exports = {
                     },
                 );
             });
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     },
@@ -127,8 +126,7 @@ module.exports = {
                     },
                 );
             });
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     },
@@ -152,8 +150,7 @@ module.exports = {
                     },
                 );
             });
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     },
@@ -178,8 +175,7 @@ module.exports = {
                     },
                 );
             });
-        }
-        catch (e) {
+        } catch (e) {
             console.error(e);
         }
     },
