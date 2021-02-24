@@ -6,7 +6,6 @@ const bot = new Discord.Client();
 // @ts-ignore
 bot.commands = new Discord.Collection();
 import config from "./config.json";
-import helpers from "./helpers";
 
 // find all commands
 const commandFiles = fs
