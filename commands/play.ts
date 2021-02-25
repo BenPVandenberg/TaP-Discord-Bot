@@ -1,17 +1,19 @@
-const fs = require("fs");
-const Discord = require("discord.js");
-const helpers = require("../helpers.js");
+import fs from "fs";
+import Discord from "discord.js";
+import assert from "assert";
+import * as sql from "../utilities/sql";
 // ranks.js
 // ========
 module.exports = {
     name: "play",
     description: "plays a audio clip",
-    execute(message, args) {
+    execute(message: Discord.Message, args: string[]) {
         const all_sounds = fs.readdirSync("./audio");
 
         // put arg to lowercase if it exists
         try {
             args[0] = args[0].toLowerCase();
+            assert(message.member);
 
             const voiceChannel = message.member.voice.channel;
             if (!voiceChannel) {
@@ -32,7 +34,7 @@ module.exports = {
             message.react("👍");
 
             // sound played successfully, therefore update database
-            helpers.dbMakeSoundLog(args[0], message.member);
+            sql.dbMakeSoundLog(args[0], message.member);
         } catch (e) {
             let sound_list = "";
             const hidden_sounds = ["stfu0", "stfu1", "stfu2", "timeout"];
@@ -46,6 +48,7 @@ module.exports = {
                 }
             }
 
+            assert(message.member);
             const member_embed = new Discord.MessageEmbed()
                 .setTitle("__**Available sounds**__")
                 .setDescription(sound_list)
