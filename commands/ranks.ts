@@ -1,4 +1,4 @@
-const Discord = require("discord.js");
+import Discord from "discord.js";
 const config = require("../config.json");
 // ranks.js
 // ========
@@ -6,7 +6,7 @@ module.exports = {
     name: "ranks",
     description: "Display all ranks T&P bot can give",
     // eslint-disable-next-line no-unused-vars
-    execute(message, args) {
+    execute(message: Discord.Message, args: string[]) {
         const rank_config = config.commands.rank;
 
         // give user list of ranks

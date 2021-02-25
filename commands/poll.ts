@@ -1,10 +1,13 @@
-const Discord = require("discord.js");
+import assert from "assert";
+import Discord from "discord.js";
+
 // poll.js
 // ========
 module.exports = {
     name: "poll",
     description: "creates a poll",
-    execute(message, args) {
+    execute(message: Discord.Message, args: string[]) {
+        assert(message.member);
         message.delete();
 
         if (!args.length) {

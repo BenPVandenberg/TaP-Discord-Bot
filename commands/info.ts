@@ -1,17 +1,20 @@
-const Discord = require("discord.js");
+import Discord from "discord.js";
+import assert from "assert";
 // info.js
 // ========
 module.exports = {
     name: "info",
     description: "gets info of a user",
-    execute(message, args) {
+    execute(message: Discord.Message, args: string[]) {
         let rMember; // Takes the user mentioned, or the ID of a user
+        assert(message.guild);
 
         try {
-            rMember = message.guild.member(
+            const memberToSearch =
                 message.mentions.users.first() ||
-                    message.guild.members.cache.get(args[0]),
-            );
+                message.guild.members.cache.get(args[0]);
+            assert(memberToSearch);
+            rMember = message.guild.member(memberToSearch);
         } catch (e) {
             return message.reply("usage: /info <@user | userid>");
         }
@@ -26,7 +29,9 @@ module.exports = {
         let roles_display;
         try {
             roles_display =
+                // @ts-ignore
                 rMember._roles
+                    // @ts-ignore
                     .map((r) => `${message.guild.roles.cache.get(r).name}`)
                     .join(" | ") || "\u200B";
         } catch (e) {
