@@ -98,18 +98,17 @@ export function dbCloseGameLog(
     try {
         verifyUser(user, () => {
             makeSQLQuery(
-                `
-        UPDATE GameLog
-        SET End = NOW()
-        WHERE ID =
-        (
-        SELECT ID FROM
-          (SELECT * FROM GameLog
-          WHERE (UserID = ${user.id}) AND
-          (Game = "${game.name}")
-          ORDER BY Start DESC LIMIT 1) AS Sub
-        WHERE (End IS NULL)
-        );`,
+                "UPDATE GameLog " +
+                    "SET End = NOW() " +
+                    "WHERE ID = " +
+                    "(" +
+                    "SELECT ID FROM " +
+                    "(SELECT * FROM GameLog " +
+                    `WHERE (UserID = ${user.id}) AND ` +
+                    `(Game = "${game.name}") ` +
+                    "ORDER BY Start DESC LIMIT 1) AS Sub " +
+                    "WHERE (End IS NULL)" +
+                    ");",
                 () => {
                     return;
                 },
