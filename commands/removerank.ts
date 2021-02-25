@@ -54,6 +54,8 @@ module.exports = {
                 else {
                     message.reply(`User doesn't have ${roleToAdd.name} rank!`);
                 }
+            } else {
+                message.reply("that's not a role I can remove.");
             }
         }
     },
