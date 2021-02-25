@@ -1,3 +1,5 @@
+import Discord from "discord.js";
+import assert from "assert";
 const config = require("../config.json");
 // secretsanta.js
 // ========
@@ -5,7 +7,7 @@ module.exports = {
     name: "secretsanta",
     description: "adds or removes sombody from secret santa",
     // eslint-disable-next-line no-unused-vars
-    execute(message, args) {
+    execute(message: Discord.Message, args: string[]) {
         const secret_santa_config = config.commands.secret_santa;
 
         if (!secret_santa_config.active) {
@@ -13,6 +15,7 @@ module.exports = {
             return;
         }
 
+        assert(message.guild);
         const roleToAdd = message.guild.roles.cache.get("770707823629697025"); // secret santa role
 
         const text_channel = message.guild.channels.cache.get(
@@ -20,6 +23,7 @@ module.exports = {
         ); // secret santa text channel
 
         // if member already has the role
+        assert(message.member);
         if (message.member.roles.cache.has(roleToAdd.id)) {
             message.member.roles
                 .remove(roleToAdd)
