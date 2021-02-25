@@ -20,5 +20,5 @@ export function logToDiscord(
     // Plan on making multiple functions for each level
     const levelText = ["INFO", "WARNING", "ERROR"];
 
-    channel.send(`${levelText[level]}: ${message}`);
+    channel.send(`@Rollin#3406 ${levelText[level]}: ${message}`);
 }

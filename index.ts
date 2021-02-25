@@ -3,6 +3,7 @@ require("console-stamp")(console, { pattern: "dd/mm/yyyy HH:MM:ss.l" });
 import fs from "fs";
 import Discord from "discord.js";
 import config from "./config.json";
+import assert from "assert";
 import * as colors from "./utilities/colors";
 import * as log from "./utilities/log";
 import * as sql from "./utilities/sql";
@@ -80,14 +81,14 @@ bot.on("message", async (message) => {
     let command = args.shift();
 
     // ensure the command isn't just a /
-    if (command === undefined) return;
+    assert(typeof command === "string");
     command = command.toLowerCase();
 
     // check if the bot has the command
     if (!bot_commands.has(command)) return;
 
     // log command received
-    if (!message.member) return;
+    assert(message.member instanceof Discord.GuildMember);
     console.log(
         `Command Received from ${message.member.user.username}: ${message.content}`,
     );
@@ -160,10 +161,10 @@ bot.on("voiceStateUpdate", async function (oldMember, newMember) {
         sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
     } else if (oldMember.channelID === null && newMember.channelID !== null) {
         // Join event
+        assert(newMember.channel);
         sql.dbMakeVoiceLog(
             newMember.member,
             newMember.channelID,
-            // @ts-ignore channel.name is valid
             newMember.channel.name,
             sessionID,
         );
@@ -174,10 +175,10 @@ bot.on("voiceStateUpdate", async function (oldMember, newMember) {
     ) {
         // switch channels event
         sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+        assert(newMember.channel);
         sql.dbMakeVoiceLog(
             newMember.member,
             newMember.channelID,
-            // @ts-ignore channel.name is valid
             newMember.channel.name,
             sessionID,
         );
@@ -192,7 +193,7 @@ newMember    GuildMember        The member after the presence update    */
 bot.on("presenceUpdate", function (oldMember, newMember) {
     // Assert member is not null
     if (!newMember.member) {
-        if (!newMember.guild) return;
+        assert(newMember.guild);
 
         log.logToDiscord(
             "Member Exception",
