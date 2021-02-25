@@ -1,11 +1,12 @@
-const Discord = require("discord.js");
+import Discord from "discord.js";
+import assert from "assert";
 const config = require("../config.json");
 // removerank.js
 // ========
 module.exports = {
     name: "removerank",
     description: "Manage users game ranks",
-    execute(message, args) {
+    execute(message: Discord.Message, args: string[]) {
         const rank_config = config.commands.rank;
 
         // give user list of ranks
@@ -23,6 +24,8 @@ module.exports = {
 
         // user gave some ranks, lets go through them
         for (let arg in args) {
+            assert(message.guild);
+            assert(message.member);
             arg = args[arg].toLowerCase();
 
             if (rank_config.free_ranks.includes(arg)) {
@@ -30,17 +33,22 @@ module.exports = {
                 const roleToAdd = message.guild.roles.cache.find(
                     (role) => role.name.toLowerCase() === arg,
                 );
+                assert(roleToAdd);
 
                 // if member already has the role
                 if (message.member.roles.cache.has(roleToAdd.id)) {
                     message.member.roles
                         .remove(roleToAdd)
-                        .then(
+                        .then(() => {
                             message.reply(
                                 `Successfully removed ${roleToAdd.name} from your ranks!`,
-                            ),
-                        );
-                    // .catch(message.reply(`Unable to remove ${arg} from ${ roleToAdd.name }`));
+                            );
+                        })
+                        .catch(() => {
+                            message.reply(
+                                `Unable to remove ${arg} from ${roleToAdd.name}`,
+                            );
+                        });
                 }
                 // if member doesn't have the role
                 else {
