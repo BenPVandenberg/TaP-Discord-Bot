@@ -8,7 +8,7 @@
         "start": "ts-node .",
         "stop": "pm2 kill"
     },
-    "author": "Ben Vandenberg & Jake Richardson",
+    "author": "Ben Vandenberg",
     "license": "ISC",
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
