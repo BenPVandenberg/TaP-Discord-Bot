@@ -5,8 +5,7 @@
     "main": "index.js",
     "scripts": {
         "pm2": "pm2 start --name Discord_Bot npm -- start",
-        "build": "tsc",
-        "start": "node dist/index.js",
+        "start": "ts-node .",
         "stop": "pm2 kill"
     },
     "author": "Ben Vandenberg & Jake Richardson",
