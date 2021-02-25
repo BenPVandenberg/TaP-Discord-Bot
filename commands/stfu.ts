@@ -8,7 +8,7 @@ module.exports = {
     description: "Lets a user know they really need to stfu",
     // eslint-disable-next-line no-unused-vars
     execute(message: Discord.Message, args: string[]) {
-        assert(message.mentions.members);
+        // @ts-ignore
         const user_to_stfu = message.mentions.members.values().next().value;
 
         // verify the user @'d someone
@@ -60,9 +60,9 @@ module.exports = {
             );
 
             dispatcher.on("finish", () => {
-                assert(eligible_channel);
                 // return member
                 member_to_stfu.voice.setChannel(original_channel);
+                assert(eligible_channel);
                 eligible_channel.leave();
             });
         });

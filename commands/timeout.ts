@@ -1,10 +1,14 @@
+import Discord from "discord.js";
+import * as channels from "../utilities/channels";
+import assert from "assert";
 // timeout.js
 // ========
 module.exports = {
     name: "timeout",
     description: "Moves the user to their own channel for 1 min",
     // eslint-disable-next-line no-unused-vars
-    execute(message, args) {
+    execute(message: Discord.Message) {
+        // @ts-ignore
         const user_to_timeout = message.mentions.members.values().next().value;
 
         // verify the user @'d someone
@@ -23,19 +27,20 @@ module.exports = {
         }
 
         // find a channel to move user to
-        let eligible_channel;
-        const channels = message.guild.channels.cache;
-        // eslint-disable-next-line no-unused-vars
-        for (const [key, channel] of channels.entries()) {
+        assert(message.guild);
+        const channelList = message.guild.channels.cache;
+        let eligible_channel: Discord.VoiceChannel | null = null;
+        for (const [, channel] of channelList.entries()) {
             if (["Muahahahahahah"].includes(channel.name)) {
-                eligible_channel = channel;
+                eligible_channel = channels.toVoiceChannel(channel);
                 break;
             }
         }
 
         // verify we got a channel to move to
-        if (!eligible_channel) {
+        if (eligible_channel === null) {
             message.reply("there arn't any eligible channels atm.");
+            return;
         }
 
         // the magic
@@ -49,6 +54,7 @@ module.exports = {
             dispatcher.on("finish", () => {
                 // return member
                 member_to_timeout.voice.setChannel(original_channel);
+                assert(eligible_channel);
                 eligible_channel.leave();
             });
         });
