@@ -1,10 +1,14 @@
+import Discord from "discord.js";
+import * as channels from "../utilities/channels";
+import assert from "assert";
 // stfu.js
 // ========
 module.exports = {
     name: "stfu",
     description: "Lets a user know they really need to stfu",
     // eslint-disable-next-line no-unused-vars
-    execute(message, args) {
+    execute(message: Discord.Message, args: string[]) {
+        assert(message.mentions.members);
         const user_to_stfu = message.mentions.members.values().next().value;
 
         // verify the user @'d someone
@@ -23,23 +27,25 @@ module.exports = {
         }
 
         // find a channel to move user to
-        let eligible_channel;
-        const channels = message.guild.channels.cache;
+        assert(message.guild);
+        const channelList = message.guild.channels.cache;
+        let eligible_channel: Discord.VoiceChannel | null = null;
         // eslint-disable-next-line no-unused-vars
-        for (const [key, channel] of channels.entries()) {
+        for (const [, channel] of channelList.entries()) {
             if (
                 channel.type === "voice" &&
                 !channel.members.size &&
                 !["AFK"].includes(channel.name)
             ) {
-                eligible_channel = channel;
+                eligible_channel = channels.toVoiceChannel(channel);
                 break;
             }
         }
 
         // verify we got a channel to move to
-        if (!eligible_channel) {
+        if (eligible_channel === null) {
             message.reply("there arn't any eligible channels atm.");
+            return;
         }
 
         // the magic
@@ -54,6 +60,7 @@ module.exports = {
             );
 
             dispatcher.on("finish", () => {
+                assert(eligible_channel);
                 // return member
                 member_to_stfu.voice.setChannel(original_channel);
                 eligible_channel.leave();
