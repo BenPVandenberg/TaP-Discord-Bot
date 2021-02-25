@@ -1,19 +1,21 @@
 import Discord from "discord.js";
 import * as mysql from "mysql2";
 
-export function makeSQLQuery(query: string, callback: () => any) {
-    const con = mysql.createPool({
-        connectionLimit: 5,
+abstract class PoolClass {
+    public static connectionPool = mysql.createPool({
+        connectionLimit: 10,
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
         database: "Discord_Bot",
     });
+}
 
-    con.query('SET time_zone = "EST";', function (err) {
+export function makeSQLQuery(query: string, callback: () => any) {
+    PoolClass.connectionPool.query('SET time_zone = "EST";', function (err) {
         if (err) throw err;
 
-        con.query(query, function (err) {
+        PoolClass.connectionPool.query(query, function (err) {
             if (err) throw err;
             return callback();
         });
