@@ -1,23 +1,25 @@
 require("dotenv").config();
-import fs from "fs";
 require("console-stamp")(console, { pattern: "dd/mm/yyyy HH:MM:ss.l" });
+import fs from "fs";
 import Discord from "discord.js";
-const bot = new Discord.Client();
-// @ts-ignore
-bot.commands = new Discord.Collection();
 import config from "./config.json";
+import * as colors from "./utilities/colors";
+import * as log from "./utilities/log";
+import * as sql from "./utilities/sql";
+import * as channels from "./utilities/channels";
+
+const bot = new Discord.Client();
+const bot_commands = new Discord.Collection<string, any>();
 
 // find all commands
 const commandFiles = fs
     .readdirSync("./commands")
-    .filter((file) => file.endsWith(".js"));
+    .filter((file) => file.endsWith(".ts"));
 
 // add commands to bot
 for (const file of commandFiles) {
-    if (!["top10.js"].includes(file)) {
-        const command = require(`./commands/${file}`);
-        bot.commands.set(command.name, command);
-    }
+    const command = require(`./commands/${file}`);
+    bot_commands.set(command.name, command);
 }
 
 // ready
@@ -32,17 +34,29 @@ PARAMETER      TYPE           DESCRIPTION
 message        Message        The created message    */
 bot.on("message", async (message) => {
     // easter egg for dms
-    if (!message.guild && !message.author.bot) {
-        message.reply(
-            "Wow someone actually messaged me... don't like it, fuck off!",
-        );
+    // nested if required to guarantee guild isn't null
+    if (!message.guild) {
+        if (!message.author.bot) {
+            message.reply(
+                "Wow someone actually messaged me... don't like it, fuck off!",
+            );
+        }
         return;
     }
 
     // update chief of military tactics' role colour
     const role = message.guild.roles.cache.get("674039470084849691");
+    if (!role) {
+        log.logToDiscord(
+            'Unable to get role "674039470084849691"\n' +
+                "Formally chief of military tactics'",
+            log.getDefaultChannel(message.guild),
+        );
+        return;
+    }
+
     role.edit({
-        color: helpers.getRandomColor(),
+        color: colors.getRandomColor(),
     });
 
     // check if it is a bot command in a non command channel
@@ -63,33 +77,40 @@ bot.on("message", async (message) => {
 
     // isolate command and args
     const args = message.content.slice(config.prefix.length).trim().split(" ");
-    const command = args.shift().toLowerCase();
+    let command = args.shift();
+
+    // ensure the command isn't just a /
+    if (command === undefined) return;
+    command = command.toLowerCase();
 
     // check if the bot has the command
-    if (!bot.commands.has(command)) return;
+    if (!bot_commands.has(command)) return;
 
     // log command received
+    if (!message.member) return;
     console.log(
         `Command Received from ${message.member.user.username}: ${message.content}`,
     );
 
     try {
-        bot.commands.get(command).execute(message, args);
+        bot_commands.get(command).execute(message, args);
     } catch (error) {
         console.error(error);
         message.reply("there was an error trying to execute that command!");
+        log.logToDiscord(
+            error,
+            log.getDefaultChannel(message.guild),
+            log.ERROR,
+        );
     }
 });
 
 // Create an event listener for new guild members
 bot.on("guildMemberAdd", (member) => {
     // Send the message to a designated channel on a server:
-    const channel = member.guild.channels.cache.find(
-        (ch) => ch.name === "general",
+    const generalChannel = channels.toTextChannel(
+        member.guild.channels.cache.find((ch) => ch.name === "general"),
     );
-    // Do nothing if the channel wasn't found on this server
-    if (!channel) return;
-    // Send the message, mentioning the member
 
     const rules_string =
         "1. Be wary of the wild DeadAss + Grim, they DO bite! \n" +
@@ -98,9 +119,10 @@ bot.on("guildMemberAdd", (member) => {
         "4. Add game ranks by using /ranks \n" +
         "BONUS: /play gbtm ;)";
 
-    channel.send(`Welcome to the server, ${member}.` + rules_string);
+    // Send the message, mentioning the member
+    generalChannel.send(`Welcome to the server, ${member}.\n` + rules_string);
 
-    helpers.verifyUser(member, () => {});
+    sql.verifyUser(member, () => {});
 });
 
 // voiceStateUpdate
@@ -111,38 +133,51 @@ newMember    GuildMember      The member after the voice state update    */
 bot.on("voiceStateUpdate", async function (oldMember, newMember) {
     const sessionID = newMember.sessionID || oldMember.sessionID;
 
+    // Check if sessionID is valid
+    if (!sessionID) {
+        log.logToDiscord(
+            "No Session for both states",
+            log.getDefaultChannel(newMember.guild),
+            log.ERROR,
+        );
+        return;
+    }
+    // Assert member is not null
+    if (!newMember.member) {
+        log.logToDiscord(
+            "Member Exception",
+            log.getDefaultChannel(newMember.guild),
+            log.ERROR,
+        );
+        return;
+    }
+
     // if a bot
     if (newMember.member.user.bot) return;
 
-    if (oldMember.channelID != null && newMember.channelID == null) {
+    if (oldMember.channelID !== null && newMember.channelID === null) {
         // leave event
-        helpers.dbCloseVoiceLog(
-            newMember.member,
-            oldMember.channelID,
-            sessionID,
-        );
-    } else if (oldMember.channelID == null && newMember.channelID != null) {
+        sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+    } else if (oldMember.channelID === null && newMember.channelID !== null) {
         // Join event
-        helpers.dbMakeVoiceLog(
+        sql.dbMakeVoiceLog(
             newMember.member,
             newMember.channelID,
+            // @ts-ignore channel.name is valid
             newMember.channel.name,
             sessionID,
         );
     } else if (
-        oldMember.channelID != null &&
-        newMember.channelID != null &&
+        oldMember.channelID !== null &&
+        newMember.channelID !== null &&
         oldMember.channelID !== newMember.channelID
     ) {
         // switch channels event
-        helpers.dbCloseVoiceLog(
-            newMember.member,
-            oldMember.channelID,
-            sessionID,
-        );
-        helpers.dbMakeVoiceLog(
+        sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+        sql.dbMakeVoiceLog(
             newMember.member,
             newMember.channelID,
+            // @ts-ignore channel.name is valid
             newMember.channel.name,
             sessionID,
         );
@@ -155,6 +190,18 @@ PARAMETER    TYPE               DESCRIPTION
 oldMember    GuildMember        The member before the presence update
 newMember    GuildMember        The member after the presence update    */
 bot.on("presenceUpdate", function (oldMember, newMember) {
+    // Assert member is not null
+    if (!newMember.member) {
+        if (!newMember.guild) return;
+
+        log.logToDiscord(
+            "Member Exception",
+            log.getDefaultChannel(newMember.guild),
+            log.ERROR,
+        );
+        return;
+    }
+
     // if a bot
     if (newMember.member.user.bot) return;
 
@@ -182,10 +229,10 @@ bot.on("presenceUpdate", function (oldMember, newMember) {
 
     if (old_activities.length !== 0 && new_activities.length === 0) {
         // leave event
-        helpers.dbCloseGameLog(newMember.member, application);
+        sql.dbCloseGameLog(newMember.member, application);
     } else if (old_activities.length === 0 && new_activities.length !== 0) {
         // Join event
-        helpers.dbMakeGameLog(newMember.member, application);
+        sql.dbMakeGameLog(newMember.member, application);
     }
 });
 
