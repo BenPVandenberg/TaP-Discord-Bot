@@ -73,7 +73,7 @@ export function dbMakeGameLog(
                 `INSERT IGNORE INTO Game (Title, GameID) VALUES ("${game.name}", ${game.applicationID});`,
                 () => {
                     makeSQLQuery(
-                        `UPDATE Game SET GameID = ${game.applicationID} WHERE Title = ${game.name};`,
+                        `UPDATE Game SET GameID = ${game.applicationID} WHERE Title = "${game.name}";`,
                         () => {
                             makeSQLQuery(
                                 `INSERT IGNORE INTO GameLog (UserID, Game) VALUES (${user.id}, "${game.name}");`,
