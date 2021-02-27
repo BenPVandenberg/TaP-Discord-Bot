@@ -46,8 +46,8 @@ bot.on("message", async (message) => {
     }
 
     // update chief of military tactics' role colour
-    const role = message.guild.roles.cache.get("674039470084849691");
-    if (!role) {
+    const chiefRole = message.guild.roles.cache.get("674039470084849691");
+    if (!chiefRole) {
         log.logToDiscord(
             'Unable to get role "674039470084849691"\n' +
                 "Formally chief of military tactics'",
@@ -56,7 +56,7 @@ bot.on("message", async (message) => {
         return;
     }
 
-    role.edit({
+    chiefRole.edit({
         color: colors.getRandomColor(),
     });
 
@@ -66,7 +66,8 @@ bot.on("message", async (message) => {
             message.content.startsWith("-") ||
             message.author.bot) &&
         !config.command_channels.includes(message.channel.id) &&
-        message.author.username !== "T&P Bot"
+        message.author.username !== "T&P Bot" &&
+        message.author.username !== "Valheim Server"
     ) {
         message.delete();
     }
@@ -121,7 +122,9 @@ bot.on("guildMemberAdd", (member) => {
         "BONUS: /play gbtm ;)";
 
     // Send the message, mentioning the member
-    generalChannel.send(`Welcome to the server, ${member}.\n` + rules_string);
+    generalChannel.send(
+        `Welcome to the server, ${member.toString()}.\n` + rules_string,
+    );
 
     sql.verifyUser(member, () => {});
 });
