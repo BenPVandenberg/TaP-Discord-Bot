@@ -1,3 +1,4 @@
+// plan on changing this file a lot
 // @ts-nocheck
 import axios from "axios";
 import React from "react";
@@ -51,7 +52,7 @@ export default class Data extends React.Component {
 
     pullAllData = async () => {
         await axios
-            .get("http://18.219.56.43:5000/data/game")
+            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/game")
             .then((res) => {
                 this.setState({ allGameData: res.data });
                 return true;
