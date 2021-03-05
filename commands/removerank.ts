@@ -6,7 +6,8 @@ const config = require("../config.json");
 module.exports = {
     name: "removerank",
     description: "Manage users game ranks",
-    execute(message: Discord.Message, args: string[]) {
+    requireVoice: false,
+    async execute(message: Discord.Message, args: string[]) {
         const rank_config = config.commands.rank;
 
         // give user list of ranks

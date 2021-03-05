@@ -5,8 +5,8 @@ const config = require("../config.json");
 module.exports = {
     name: "ranks",
     description: "Display all ranks T&P bot can give",
-    // eslint-disable-next-line no-unused-vars
-    execute(message: Discord.Message, args: string[]) {
+    requireVoice: false,
+    async execute(message: Discord.Message, args: string[]) {
         const rank_config = config.commands.rank;
 
         // give user list of ranks

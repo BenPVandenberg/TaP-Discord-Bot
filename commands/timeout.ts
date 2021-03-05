@@ -6,8 +6,8 @@ import assert from "assert";
 module.exports = {
     name: "timeout",
     description: "Moves the user to their own channel for 1 min",
-    // eslint-disable-next-line no-unused-vars
-    execute(message: Discord.Message) {
+    requireVoice: true,
+    async execute(message: Discord.Message) {
         // @ts-ignore
         const user_to_timeout = message.mentions.members.values().next().value;
 
@@ -48,7 +48,7 @@ module.exports = {
         member_to_timeout.voice.setChannel(eligible_channel);
 
         // join and play yt audio
-        eligible_channel.join().then((connection) => {
+        await eligible_channel.join().then((connection) => {
             const dispatcher = connection.play("./audio/timeout.mp3");
 
             dispatcher.on("finish", () => {

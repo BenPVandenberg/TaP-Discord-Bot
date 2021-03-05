@@ -6,7 +6,8 @@ import Discord from "discord.js";
 module.exports = {
     name: "poll",
     description: "creates a poll",
-    execute(message: Discord.Message, args: string[]) {
+    requireVoice: false,
+    async execute(message: Discord.Message, args: string[]) {
         assert(message.member);
         message.delete();
 

@@ -7,8 +7,8 @@ const config = require("../config.json");
 module.exports = {
     name: "secretsanta",
     description: "adds or removes sombody from secret santa",
-    // eslint-disable-next-line no-unused-vars
-    execute(message: Discord.Message, args: string[]) {
+    requireVoice: false,
+    async execute(message: Discord.Message, args: string[]) {
         const secret_santa_config = config.commands.secret_santa;
 
         if (!secret_santa_config.active) {

@@ -6,8 +6,8 @@ import assert from "assert";
 module.exports = {
     name: "stfu",
     description: "Lets a user know they really need to stfu",
-    // eslint-disable-next-line no-unused-vars
-    execute(message: Discord.Message, args: string[]) {
+    requireVoice: true,
+    async execute(message: Discord.Message, args: string[]) {
         // @ts-ignore
         const user_to_stfu = message.mentions.members.values().next().value;
 
@@ -53,7 +53,7 @@ module.exports = {
         member_to_stfu.voice.setChannel(eligible_channel);
 
         // join and play yt audio
-        eligible_channel.join().then((connection) => {
+        await eligible_channel.join().then((connection) => {
             const random_index = Math.floor(Math.random() * 3);
             const dispatcher = connection.play(
                 `./audio/stfu${random_index}.mp3`,

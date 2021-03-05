@@ -1,16 +1,18 @@
 require("dotenv").config();
 require("console-stamp")(console, { pattern: "dd/mm/yyyy HH:MM:ss.l" });
-import fs from "fs";
-import Discord from "discord.js";
-import config from "./config.json";
 import assert from "assert";
+import Discord from "discord.js";
+import fs from "fs";
+import config from "./config.json";
+import * as channels from "./utilities/channels";
 import * as colors from "./utilities/colors";
 import * as log from "./utilities/log";
 import * as sql from "./utilities/sql";
-import * as channels from "./utilities/channels";
 
 const bot = new Discord.Client();
 const bot_commands = new Discord.Collection<string, any>();
+
+let bot_voice_ready = true;
 
 // find all commands
 const commandFiles = fs
@@ -95,7 +97,18 @@ bot.on("message", async (message) => {
     );
 
     try {
-        bot_commands.get(command).execute(message, args);
+        const cmd = bot_commands.get(command);
+        if (cmd.requireVoice) {
+            if (!bot_voice_ready) {
+                message.reply("im currently busy. Try again in a few seconds.");
+                return;
+            }
+            bot_voice_ready = false;
+            await cmd.execute(message, args);
+            bot_voice_ready = true;
+        } else {
+            cmd.execute(message, args);
+        }
     } catch (error) {
         console.error(error);
         message.reply("there was an error trying to execute that command!");

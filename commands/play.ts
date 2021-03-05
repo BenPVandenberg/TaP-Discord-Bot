@@ -7,7 +7,8 @@ import * as sql from "../utilities/sql";
 module.exports = {
     name: "play",
     description: "plays a audio clip",
-    execute(message: Discord.Message, args: string[]) {
+    requireVoice: true,
+    async execute(message: Discord.Message, args: string[]) {
         const all_sounds = fs.readdirSync("./audio");
 
         // put arg to lowercase if it exists
@@ -25,13 +26,13 @@ module.exports = {
                 throw "not a valid sound";
             }
 
+            message.react("👍");
+
             // join and play yt audio
-            voiceChannel.join().then((connection) => {
+            await voiceChannel.join().then((connection) => {
                 const dispatcher = connection.play(`./audio/${args[0]}.mp3`);
                 dispatcher.on("finish", () => voiceChannel.leave());
             });
-
-            message.react("👍");
 
             // sound played successfully, therefore update database
             sql.dbMakeSoundLog(args[0], message.member);
