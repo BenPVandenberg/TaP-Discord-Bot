@@ -220,24 +220,29 @@ bot.on("presenceUpdate", function (oldMember, newMember) {
         (act) => act.type === "PLAYING",
     );
 
-    // ensure its a change in activities
-    if (new_activities.length === old_activities.length) return;
+    // TODO: Need a way to put identical games together in the db
 
-    const application = new_activities[0] || old_activities[0];
-
-    // TODO: Replace with dictionaries of equivalent game ID's
-    application.applicationID =
-        application.applicationID === "356869127241072640"
-            ? "401518684763586560"
-            : application.applicationID;
-
-    if (old_activities.length !== 0 && new_activities.length === 0) {
-        // leave event
-        sql.dbCloseGameLog(newMember.member, application);
-    } else if (old_activities.length === 0 && new_activities.length !== 0) {
-        // Join event
-        sql.dbMakeGameLog(newMember.member, application);
+    for (const game of new_activities) {
+        // look for app in old_activities
+        const search = old_activities.find((app) => app.name === game.name);
+        if (search === undefined) {
+            // no app in prev presense, therefore new log
+            sql.dbMakeGameLog(newMember.member, game);
+        }
     }
+
+    for (const game of old_activities) {
+        // look for app in new_activities
+        const search = new_activities.find((app) => app.name === game.name);
+        if (search === undefined) {
+            // no app in new presense, therefore close log
+            sql.dbCloseGameLog(newMember.member, game);
+        }
+    }
+});
+
+bot.on("messageReactionAdd", (reaction, user) => {
+    console.log(reaction.emoji);
 });
 
 bot.on("shardError", (error) => {
