@@ -108,7 +108,7 @@ bot.on("message", async (message) => {
 });
 
 // Create an event listener for new guild members
-bot.on("guildMemberAdd", (member) => {
+bot.on("guildMemberAdd", async (member) => {
     // Send the message to a designated channel on a server:
     const generalChannel = channels.toTextChannel(
         member.guild.channels.cache.find((ch) => ch.name === "general"),
@@ -134,7 +134,7 @@ bot.on("guildMemberAdd", (member) => {
 PARAMETER    TYPE             DESCRIPTION
 oldMember    GuildMember      The member before the voice state update
 newMember    GuildMember      The member after the voice state update    */
-bot.on("voiceStateUpdate", async function (oldMember, newMember) {
+bot.on("voiceStateUpdate", async (oldMember, newMember) => {
     const sessionID = newMember.sessionID || oldMember.sessionID;
 
     // Check if sessionID is valid
@@ -193,7 +193,7 @@ bot.on("voiceStateUpdate", async function (oldMember, newMember) {
 PARAMETER    TYPE               DESCRIPTION
 oldMember    GuildMember        The member before the presence update
 newMember    GuildMember        The member after the presence update    */
-bot.on("presenceUpdate", function (oldMember, newMember) {
+bot.on("presenceUpdate", async (oldMember, newMember) => {
     // Assert member is not null
     if (!newMember.member) {
         assert(newMember.guild);
