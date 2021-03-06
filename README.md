@@ -12,6 +12,12 @@
 
 ## How to run locally
 
-1. Create a .env file following the example (if gala)
-2. Run ```npm install``` in envy or gala
-3. Run ```npm start```
+### Envy
+
+1. Run ```npm install``` + ```npm start```
+
+### Gala
+
+1. Create a .env file following the example
+2. Crate an SSL certificate with ```openssl req -nodes -new -x509 -keyout server.key -out server.cert```
+3. Run ```npm install``` + ```npm start```
