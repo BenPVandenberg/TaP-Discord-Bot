@@ -227,10 +227,12 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 
     // remove any activities that aren't a game
     const new_activities = newMember.activities.filter(
-        (act) => act.type === "PLAYING",
+        (act) =>
+            act.type === "PLAYING" && act.name !== "Divinity: Original Sin 2",
     );
     const old_activities = oldMember.activities.filter(
-        (act) => act.type === "PLAYING",
+        (act) =>
+            act.type === "PLAYING" && act.name !== "Divinity: Original Sin 2",
     );
 
     // TODO: Need a way to put identical games together in the db
