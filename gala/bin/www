@@ -7,7 +7,9 @@
  */
 
 const debug = require("debug")("discord-bot-admin-backend:server");
-const http = require("http");
+const fs = require("fs");
+const path = require("path");
+const https = require("https");
 const app = require("../app");
 
 /**
@@ -18,10 +20,16 @@ const port = normalizePort(process.env.PORT || "5000");
 app.set("port", port);
 
 /**
- * Create HTTP server.
+ * Create HTTPS server.
  */
 
-const server = http.createServer(app);
+const server = https.createServer(
+    {
+        key: fs.readFileSync("server.key"),
+        cert: fs.readFileSync("server.cert"),
+    },
+    app,
+);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -53,7 +61,7 @@ function normalizePort(val) {
 }
 
 /**
- * Event listener for HTTP server "error" event.
+ * Event listener for HTTPS server "error" event.
  */
 
 function onError(error) {
@@ -77,7 +85,7 @@ function onError(error) {
 }
 
 /**
- * Event listener for HTTP server "listening" event.
+ * Event listener for HTTPS server "listening" event.
  */
 
 function onListening() {

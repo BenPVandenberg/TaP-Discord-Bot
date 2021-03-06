@@ -105,3 +105,7 @@ dist
 
 *.bak
 SQL/dumps
+
+# keys
+*.cert
+*.key

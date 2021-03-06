@@ -23,7 +23,7 @@ const uploadSound = async (sound: any) => {
     formData.append("file", sound);
 
     return await axios
-        .post("http://143.110.209.151:5000/sounds/upload", formData, {
+        .post("https://143.110.209.151:5000/sounds/upload", formData, {
             headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
