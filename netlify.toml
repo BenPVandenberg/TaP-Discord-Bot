@@ -16,7 +16,6 @@
     # Default build command.
     command = "npm run build"
 
-# A basic redirect rule
 [[redirects]]
     from = "/*"
     to = "/index.html"
