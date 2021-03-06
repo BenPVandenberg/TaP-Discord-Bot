@@ -1,6 +1,7 @@
 {
     "prefix": "/",
     "command_channels": ["522935673964199936", "740332251103101048"],
+    "ignore_games": ["Divinity: Original Sin 2"],
     "commands": {
         "rank": {
             "free_ranks": ["minecraft", "valorant", "valheim"]

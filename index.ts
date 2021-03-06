@@ -68,9 +68,9 @@ bot.on("message", async (message) => {
             message.content.startsWith("-") ||
             message.author.bot) &&
         !config.command_channels.includes(message.channel.id) &&
-        message.author.username !== "T&P Bot" &&
-        message.author.username !== "Valheim Server"
+        message.author.username !== "T&P Bot"
     ) {
+        message.reply("Bot commands are not allowed here.");
         message.delete();
     }
 
@@ -98,9 +98,12 @@ bot.on("message", async (message) => {
 
     try {
         const cmd = bot_commands.get(command);
+        // check if the bot is already talking
         if (cmd.requireVoice) {
             if (!bot_voice_ready) {
-                message.reply("im currently busy. Try again in a few seconds.");
+                message.reply(
+                    "I'm currently busy. Try again in a few seconds.",
+                );
                 return;
             }
             bot_voice_ready = false;
@@ -148,7 +151,7 @@ PARAMETER    TYPE             DESCRIPTION
 oldMember    GuildMember      The member before the voice state update
 newMember    GuildMember      The member after the voice state update    */
 bot.on("voiceStateUpdate", async (oldMember, newMember) => {
-    const sessionID = newMember.sessionID || oldMember.sessionID;
+    const sessionID = newMember.sessionID ?? oldMember.sessionID;
 
     // Check if sessionID is valid
     if (!sessionID) {
@@ -228,11 +231,11 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
     // remove any activities that aren't a game
     const new_activities = newMember.activities.filter(
         (act) =>
-            act.type === "PLAYING" && act.name !== "Divinity: Original Sin 2",
+            act.type === "PLAYING" && !config.ignore_games.includes(act.name),
     );
     const old_activities = oldMember.activities.filter(
         (act) =>
-            act.type === "PLAYING" && act.name !== "Divinity: Original Sin 2",
+            act.type === "PLAYING" && !config.ignore_games.includes(act.name),
     );
 
     // TODO: Need a way to put identical games together in the db
