@@ -1,6 +1,7 @@
 # T&P-Discord-Bot
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/6dc605e9-9e20-4ec9-bad2-f36ce8f1079b/deploy-status)](https://app.netlify.com/sites/tandp/deploys)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/570c26163c0c4e9ca72553d53eba29f1)](https://www.codacy.com/gh/BenPVandenberg/TaP-Discord-Bot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BenPVandenberg/TaP-Discord-Bot&amp;utm_campaign=Badge_Grade)
 
 ## Structure
 
