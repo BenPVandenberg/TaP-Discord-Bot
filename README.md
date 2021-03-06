@@ -1,5 +1,7 @@
 # T&P-Discord-Bot
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6dc605e9-9e20-4ec9-bad2-f36ce8f1079b/deploy-status)](https://app.netlify.com/sites/tandp/deploys)
+
 ## Structure
 
 | Codebase |     Description |

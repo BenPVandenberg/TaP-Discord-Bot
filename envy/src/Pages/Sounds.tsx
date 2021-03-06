@@ -29,7 +29,7 @@ export default function Sounds() {
 
         // get /play statistics
         await axios
-            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/play")
+            .get("http://143.110.209.151:5000/data/play")
             .then((res) => {
                 soundData = res.data;
             })
@@ -45,7 +45,7 @@ export default function Sounds() {
 
         // get all available sounds
         await axios
-            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/sounds")
+            .get("http://143.110.209.151:5000/sounds")
             .then((res) => {
                 sounds = res.data;
             })

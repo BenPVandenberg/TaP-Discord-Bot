@@ -1,8 +1,8 @@
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { FaHome, FaMusic } from "react-icons/fa";
 import { ImDatabase } from "react-icons/im";
 import { IoSend } from "react-icons/io5";
-import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => {
     return {

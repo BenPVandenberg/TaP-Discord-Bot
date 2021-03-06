@@ -1,15 +1,15 @@
 import {
+    createMuiTheme,
     makeStyles,
     ThemeProvider,
-    createMuiTheme,
 } from "@material-ui/core/styles";
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Data from "./components/Pages/Data";
-import Home from "./components/Pages/Home";
-import NavBar from "./components/NavBar/NavBar";
-import Sounds from "./components/Pages/Sounds";
-import Suggest from "./components/Pages/Suggest";
+import NavBar from "./Components/NavBar";
+import Data from "./Pages/Data";
+import Home from "./Pages/Home";
+import Sounds from "./Pages/Sounds";
+import Suggest from "./Pages/Suggest";
 
 // light theme, dark theme to come
 const lightTheme = createMuiTheme({

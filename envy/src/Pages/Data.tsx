@@ -1,8 +1,8 @@
 // plan on changing this file a lot
 // @ts-nocheck
+import Button from "@material-ui/core/Button";
 import axios from "axios";
 import React from "react";
-import Button from "@material-ui/core/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
@@ -52,7 +52,7 @@ export default class Data extends React.Component {
 
     pullAllData = async () => {
         await axios
-            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/game")
+            .get("http://143.110.209.151:5000/data/game")
             .then((res) => {
                 this.setState({ allGameData: res.data });
                 return true;
@@ -88,9 +88,8 @@ export default class Data extends React.Component {
 
         return (
             <div className="App">
-                <h1 className="page-header">
-                    <p>Data</p>
-                </h1>
+                <h1 className="page-header">Data</h1>
+                <h2>THIS PAGE IS BEING RE-DONE</h2>
 
                 {/* Get User ID to look for */}
                 <Form onSubmit={this.onSubmit}>
