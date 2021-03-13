@@ -30,14 +30,14 @@ export default function Sounds() {
 
     const updateSounds = async () => {
         const newAllSounds: Sound[] = [];
-        let sounds: any;
-        let soundData: any; // res responce
+        let soundsSQL: Sound[] = []; // res responce
+        let soundList: string[] = [];
 
         // get /play statistics
         await axios
             .get("https://api.tandp.me/data/play")
             .then((res) => {
-                soundData = res.data;
+                soundsSQL = res.data;
             })
             .catch((err) => {
                 Swal.fire({
@@ -53,7 +53,7 @@ export default function Sounds() {
         await axios
             .get("https://api.tandp.me/sounds")
             .then((res) => {
-                sounds = res.data;
+                soundList = res.data;
             })
             .catch((err) => {
                 Swal.fire({
@@ -66,16 +66,26 @@ export default function Sounds() {
             });
 
         // if we have data for a song then update allSounds
-        sounds.forEach((sound: string) => {
+        soundList.forEach((sound) => {
             sound = sound.slice(0, -4);
-            if (soundData[sound] === undefined) soundData[sound] = {};
 
-            newAllSounds.push({
-                name: sound,
-                occurrences: soundData[sound]["occurrences"] ?? 0,
-                ownerID: soundData[sound]["ownerID"] ?? null,
-                ownerName: soundData[sound]["ownerName"] ?? "",
-            });
+            const soundData = soundsSQL.find((el) => el.name === sound);
+
+            if (soundData === undefined) {
+                newAllSounds.push({
+                    name: sound,
+                    occurrences: 0,
+                    ownerID: null,
+                    ownerName: "",
+                });
+            } else {
+                newAllSounds.push({
+                    name: sound,
+                    occurrences: soundData.occurrences,
+                    ownerID: soundData.ownerID,
+                    ownerName: soundData.ownerName,
+                });
+            }
         });
 
         // sort by highest frequency
