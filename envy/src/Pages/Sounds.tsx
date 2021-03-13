@@ -29,7 +29,7 @@ export default function Sounds() {
 
         // get /play statistics
         await axios
-            .get("https://143.110.209.151:5000/data/play")
+            .get("https://api.tandp.me/data/play")
             .then((res) => {
                 soundData = res.data;
             })
@@ -45,7 +45,7 @@ export default function Sounds() {
 
         // get all available sounds
         await axios
-            .get("https://143.110.209.151:5000/sounds")
+            .get("https://api.tandp.me/sounds")
             .then((res) => {
                 sounds = res.data;
             })

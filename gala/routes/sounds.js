@@ -25,7 +25,7 @@ router.post("/upload", (req, res, next) => {
         });
     }
 
-    // check for spaces (it breaks the bot)
+    // check for spaces (it can't be played by the bot)
     if (myFile.name.indexOf(" ") !== -1) {
         return res
             .status(400)

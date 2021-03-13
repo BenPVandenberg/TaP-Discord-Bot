@@ -20,7 +20,8 @@ router.get("/:file", (req, res, next) => {
     switch (req.params.file) {
         case "play":
             con.query(
-                "SELECT SoundName, Count(*) AS Occurrences, UserID as OwnerID, Username as OwnerName FROM PlayLog natural join Sound left join User on Owner = UserID GROUP BY SoundName;",
+                "SELECT SoundName, Count(*) AS Occurrences, UserID as OwnerID, Username as OwnerName " +
+                    "FROM PlayLog natural join Sound left join User on Owner = UserID GROUP BY SoundName;",
                 (err, result) => {
                     if (err) {
                         res.status(400).send({ msg: err.message });
