@@ -13,7 +13,7 @@ import Home from "./Pages/Home";
 import Sounds from "./Pages/Sounds";
 import Suggest from "./Pages/Suggest";
 
-// light theme, dark theme to come
+// dark theme
 const darkTheme = responsiveFontSizes(
     createMuiTheme({
         palette: {
@@ -29,7 +29,7 @@ const darkTheme = responsiveFontSizes(
             },
         },
         typography: {
-            fontFamily: "fontsource-roboto",
+            fontFamily: "Roboto",
         },
     }),
 );
