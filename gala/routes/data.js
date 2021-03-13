@@ -15,7 +15,6 @@ const con = mysql.createPool({
 /* GET data listing. */
 router.get("/:file", (req, res, next) => {
     // send contents of data file
-    const rtnDataDict = {};
     const rtnDataArr = [];
     switch (req.params.file) {
         case "play":
@@ -33,14 +32,15 @@ router.get("/:file", (req, res, next) => {
                     }
 
                     result.forEach((element) => {
-                        rtnDataDict[element.SoundName] = {
+                        rtnDataArr.push({
+                            name: element.SoundName,
                             occurrences: element.Occurrences,
                             ownerID: element.OwnerID,
                             ownerName: element.OwnerName,
-                        };
+                        });
                     });
 
-                    res.status(200).send(rtnDataDict);
+                    res.status(200).send(rtnDataArr);
                 },
             );
             return;

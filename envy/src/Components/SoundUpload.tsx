@@ -5,10 +5,12 @@ import React from "react";
 import { MdCloudUpload } from "react-icons/md";
 import Swal from "sweetalert2";
 
-const useStyles = makeStyles({
-    input: {
-        display: "none",
-    },
+const useStyles = makeStyles((theme) => {
+    return {
+        input: {
+            display: "none",
+        },
+    };
 });
 
 const isCorrectSoundName = (name: string) => {

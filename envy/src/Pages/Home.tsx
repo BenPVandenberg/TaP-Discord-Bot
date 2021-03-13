@@ -3,14 +3,16 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 import { AiFillCheckCircle } from "react-icons/ai";
 
-const useStyles = makeStyles({
-    wrapper: {
-        // Following need to be specified to center correctly
-        textAlign: "center",
-        margin: "auto",
-        // end of required values
-        width: "75%",
-    },
+const useStyles = makeStyles((theme) => {
+    return {
+        wrapper: {
+            // Following need to be specified to center correctly
+            textAlign: "center",
+            margin: "auto",
+            // end of required values
+            width: "75%",
+        },
+    };
 });
 
 export default function Home() {

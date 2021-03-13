@@ -1,21 +1,25 @@
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
 import { SiGithub } from "react-icons/si";
 
-const useStyles = makeStyles({
-    wrapper: {},
-    githubButton: {
-        background: "black",
-        borderRadius: 3,
-        border: 0,
-        color: "white",
-        height: 48,
-        padding: "0 30px",
-        "&:hover": {
-            background: "#5c5c5c",
+const useStyles = makeStyles((theme) => {
+    return {
+        wrapper: {
+            textAlign: "center",
+            margin: "auto",
         },
-    },
+        githubButton: {
+            background: "black",
+            borderRadius: 3,
+            border: 0,
+            color: "white",
+            height: 48,
+            padding: "0 30px",
+            "&:hover": {
+                background: "#5c5c5c",
+            },
+        },
+    };
 });
 
 export default function Suggest() {
