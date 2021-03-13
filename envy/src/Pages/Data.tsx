@@ -45,16 +45,10 @@ export default function Data() {
         if (!userId) return;
 
         const userIdNum: number = Number(userId);
-        console.log({ userIdNum });
 
-        // verify the input is a number
-        if (isNaN(userIdNum)) {
-            Swal.fire({
-                title: "UserID isn't a number",
-                icon: "error",
-            });
-            return;
-        }
+        let inputType: "userID" | "username" = isNaN(userIdNum)
+            ? "username"
+            : "userID";
 
         // show loading
         Swal.fire({
@@ -80,8 +74,15 @@ export default function Data() {
 
         // filter the data
         downloadedData = downloadedData.filter(
-            (data) => data.userID === userIdNum,
+            (data) => data.userID === userIdNum || data.username === userId,
         );
+
+        if (!downloadedData.length) {
+            await Swal.fire({
+                title: `No results for this ${inputType}`,
+                icon: "error",
+            });
+        }
 
         setGameLogs(downloadedData);
 
@@ -95,7 +96,7 @@ export default function Data() {
             <h1 className={classes.title}>Data Lookup</h1>
             <TextField
                 className={classes.textInput}
-                label="User ID"
+                label="User ID or Username"
                 fullWidth
                 variant="outlined"
                 value={userId}

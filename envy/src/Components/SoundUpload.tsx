@@ -18,7 +18,6 @@ const isCorrectSoundName = (name: string) => {
     return name.indexOf(" ") === -1;
 };
 
-// eslint-disable-next-line no-unused-vars
 const uploadSound = async (sound: any) => {
     console.log({ sound });
     const formData = new FormData();
