@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Swal from "sweetalert2";
 import axios from "axios";
+import DataTable from "../Components/DataTable";
 
 const useStyles = makeStyles((theme) => {
     return {
-        wrapper: {},
-        title: {
+        wrapper: {
             textAlign: "center",
             margin: "auto",
         },
+        title: {},
     };
 });
 
@@ -24,9 +25,10 @@ interface GameLog {
 
 export default function Suggest() {
     const [userId, setUserId] = useState<string>("");
+    const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
 
     // this function will update the data on the visible table
-    const updateTable = async () => {
+    const fetchGameLogs = async () => {
         // verify we have a string
         if (!userId) return;
 
@@ -58,7 +60,12 @@ export default function Suggest() {
                 });
             });
 
-        console.log({ downloadedData });
+        // filter the data
+        downloadedData = downloadedData.filter(
+            (data) => data.userID === userIdNum,
+        );
+
+        setGameLogs(downloadedData);
     };
 
     const classes = useStyles();
@@ -72,9 +79,12 @@ export default function Suggest() {
                 value={userId}
                 onChange={(event) => setUserId(event.target.value)}
                 onKeyPress={(event) => {
-                    if (event.key === "Enter") updateTable();
+                    if (event.key === "Enter") fetchGameLogs();
                 }}
             />
+            {gameLogs.length ? (
+                <DataTable gameLogs={gameLogs}></DataTable>
+            ) : null}
         </div>
     );
 }

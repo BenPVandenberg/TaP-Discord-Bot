@@ -8,19 +8,21 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import React from "react";
 
+const useStyles = makeStyles((theme) => {
+    return {
+        table: {
+            minWidth: "310px",
+            maxWidth: "340px",
+        },
+    };
+});
+
 type Sound = {
     name: string;
     occurrences: number;
     ownerID: number | null;
     ownerName: string;
 };
-
-const useStyles = makeStyles({
-    table: {
-        minWidth: "310px",
-        maxWidth: "340px",
-    },
-});
 
 // TODO With Auth, be able to determine if the user is the owner of a song
 const isOwner = (song: string) => {
