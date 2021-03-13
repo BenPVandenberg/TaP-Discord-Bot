@@ -1,7 +1,7 @@
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import SoundTable from "../Components/SoundTable";
 import SoundUpload from "../Components/SoundUpload";
@@ -13,10 +13,16 @@ type Sound = {
     ownerName: string;
 };
 
-const useStyles = makeStyles({
-    pageHeader: {
-        paddingBottom: "10px",
-    },
+const useStyles = makeStyles((theme) => {
+    return {
+        wrapper: {
+            textAlign: "center",
+            margin: "auto",
+        },
+        pageHeader: {
+            paddingBottom: "10px",
+        },
+    };
 });
 
 export default function Sounds() {
@@ -66,9 +72,9 @@ export default function Sounds() {
 
             newAllSounds.push({
                 name: sound,
-                occurrences: soundData[sound]["occurrences"] || 0,
-                ownerID: soundData[sound]["ownerID"] || null,
-                ownerName: soundData[sound]["ownerName"] || "",
+                occurrences: soundData[sound]["occurrences"] ?? 0,
+                ownerID: soundData[sound]["ownerID"] ?? null,
+                ownerName: soundData[sound]["ownerName"] ?? "",
             });
         });
 
@@ -81,13 +87,12 @@ export default function Sounds() {
     // run on mount
     useEffect(() => {
         updateSounds();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // * This empty array makes useEffect act like componentDidMount
 
     const classes = useStyles();
 
     return (
-        <div>
+        <div className={classes.wrapper}>
             <h1 className={classes.pageHeader}>Sounds</h1>
             <Grid container direction="row" justify="center" spacing={5}>
                 <Grid item>

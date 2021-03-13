@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
     },
     contentWrapper: {
-        textAlign: "center",
-        margin: "auto",
+        // textAlign: "center",
+        // margin: "auto",
         paddingLeft: "5%",
         paddingRight: "5%",
         paddingTop: "2%",
