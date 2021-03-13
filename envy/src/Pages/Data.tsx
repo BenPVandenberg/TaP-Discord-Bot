@@ -11,7 +11,19 @@ const useStyles = makeStyles((theme) => {
             textAlign: "center",
             margin: "auto",
         },
-        title: {},
+        title: {
+            marginBottom: "20px",
+        },
+        textInput: {
+            marginBottom: "20px",
+            width: "50%",
+            minWidth: "165px",
+        },
+        dataTable: {
+            margin: "auto",
+            minWidth: "430px",
+            maxWidth: "975px",
+        },
     };
 });
 
@@ -23,7 +35,7 @@ interface GameLog {
     end: Date | null;
 }
 
-export default function Suggest() {
+export default function Data() {
     const [userId, setUserId] = useState<string>("");
     const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
 
@@ -43,6 +55,12 @@ export default function Suggest() {
             });
             return;
         }
+
+        // show loading
+        Swal.fire({
+            title: "Loading logs from server",
+        });
+        Swal.showLoading();
 
         let downloadedData: GameLog[] = [];
         await axios
@@ -66,6 +84,9 @@ export default function Suggest() {
         );
 
         setGameLogs(downloadedData);
+
+        // stop loading
+        Swal.close();
     };
 
     const classes = useStyles();
@@ -73,6 +94,7 @@ export default function Suggest() {
         <div className={classes.wrapper}>
             <h1 className={classes.title}>Data Lookup</h1>
             <TextField
+                className={classes.textInput}
                 label="User ID"
                 fullWidth
                 variant="outlined"
@@ -83,7 +105,10 @@ export default function Suggest() {
                 }}
             />
             {gameLogs.length ? (
-                <DataTable gameLogs={gameLogs}></DataTable>
+                <DataTable
+                    gameLogs={gameLogs}
+                    className={classes.dataTable}
+                ></DataTable>
             ) : null}
         </div>
     );

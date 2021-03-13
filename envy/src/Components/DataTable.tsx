@@ -1,12 +1,10 @@
 import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import React from "react";
 
 interface GameLog {
     userID: number;
@@ -16,21 +14,12 @@ interface GameLog {
     end: Date | null;
 }
 
-const useStyles = makeStyles((theme) => {
-    return {
-        table: {
-            width: "75%",
-            minWidth: "430px",
-            maxWidth: "975px",
-        },
-    };
-});
-
-export default function SoundTable(props: { gameLogs: GameLog[] }) {
-    const classes = useStyles();
-
+export default function DataTable(props: {
+    gameLogs: GameLog[];
+    className: string;
+}) {
     return (
-        <TableContainer className={classes.table} component={Paper}>
+        <TableContainer className={props.className} component={Paper}>
             <Table size="small">
                 <colgroup>
                     <col style={{ width: "20%" }} />
