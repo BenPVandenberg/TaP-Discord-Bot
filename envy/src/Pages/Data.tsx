@@ -1,5 +1,5 @@
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import axios from "axios";
@@ -79,17 +79,17 @@ const voiceLogCols = [
     },
     {
         title: "Channel",
-        width: "15%",
-        value: "game",
+        width: "20%",
+        value: "channel",
     },
     {
         title: "Start",
-        width: "32.5%",
+        width: "30%",
         value: "start",
     },
     {
         title: "End",
-        width: "32.5%",
+        width: "30%",
         value: "end",
     },
 ];
@@ -101,7 +101,7 @@ export default function Data() {
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
 
     // this function will update the data on the visible table
-    const fetchGameLogs = async () => {
+    const fetchLogs = async () => {
         // verify we have a string
         if (!userId) return;
 
@@ -120,11 +120,11 @@ export default function Data() {
         });
         Swal.showLoading();
 
-        let downloadedData: GameLog[] = [];
+        let gameDownloaded: GameLog[] = [];
         await axios
             .get("https://api.tandp.me/data/game")
             .then((res) => {
-                downloadedData = res.data;
+                gameDownloaded = res.data;
             })
             .catch((err) => {
                 Swal.fire({
@@ -136,21 +136,45 @@ export default function Data() {
                 });
             });
 
+        let voiceDownloaded: VoiceLog[] = [];
+        await axios
+            .get("https://localhost:5000/data/voice")
+            .then((res) => {
+                voiceDownloaded = res.data;
+            })
+            .catch((err) => {
+                Swal.close();
+                Swal.fire({
+                    title: "Error with the server: GET /data/voice",
+                    text:
+                        err.response.data.msg ||
+                        `HTTP Code ${err.response.status}`,
+                    icon: "error",
+                });
+            });
+
         // filter the data
-        downloadedData = downloadedData.filter(
+        gameDownloaded = gameDownloaded.filter(
             (data) =>
                 data.userID === userIdNum ||
                 data.username.toLowerCase() === userId.toLowerCase(),
         );
 
-        if (!downloadedData.length) {
+        voiceDownloaded = voiceDownloaded.filter(
+            (data) =>
+                data.userID === userIdNum ||
+                data.username.toLowerCase() === userId.toLowerCase(),
+        );
+
+        if (!gameDownloaded.length && !voiceDownloaded.length) {
             await Swal.fire({
                 title: `No results for this ${inputType}`,
                 icon: "error",
             });
         }
 
-        setGameLogs(downloadedData);
+        setGameLogs(gameDownloaded);
+        setVoiceLogs(voiceDownloaded);
 
         // stop loading
         Swal.close();
@@ -160,6 +184,7 @@ export default function Data() {
     return (
         <div className={classes.wrapper}>
             <h1 className={classes.title}>Data Lookup</h1>
+            <div>
                 <TextField
                     className={classes.textInput}
                     label="User ID or Username"
@@ -168,14 +193,41 @@ export default function Data() {
                     value={userId}
                     onChange={(event) => setUserId(event.target.value)}
                     onKeyPress={(event) => {
-                        if (event.key === "Enter") fetchGameLogs();
+                        if (event.key === "Enter") fetchLogs();
                     }}
                 />
-            {gameLogs.length ? (
+            </div>
+            <div>
+                <ToggleButtonGroup
+                    value={tableView}
+                    className={classes.buttonGroup}
+                    color="primary"
+                    exclusive
+                    onChange={(_event, newTableView) => {
+                        setTableView(newTableView);
+                    }}
+                >
+                    <ToggleButton value="game">Game</ToggleButton>
+                    <ToggleButton value="voice">Voice</ToggleButton>
+                </ToggleButtonGroup>
+            </div>
+            {gameLogs.length && tableView === "game" ? (
+                <div>
                     <DataTable
-                    gameLogs={gameLogs}
-                    className={classes.dataTable}
+                        table={{ className: classes.dataTable }}
+                        columns={gameLogCols}
+                        rows={gameLogs}
                     ></DataTable>
+                </div>
+            ) : null}
+            {voiceLogs.length && tableView === "voice" ? (
+                <div>
+                    <DataTable
+                        table={{ className: classes.dataTable }}
+                        columns={voiceLogCols}
+                        rows={voiceLogs}
+                    ></DataTable>
+                </div>
             ) : null}
         </div>
     );

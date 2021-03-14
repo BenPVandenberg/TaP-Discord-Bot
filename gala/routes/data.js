@@ -47,7 +47,7 @@ router.get("/:file", (req, res, next) => {
 
         case "game":
             con.query(
-                "SELECT UserID, Username, Game, Start, End FROM User natural join GameLog ORDER BY Start DESC;",
+                "SELECT UserID, Username, Game, Start, End FROM GameLogsView;",
                 (err, result) => {
                     if (err) res.status(400).send({ msg: err.message });
 
@@ -56,6 +56,29 @@ router.get("/:file", (req, res, next) => {
                             userID: element.UserID,
                             username: element.Username,
                             game: element.Game,
+                            start: element.Start.toLocaleString(),
+                            end: element.End
+                                ? element.End.toLocaleString()
+                                : element.End,
+                        });
+                    });
+
+                    res.status(200).send(rtnDataArr);
+                },
+            );
+            return;
+
+        case "voice":
+            con.query(
+                "SELECT UserID, Username, Channel, Start, End FROM VoiceLogsView;",
+                (err, result) => {
+                    if (err) res.status(400).send({ msg: err.message });
+
+                    result.forEach((element) => {
+                        rtnDataArr.push({
+                            userID: element.UserID,
+                            username: element.Username,
+                            channel: element.Channel,
                             start: element.Start.toLocaleString(),
                             end: element.End
                                 ? element.End.toLocaleString()
