@@ -3,15 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import SoundTable from "../Components/SoundTable";
+import DataTable from "../Components/DataTable";
 import SoundUpload from "../Components/SoundUpload";
-
-type Sound = {
-    name: string;
-    occurrences: number;
-    ownerID: number | null;
-    ownerName: string;
-};
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -22,8 +15,37 @@ const useStyles = makeStyles((theme) => {
         pageHeader: {
             paddingBottom: "10px",
         },
+        dataTable: {
+            minWidth: "310px",
+            maxWidth: "340px",
+        },
     };
 });
+
+type Sound = {
+    name: string;
+    occurrences: number;
+    ownerID: number | null;
+    ownerName: string;
+};
+
+const soundCols = [
+    {
+        title: "Sound Name",
+        width: "50%",
+        value: "name",
+    },
+    {
+        title: "# of plays",
+        width: "15%",
+        value: "occurrences",
+    },
+    {
+        title: "Owner",
+        width: "20%",
+        value: "ownerName",
+    },
+];
 
 export default function Sounds() {
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
@@ -106,7 +128,11 @@ export default function Sounds() {
             <h1 className={classes.pageHeader}>Sounds</h1>
             <Grid container direction="row" justify="center" spacing={5}>
                 <Grid item>
-                    <SoundTable sounds={allSounds} />
+                    <DataTable
+                        table={{ className: classes.dataTable }}
+                        columns={soundCols}
+                        rows={allSounds}
+                    />
                 </Grid>
                 <Grid item>
                     <SoundUpload />

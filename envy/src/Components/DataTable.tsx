@@ -6,42 +6,44 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-interface GameLog {
-    userID: number;
-    username: string;
-    game: string;
-    start: Date;
-    end: Date | null;
+interface TableProps {
+    className: string;
 }
 
-export default function DataTable(props: {
-    gameLogs: GameLog[];
-    className: string;
+interface Column {
+    title: string;
+    width: string;
+    value: string;
+}
+
+export default function GameLogTable(props: {
+    table: TableProps;
+    columns: Column[];
+    rows: any[];
 }) {
     return (
-        <TableContainer className={props.className} component={Paper}>
+        <TableContainer className={props.table.className} component={Paper}>
             <Table size="small">
                 <colgroup>
-                    <col style={{ width: "20%" }} />
-                    <col style={{ width: "40%" }} />
-                    <col style={{ width: "20%" }} />
-                    <col style={{ width: "20%" }} />
+                    {props.columns.map((col, index) => (
+                        <col key={index} style={{ width: col.width }} />
+                    ))}
                 </colgroup>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Username</TableCell>
-                        <TableCell>Game</TableCell>
-                        <TableCell>Start</TableCell>
-                        <TableCell>End</TableCell>
+                        {props.columns.map((col, index) => (
+                            <TableCell key={index}>{col.title}</TableCell>
+                        ))}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.gameLogs.slice(0, 50).map((row, index) => (
+                    {props.rows.map((row, index) => (
                         <TableRow key={index}>
-                            <TableCell scope="row">{row.username}</TableCell>
-                            <TableCell>{row.game}</TableCell>
-                            <TableCell>{row.start}</TableCell>
-                            <TableCell>{row.end}</TableCell>
+                            {props.columns.map((col, index2) => (
+                                <TableCell key={index2}>
+                                    {row[col.value]}
+                                </TableCell>
+                            ))}
                         </TableRow>
                     ))}
                 </TableBody>

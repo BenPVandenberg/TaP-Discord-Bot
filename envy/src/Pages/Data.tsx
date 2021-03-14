@@ -1,8 +1,10 @@
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
-import Swal from "sweetalert2";
 import axios from "axios";
+import React, { useState } from "react";
+import Swal from "sweetalert2";
 import DataTable from "../Components/DataTable";
 
 const useStyles = makeStyles((theme) => {
@@ -19,10 +21,13 @@ const useStyles = makeStyles((theme) => {
             width: "50%",
             minWidth: "165px",
         },
+        buttonGroup: {
+            marginBottom: "20px",
+        },
         dataTable: {
             margin: "auto",
             minWidth: "430px",
-            maxWidth: "975px",
+            maxWidth: "1000px",
         },
     };
 });
@@ -35,9 +40,65 @@ interface GameLog {
     end: Date | null;
 }
 
+interface VoiceLog {
+    userID: number;
+    username: string;
+    channel: string;
+    start: Date;
+    end: Date | null;
+}
+
+const gameLogCols = [
+    {
+        title: "Username",
+        width: "20%",
+        value: "username",
+    },
+    {
+        title: "Game",
+        width: "40%",
+        value: "game",
+    },
+    {
+        title: "Start",
+        width: "20%",
+        value: "start",
+    },
+    {
+        title: "End",
+        width: "20%",
+        value: "end",
+    },
+];
+
+const voiceLogCols = [
+    {
+        title: "Username",
+        width: "20%",
+        value: "username",
+    },
+    {
+        title: "Channel",
+        width: "15%",
+        value: "game",
+    },
+    {
+        title: "Start",
+        width: "32.5%",
+        value: "start",
+    },
+    {
+        title: "End",
+        width: "32.5%",
+        value: "end",
+    },
+];
+
 export default function Data() {
+    const [tableView, setTableView] = useState<"game" | "voice">("game");
     const [userId, setUserId] = useState<string>("");
     const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
+    const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
 
     // this function will update the data on the visible table
     const fetchGameLogs = async () => {
@@ -53,6 +114,9 @@ export default function Data() {
         // show loading
         Swal.fire({
             title: "Loading logs from server",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
         });
         Swal.showLoading();
 
@@ -74,7 +138,9 @@ export default function Data() {
 
         // filter the data
         downloadedData = downloadedData.filter(
-            (data) => data.userID === userIdNum || data.username === userId,
+            (data) =>
+                data.userID === userIdNum ||
+                data.username.toLowerCase() === userId.toLowerCase(),
         );
 
         if (!downloadedData.length) {
@@ -94,22 +160,22 @@ export default function Data() {
     return (
         <div className={classes.wrapper}>
             <h1 className={classes.title}>Data Lookup</h1>
-            <TextField
-                className={classes.textInput}
-                label="User ID or Username"
-                fullWidth
-                variant="outlined"
-                value={userId}
-                onChange={(event) => setUserId(event.target.value)}
-                onKeyPress={(event) => {
-                    if (event.key === "Enter") fetchGameLogs();
-                }}
-            />
+                <TextField
+                    className={classes.textInput}
+                    label="User ID or Username"
+                    fullWidth
+                    variant="outlined"
+                    value={userId}
+                    onChange={(event) => setUserId(event.target.value)}
+                    onKeyPress={(event) => {
+                        if (event.key === "Enter") fetchGameLogs();
+                    }}
+                />
             {gameLogs.length ? (
-                <DataTable
+                    <DataTable
                     gameLogs={gameLogs}
                     className={classes.dataTable}
-                ></DataTable>
+                    ></DataTable>
             ) : null}
         </div>
     );

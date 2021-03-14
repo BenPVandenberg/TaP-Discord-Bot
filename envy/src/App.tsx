@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         fontSize: "18px",
         marginLeft: "132.48px" /* SAME AS .navWrapper width */,
-        paddingTop: "20px",
     },
     navWrapper: {
         background: "#1b1e21",
@@ -61,6 +60,8 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: "5%",
         paddingTop: "2%",
         paddingBottom: "25px",
+        marginTop: "20px",
+        marginBottom: "20px",
         width: "95%",
         borderRadius: "0.75rem 0.75rem 0.75rem 0.75rem",
         background: "rgba(0, 0, 0, 0.54)",

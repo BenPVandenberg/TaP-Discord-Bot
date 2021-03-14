@@ -27,7 +27,7 @@ export default function Home() {
             </p>
             <p>
                 This project is a WIP so expect it to change frequently. Please
-                report bugs to Rollin on discord.
+                report bugs on the project's <a href="/suggest">Github</a>.
             </p>
             <Table
                 className="text-white w-50"
