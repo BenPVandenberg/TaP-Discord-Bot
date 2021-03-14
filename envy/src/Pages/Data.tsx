@@ -138,7 +138,7 @@ export default function Data() {
 
         let voiceDownloaded: VoiceLog[] = [];
         await axios
-            .get("https://localhost:5000/data/voice")
+            .get("https://api.tandp.me/data/voice")
             .then((res) => {
                 voiceDownloaded = res.data;
             })
