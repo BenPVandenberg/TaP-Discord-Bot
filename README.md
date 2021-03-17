@@ -7,7 +7,7 @@
 
 | Codebase |     Description |
 | :------- | --------------: |
-| Envy     |  React frontend |
+| envy     |  React frontend |
 | gala     | express backend |
 | opal     |           mySQL |
 
