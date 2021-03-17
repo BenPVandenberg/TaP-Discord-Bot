@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { FaHome, FaMusic } from "react-icons/fa";
 import { ImDatabase } from "react-icons/im";
-import { IoSend } from "react-icons/io5";
+import { IoSend, IoPerson } from "react-icons/io5";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -29,12 +29,12 @@ const useStyles = makeStyles((theme) => {
     };
 });
 
-function NavBar() {
+export default function NavBar() {
     const classes = useStyles();
     return (
         <div>
             <img
-                src="https://media.discordapp.net/attachments/428568679433633792/800890636919373854/server_logo_tp.png"
+                src="https://media.discordapp.net/attachments/428568679433633792/821879003132461076/server_logo_tp_1.png"
                 className={classes.appLogo}
                 alt="logo"
             />
@@ -63,8 +63,10 @@ function NavBar() {
                     <p>Suggest</p>
                 </div>
             </a>
+            <div className={classes.navEntry}>
+                <IoPerson size={35} />
+                <p>Profile</p>
+            </div>
         </div>
     );
 }
-
-export default NavBar;
