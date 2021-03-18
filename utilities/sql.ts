@@ -11,169 +11,139 @@ abstract class PoolClass {
     });
 }
 
-export function makeSQLQuery(query: string, callback: () => any) {
-    PoolClass.connectionPool.query('SET time_zone = "EST";', function (err) {
-        if (err) throw err;
-
-        PoolClass.connectionPool.query(query, function (err) {
-            if (err) throw err;
-            return callback();
-        });
-    });
+export async function makeSQLQuery(query: string) {
+    PoolClass.connectionPool.query('SET time_zone = "EST";');
+    PoolClass.connectionPool.query(query);
 }
 
-export function verifyUser(user: Discord.GuildMember, callback: () => void) {
+export async function verifyUser(user: Discord.GuildMember) {
     try {
-        makeSQLQuery(
-            `INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) VALUES (${user.id}, "${user.displayName}", "${user.user.username}", ${user.user.discriminator});`,
-            () => {
-                makeSQLQuery(
-                    `UPDATE User SET DisplayName = "${user.displayName}", UserName = "${user.user.username}", Discriminator = ${user.user.discriminator} WHERE UserID = ${user.id}`,
-                    () => {
-                        callback();
-                    },
-                );
-            },
+        await makeSQLQuery(
+            "INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) " +
+                `VALUES (${user.id}, "${user.displayName}", "${user.user.username}", ${user.user.discriminator});`,
+        );
+        await makeSQLQuery(
+            "UPDATE User SET " +
+                `DisplayName = "${user.displayName}", ` +
+                `UserName = "${user.user.username}", ` +
+                `Discriminator = ${user.user.discriminator} ` +
+                `WHERE UserID = ${user.id}`,
         );
     } catch (e) {
         console.error(e);
     }
 }
 
-export function dbMakeSoundLog(
+export async function dbMakeSoundLog(
     soundName: string,
     requestor: Discord.GuildMember,
 ) {
     try {
-        verifyUser(requestor, () => {
-            makeSQLQuery(
-                `INSERT IGNORE INTO Sound (SoundName) VALUES ('${soundName}');`,
-                () => {
-                    makeSQLQuery(
-                        `INSERT IGNORE INTO PlayLog (Requestor, SoundName) VALUES (${requestor.id}, '${soundName}');`,
-                        () => {
-                            return;
-                        },
-                    );
-                },
-            );
-        });
+        await verifyUser(requestor);
+        await makeSQLQuery(
+            `INSERT IGNORE INTO Sound (SoundName) ` +
+                `VALUES ('${soundName}');`,
+        );
+        await makeSQLQuery(
+            `INSERT IGNORE INTO PlayLog (Requestor, SoundName) ` +
+                `VALUES (${requestor.id}, '${soundName}');`,
+        );
     } catch (e) {
         console.error(e);
     }
 }
 
-export function dbMakeGameLog(
+export async function dbMakeGameLog(
     user: Discord.GuildMember,
     game: Discord.Activity,
 ) {
     try {
-        verifyUser(user, () => {
-            makeSQLQuery(
-                `INSERT IGNORE INTO Game (Title, GameID) VALUES ("${game.name}", ${game.applicationID});`,
-                () => {
-                    makeSQLQuery(
-                        `UPDATE Game SET GameID = ${game.applicationID} WHERE Title = "${game.name}";`,
-                        () => {
-                            makeSQLQuery(
-                                `INSERT IGNORE INTO GameLog (UserID, Game) VALUES (${user.id}, "${game.name}");`,
-                                () => {
-                                    return;
-                                },
-                            );
-                        },
-                    );
-                },
-            );
-        });
+        await verifyUser(user);
+        await makeSQLQuery(
+            `INSERT IGNORE INTO Game (Title, GameID) ` +
+                `VALUES ("${game.name}", ${game.applicationID});`,
+        );
+        await makeSQLQuery(
+            `UPDATE Game SET GameID = ${game.applicationID} ` +
+                `WHERE Title = "${game.name}";`,
+        );
+        await makeSQLQuery(
+            `INSERT IGNORE INTO GameLog (UserID, Game) ` +
+                `VALUES (${user.id}, "${game.name}");`,
+        );
     } catch (e) {
         console.error(e);
     }
 }
 
-export function dbCloseGameLog(
+export async function dbCloseGameLog(
     user: Discord.GuildMember,
     game: Discord.Activity,
 ) {
     try {
-        verifyUser(user, () => {
-            makeSQLQuery(
-                "UPDATE GameLog " +
-                    "SET End = NOW() " +
-                    "WHERE ID = " +
-                    "(" +
-                    "SELECT ID FROM " +
-                    "(SELECT * FROM GameLog " +
-                    `WHERE (UserID = ${user.id}) AND ` +
-                    `(Game = "${game.name}") ` +
-                    "ORDER BY Start DESC LIMIT 1) AS Sub " +
-                    "WHERE (End IS NULL)" +
-                    ");",
-                () => {
-                    return;
-                },
-            );
-        });
+        await verifyUser(user);
+        await makeSQLQuery(
+            "UPDATE GameLog " +
+                "SET End = NOW() " +
+                "WHERE ID = " +
+                "(SELECT ID FROM " +
+                "(SELECT * FROM GameLog " +
+                `WHERE (UserID = ${user.id}) AND ` +
+                `(Game = "${game.name}") ` +
+                "ORDER BY Start DESC LIMIT 1) AS Sub " +
+                "WHERE (End IS NULL)" +
+                ");",
+        );
     } catch (e) {
         console.error(e);
     }
 }
 
-export function dbMakeVoiceLog(
+export async function dbMakeVoiceLog(
     user: Discord.GuildMember,
     channelID: string,
     channelName: string,
     sessionID: string,
 ) {
     try {
-        verifyUser(user, () => {
-            makeSQLQuery(
-                `INSERT IGNORE INTO VoiceSession (SessionID, UserID) VALUES ('${sessionID}', ${user.id});`,
-                () => {
-                    makeSQLQuery(
-                        `INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) VALUES (${channelID}, '${channelName}');`,
-                        () => {
-                            makeSQLQuery(
-                                `INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) VALUES ('${sessionID}', ${channelID});`,
-                                () => {
-                                    return;
-                                },
-                            );
-                        },
-                    );
-                },
-            );
-        });
+        await verifyUser(user);
+
+        await makeSQLQuery(
+            `INSERT IGNORE INTO VoiceSession (SessionID, UserID) ` +
+                `VALUES ('${sessionID}', ${user.id});`,
+        );
+        await makeSQLQuery(
+            `INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) ` +
+                `VALUES (${channelID}, '${channelName}');`,
+        );
+        await makeSQLQuery(
+            `INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) VALUES ` +
+                `('${sessionID}', ${channelID});`,
+        );
     } catch (e) {
         console.error(e);
     }
 }
 
-export function dbCloseVoiceLog(
+export async function dbCloseVoiceLog(
     user: Discord.GuildMember,
     channelID: string,
     sessionID: string,
 ) {
     try {
-        verifyUser(user, () => {
-            makeSQLQuery(
-                `
-        UPDATE VoiceLog
-        SET End = NOW()
-        WHERE ID =
-        (
-        SELECT ID FROM
-          (SELECT * FROM VoiceLog
-          WHERE (SessionID = '${sessionID}') AND
-          (ChannelID = ${channelID})
-          ORDER BY Start DESC LIMIT 1) AS Sub
-        WHERE (End IS NULL)
-        )`,
-                () => {
-                    return;
-                },
-            );
-        });
+        await verifyUser(user);
+
+        await makeSQLQuery(
+            "UPDATE VoiceLog " +
+                "SET End = NOW() " +
+                "WHERE ID = " +
+                "(SELECT ID FROM " +
+                "(SELECT * FROM VoiceLog " +
+                `WHERE (SessionID = '${sessionID}') AND ` +
+                `(ChannelID = ${channelID}) ` +
+                "ORDER BY Start DESC LIMIT 1) AS Sub " +
+                "WHERE (End IS NULL));",
+        );
     } catch (e) {
         console.error(e);
     }

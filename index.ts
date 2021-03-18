@@ -68,9 +68,11 @@ bot.on("message", async (message) => {
             message.content.startsWith("-") ||
             message.author.bot) &&
         !config.command_channels.includes(message.channel.id) &&
-        message.author.username !== "T&P Bot"
+        !["T&P Bot", "VALORANT #announcements"].includes(
+            message.author.username,
+        )
     ) {
-        message.reply("Bot commands are not allowed here.");
+        message.reply("bot commands are not allowed here.");
         message.delete();
     }
 
@@ -142,7 +144,7 @@ bot.on("guildMemberAdd", async (member) => {
         `Welcome to the server, ${member.toString()}.\n` + rules_string,
     );
 
-    sql.verifyUser(member, () => {});
+    sql.verifyUser(member);
 });
 
 // voiceStateUpdate
