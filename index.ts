@@ -68,9 +68,7 @@ bot.on("message", async (message) => {
             message.content.startsWith("-") ||
             message.author.bot) &&
         !config.command_channels.includes(message.channel.id) &&
-        !["T&P Bot", "VALORANT #announcements"].includes(
-            message.author.username,
-        )
+        !config.bot_overrides.includes(message.author.username)
     ) {
         message.reply("bot commands are not allowed here.");
         message.delete();

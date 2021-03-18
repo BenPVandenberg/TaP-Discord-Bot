@@ -1,6 +1,7 @@
 {
     "prefix": "/",
     "command_channels": ["522935673964199936", "740332251103101048"],
+    "bot_overrides": ["T&P Bot", "VALORANT #announcements"],
     "ignore_games": [
         "Divinity: Original Sin 2",
         "Call of Duty®: Black Ops Cold War"
