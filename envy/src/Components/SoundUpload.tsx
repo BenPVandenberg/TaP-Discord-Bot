@@ -72,7 +72,6 @@ export default function SoundUpload() {
 
                 // upload sound
                 uploadSound(file).then((res) => {
-                    console.log({ res });
                     // close the loading screen
                     Swal.close();
                     // successful upload
