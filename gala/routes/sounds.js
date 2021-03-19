@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const path = require("path");
 
 const router = express.Router();
 
@@ -32,9 +33,10 @@ router.post("/upload", (req, res, next) => {
             .send({ msg: "Spaces aren't permitted in the filename" });
     }
 
-    const fullFilePath = `${
-        process.env.SOUNDS_DIR
-    }${myFile.name.toLowerCase()}`;
+    const fullFilePath = path.join(
+        process.env.SOUNDS_DIR,
+        myFile.name.toLowerCase(),
+    );
 
     // check if file already exists
     if (fs.existsSync(fullFilePath)) {
@@ -49,7 +51,7 @@ router.post("/upload", (req, res, next) => {
             });
         }
 
-        // returning the response with file path and name
+        // returning the response with file name
         return res.status(201).send({
             fileName: myFile.name.toLowerCase(),
             name: myFile.name.slice(0, -4).toLowerCase(),

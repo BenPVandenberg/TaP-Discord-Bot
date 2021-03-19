@@ -19,7 +19,6 @@ const isCorrectSoundName = (name: string) => {
 };
 
 const uploadSound = async (sound: any) => {
-    console.log({ sound });
     const formData = new FormData();
     formData.append("file", sound);
 
@@ -64,17 +63,12 @@ export default function SoundUpload() {
                 // show loading screen while uploading sound
                 Swal.fire({
                     title: "Uploading...",
-                    didOpen: () => {
-                        Swal.showLoading();
-                    },
-                    willClose: () => {
-                        Swal.hideLoading();
-                    },
                     showConfirmButton: false,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     allowEnterKey: false,
                 });
+                Swal.showLoading();
 
                 // upload sound
                 uploadSound(file).then((res) => {
@@ -82,18 +76,14 @@ export default function SoundUpload() {
                     Swal.close();
                     // successful upload
                     if (res.status === 201) {
-                        console.log(res);
                         Swal.fire({
                             toast: true,
                             icon: "success",
-                            title: `Sound ${res.data.msg} Uploaded`,
+                            title: `Sound ${res.data.name} uploaded!`,
                             position: "top-end",
                             showConfirmButton: false,
                             timer: 10000,
                             timerProgressBar: true,
-                            didOpen: () => {
-                                Swal.hideLoading();
-                            },
                         });
                     }
                     // server gave us error code
@@ -110,9 +100,6 @@ export default function SoundUpload() {
                         Swal.fire({
                             title: "Unable to reach server",
                             icon: "error",
-                            didOpen: () => {
-                                Swal.hideLoading();
-                            },
                         });
                         console.error(res.stack);
                     }
