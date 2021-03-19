@@ -51,7 +51,7 @@ router.post("/upload", (req, res, next) => {
             });
         }
 
-        // returning the response with file path and name
+        // returning the response with file name
         return res.status(201).send({
             fileName: myFile.name.toLowerCase(),
             name: myFile.name.slice(0, -4).toLowerCase(),
