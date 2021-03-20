@@ -70,7 +70,7 @@ bot.on("message", async (message) => {
         !config.command_channels.includes(message.channel.id) &&
         !config.bot_overrides.includes(message.author.username)
     ) {
-        message.reply("bot commands are not allowed here.");
+        // message.reply("bot commands are not allowed here.");
         message.delete();
     }
 
