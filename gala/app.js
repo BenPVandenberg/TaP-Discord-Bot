@@ -25,14 +25,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors()); // it enables all cors requests
 app.use(
-    fileUpload({
-        limits: {
-            fileSize: 50000000, // 1mb
-        },
-        abortOnLimit: true,
+    express.urlencoded({
+        extended: false,
+        limit: "50mb",
+        parameterLimit: 50 * 1024 * 1024,
     }),
 );
-// app.use(express.bodyParser({ limit: "50mb" }));
+// app.use(
+//     fileUpload({
+//         limits: { fileSize: 50 * 1024 * 1024 },
+//     }),
+// );
 
 app.use("/", indexRouter);
 app.use("/sounds", soundsRouter);
