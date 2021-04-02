@@ -23,9 +23,13 @@ const uploadSound = async (sound: any) => {
     formData.append("file", sound);
 
     return await axios
-        .post("https://api.tandp.me/sounds/upload", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        })
+        .post(
+            process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/upload",
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+            },
+        )
         .then((response) => {
             return response;
         })

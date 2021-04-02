@@ -57,7 +57,7 @@ export default function Sounds() {
 
         // get /play statistics
         await axios
-            .get("https://api.tandp.me/data/play")
+            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/play")
             .then((res) => {
                 soundsSQL = res.data;
             })
@@ -73,7 +73,7 @@ export default function Sounds() {
 
         // get all available sounds
         await axios
-            .get("https://api.tandp.me/sounds")
+            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/sounds")
             .then((res) => {
                 soundList = res.data;
             })

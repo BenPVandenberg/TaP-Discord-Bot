@@ -34,7 +34,7 @@ export default function NavBar() {
     return (
         <div>
             <img
-                src="https://media.discordapp.net/attachments/428568679433633792/821879003132461076/server_logo_tp_1.png"
+                src="/favicon-104x104.png"
                 className={classes.appLogo}
                 alt="logo"
             />
