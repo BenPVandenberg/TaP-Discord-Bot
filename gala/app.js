@@ -10,7 +10,6 @@ require("dotenv").config();
 const indexRouter = require("./routes/index");
 const soundsRouter = require("./routes/sounds");
 const dataRouter = require("./routes/data");
-const suggestionRouter = require("./routes/suggestion");
 const authRouter = require("./routes/auth");
 
 const app = express();
@@ -35,7 +34,6 @@ app.use(
 app.use("/", indexRouter);
 app.use("/sounds", soundsRouter);
 app.use("/data", dataRouter);
-app.use("/suggestion", suggestionRouter);
 app.use("/auth", authRouter);
 
 app.use((req, res, next) => {
