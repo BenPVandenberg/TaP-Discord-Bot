@@ -15,7 +15,8 @@
 
 ### Envy
 
-1. Run ```npm install``` + ```npm start```
+1. Create a .env file following the example
+2. Run ```npm install``` + ```npm start```
 
 ### Gala
 
