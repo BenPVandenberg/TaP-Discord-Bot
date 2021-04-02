@@ -122,7 +122,7 @@ export default function Data() {
 
         let gameDownloaded: GameLog[] = [];
         await axios
-            .get("https://api.tandp.me/data/game")
+            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/game")
             .then((res) => {
                 gameDownloaded = res.data;
             })
@@ -138,7 +138,7 @@ export default function Data() {
 
         let voiceDownloaded: VoiceLog[] = [];
         await axios
-            .get("https://api.tandp.me/data/voice")
+            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/voice")
             .then((res) => {
                 voiceDownloaded = res.data;
             })
