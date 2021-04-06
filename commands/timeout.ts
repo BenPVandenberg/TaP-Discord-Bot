@@ -13,7 +13,7 @@ module.exports = {
 
         // verify the user @'d someone
         if (user_to_timeout === undefined) {
-            message.reply("usage is /timeout @user");
+            message.reply("usage is .timeout @user");
             return;
         }
 

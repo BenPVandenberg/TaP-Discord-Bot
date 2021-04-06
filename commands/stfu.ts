@@ -13,7 +13,7 @@ module.exports = {
 
         // verify the user @'d someone
         if (user_to_stfu === undefined) {
-            message.reply("usage is /stfu @user");
+            message.reply("usage is .stfu @user");
             return;
         }
 
