@@ -135,7 +135,7 @@ bot.on("guildMemberAdd", async (member) => {
         "2. This is NOT a democracy (RIP ur free will) \n" +
         '3. The President is "not racist" -President \n' +
         "4. Add game ranks by using /ranks \n" +
-        "BONUS: /play gbtm ;)";
+        "BONUS: .play gbtm ;)";
 
     // Send the message, mentioning the member
     generalChannel.send(
