@@ -194,7 +194,7 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
 
         // remove in voice role
         if (in_voice_role) {
-            newMember.member.roles.add(in_voice_role);
+            newMember.member.roles.remove(in_voice_role);
         }
     } else if (oldMember.channelID === null && newMember.channelID !== null) {
         // Join event
