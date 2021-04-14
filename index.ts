@@ -175,9 +175,27 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
     // if a bot
     if (newMember.member.user.bot) return;
 
+    const in_voice_role = await newMember.guild.roles.fetch(
+        config["in_voice_role_id"],
+    );
+
+    // send an error if we cant find the role
+    if (!in_voice_role) {
+        log.logToDiscord(
+            `Cant find role ${config["in_voice_role_id"]}`,
+            log.getDefaultChannel(newMember.guild),
+            log.ERROR,
+        );
+    }
+
     if (oldMember.channelID !== null && newMember.channelID === null) {
         // leave event
         sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+
+        // remove in voice role
+        if (in_voice_role) {
+            newMember.member.roles.add(in_voice_role);
+        }
     } else if (oldMember.channelID === null && newMember.channelID !== null) {
         // Join event
         assert(newMember.channel);
@@ -187,6 +205,11 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
             newMember.channel.name,
             sessionID,
         );
+
+        // add the invoice role
+        if (in_voice_role) {
+            newMember.member.roles.add(in_voice_role);
+        }
     } else if (
         oldMember.channelID !== null &&
         newMember.channelID !== null &&
