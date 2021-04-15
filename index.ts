@@ -36,6 +36,7 @@ bot.on("ready", () => {
 PARAMETER      TYPE           DESCRIPTION
 message        Message        The created message    */
 bot.on("message", async (message) => {
+    if (message.author.bot) return;
     // easter egg for dms
     // nested if required to guarantee guild isn't null
     if (!message.guild) {
@@ -75,7 +76,14 @@ bot.on("message", async (message) => {
     }
 
     // check if it is a command for us, if not break
-    if (!message.content.startsWith(config.prefix) || message.author.bot) {
+    if (!message.content.trim().startsWith(config.prefix)) {
+        // check if its a tts
+        if (
+            /[a-zA-Z0-9]/.test(message.content[0]) &&
+            message.channel.id === config["text-to-speech_channel"]
+        ) {
+            message.channel.send(message.content);
+        }
         return;
     }
 
