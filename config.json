@@ -1,13 +1,16 @@
 {
     "prefix": ".",
-    "command_channels": ["522935673964199936", "740332251103101048"],
+    "command_channels": [
+        "522935673964199936",
+        "740332251103101048",
+        "831947692179062795"
+    ],
     "bot_overrides": ["T&P Bot", "VALORANT #announcements"],
     "ignore_games": [
         "Divinity: Original Sin 2",
         "Call of Duty®: Black Ops Cold War"
     ],
     "in_voice_role_id": "831948388689903636",
-    "text-to-speech_channel": "831947692179062795",
     "commands": {
         "rank": {
             "free_ranks": ["minecraft", "valorant", "valheim"]
