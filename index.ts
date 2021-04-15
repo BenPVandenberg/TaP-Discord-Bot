@@ -82,7 +82,7 @@ bot.on("message", async (message) => {
             /[a-zA-Z0-9]/.test(message.content[0]) &&
             message.channel.id === config["text-to-speech_channel"]
         ) {
-            message.channel.send(message.content);
+            message.channel.send("' " + message.content);
         }
         return;
     }
