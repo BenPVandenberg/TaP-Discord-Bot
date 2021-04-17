@@ -6,6 +6,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import DataTable from "../Components/DataTable";
+import { GameLog, VoiceLog } from "../types";
+import { Column } from "../Components/DataTable";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -32,23 +34,7 @@ const useStyles = makeStyles((theme) => {
     };
 });
 
-interface GameLog {
-    userID: number;
-    username: string;
-    game: string;
-    start: Date;
-    end: Date | null;
-}
-
-interface VoiceLog {
-    userID: number;
-    username: string;
-    channel: string;
-    start: Date;
-    end: Date | null;
-}
-
-const gameLogCols = [
+const gameLogCols: Column[] = [
     {
         title: "Username",
         width: "20%",
@@ -71,7 +57,7 @@ const gameLogCols = [
     },
 ];
 
-const voiceLogCols = [
+const voiceLogCols: Column[] = [
     {
         title: "Username",
         width: "20%",
