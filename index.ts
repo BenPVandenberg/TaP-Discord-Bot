@@ -36,7 +36,6 @@ bot.on("ready", () => {
 PARAMETER      TYPE           DESCRIPTION
 message        Message        The created message    */
 bot.on("message", async (message) => {
-    if (message.author.bot) return;
     // easter egg for dms
     // nested if required to guarantee guild isn't null
     if (!message.guild) {
@@ -65,18 +64,26 @@ bot.on("message", async (message) => {
 
     // check if it is a bot command in a non command channel
     if (
+        !message.author.bot &&
         (message.content.startsWith(config.prefix) ||
-            message.content.startsWith("-") ||
-            message.author.bot) &&
-        !config.command_channels.includes(message.channel.id) &&
-        !config.bot_overrides.includes(message.author.username)
+            message.content.startsWith("-")) &&
+        !config.command_channels.includes(message.channel.id)
     ) {
-        // message.reply("bot commands are not allowed here.");
+        message.author.send("Oi! Bot commands are not allowed there.");
         message.delete();
     }
 
-    // check if it is a command for us, if not break
+    // check if its a restricted bot out of its channel
+    if (
+        message.author.bot &&
+        config.restricted_bots.includes(message.author.id) &&
+        !config.command_channels.includes(message.channel.id)
+    ) {
+        message.delete();
+    }
+
     if (!message.content.trim().startsWith(config.prefix)) {
+        // check if it is a command for us, if not break
         return;
     }
 
