@@ -150,7 +150,7 @@ bot.on("guildMemberAdd", async (member) => {
         `Welcome to the server, ${member.toString()}.\n` + rules_string,
     );
 
-    sql.verifyUser(member);
+    await sql.verifyUser(member);
 });
 
 // voiceStateUpdate
@@ -198,7 +198,7 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
 
     if (oldMember.channelID !== null && newMember.channelID === null) {
         // leave event
-        sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+        await sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
 
         // remove in voice role
         if (in_voice_role) {
@@ -207,7 +207,7 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
     } else if (oldMember.channelID === null && newMember.channelID !== null) {
         // Join event
         assert(newMember.channel);
-        sql.dbMakeVoiceLog(
+        await sql.dbMakeVoiceLog(
             newMember.member,
             newMember.channelID,
             newMember.channel.name,
@@ -224,9 +224,13 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
         oldMember.channelID !== newMember.channelID
     ) {
         // switch channels event
-        sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+        await sql.dbCloseVoiceLog(
+            newMember.member,
+            oldMember.channelID,
+            sessionID,
+        );
         assert(newMember.channel);
-        sql.dbMakeVoiceLog(
+        await sql.dbMakeVoiceLog(
             newMember.member,
             newMember.channelID,
             newMember.channel.name,
@@ -276,7 +280,7 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
         const search = old_activities.find((app) => app.name === game.name);
         if (search === undefined) {
             // no app in prev presense, therefore new log
-            sql.dbMakeGameLog(newMember.member, game);
+            await sql.dbMakeGameLog(newMember.member, game);
         }
     }
 
@@ -285,7 +289,7 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
         const search = new_activities.find((app) => app.name === game.name);
         if (search === undefined) {
             // no app in new presense, therefore close log
-            sql.dbCloseGameLog(newMember.member, game);
+            await sql.dbCloseGameLog(newMember.member, game);
         }
     }
 });
