@@ -275,21 +275,21 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
 
     // TODO: Need a way to put identical games together in the db
 
-    for (const game of new_activities) {
-        // look for app in old_activities
-        const search = old_activities.find((app) => app.name === game.name);
-        if (search === undefined) {
-            // no app in prev presense, therefore new log
-            await sql.dbMakeGameLog(newMember.member, game);
-        }
-    }
-
     for (const game of old_activities) {
         // look for app in new_activities
         const search = new_activities.find((app) => app.name === game.name);
         if (search === undefined) {
             // no app in new presense, therefore close log
             await sql.dbCloseGameLog(newMember.member, game);
+        }
+    }
+    
+    for (const game of new_activities) {
+        // look for app in old_activities
+        const search = old_activities.find((app) => app.name === game.name);
+        if (search === undefined) {
+            // no app in prev presense, therefore new log
+            await sql.dbMakeGameLog(newMember.member, game);
         }
     }
 });

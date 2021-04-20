@@ -17,7 +17,7 @@ module.exports = {
             assert(memberToSearch);
             rMember = message.guild.member(memberToSearch);
         } catch (e) {
-            return message.reply("usage: /info <@user | userid>");
+            return message.reply("usage: .info <@user | userid>");
         }
 
         // if there is no user mentioned, or provided, it will say this
