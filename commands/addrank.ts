@@ -1,6 +1,7 @@
 import assert from "assert";
 import Discord from "discord.js";
 const config = require("../config.json");
+
 // addrank.js
 // ========
 module.exports = {
