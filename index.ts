@@ -294,15 +294,24 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
     }
 });
 
-bot.on("messageReactionAdd", (reaction, user) => {
-    console.log(reaction.emoji);
-});
+bot.on(
+    "messageReactionAdd",
+    async (
+        reaction: Discord.MessageReaction,
+        user: Discord.User | Discord.PartialUser,
+    ) => {
+        const emoji = reaction.emoji;
+        if (emoji.name = "pngcliparthotdoghamburgerfrenchf"){
+            reaction.message.react(emoji);
+        }
+    },
+);
 
-bot.on("shardError", (error) => {
+bot.on("shardError", async (error) => {
     console.error("A websocket connection encountered an error:", error);
 });
 
-process.on("unhandledRejection", (error) => {
+process.on("unhandledRejection", async (error) => {
     console.error("Unhandled promise rejection:", error);
 });
 
