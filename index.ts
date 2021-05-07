@@ -301,7 +301,7 @@ bot.on(
         user: Discord.User | Discord.PartialUser,
     ) => {
         const emoji = reaction.emoji;
-        if (emoji.name = "pngcliparthotdoghamburgerfrenchf"){
+        if (emoji.name === "pngcliparthotdoghamburgerfrenchf"){
             reaction.message.react(emoji);
         }
     },
