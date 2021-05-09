@@ -1,11 +1,12 @@
 const express = require("express");
 const fetch = require("node-fetch");
+const FormData = require("form-data");
 const btoa = require("btoa");
 
-const router = express.Router();
-
 const { CLIENT_ID, CLIENT_SECRET } = process.env;
-const redirect = "https://localhost:5000/auth/callback";
+const redirect = process.env.DISCORD_CALLBACK_URL;
+
+const router = express.Router();
 
 // async/await error catcher
 const catchAsync = (fn) => (req, res, next) => {
@@ -47,11 +48,34 @@ router.get(
         });
         const json = await response.json();
         res.redirect(
-            `http://localhost:3000/login` +
+            `${process.env.FRONTEND_URL}/login` +
                 `?access_token=${json.access_token}` +
                 `&refresh_token=${json.refresh_token}`,
-            // `&token_type=${json.token_type}`,
         );
+    }),
+);
+
+router.get(
+    "/refresh",
+    catchAsync(async (req, res) => {
+        const { refreshToken } = req.query;
+        if (!refreshToken) {
+            res.status(400).send("No refresh token provided");
+        }
+        const formData = new FormData();
+        formData.append("client_id", CLIENT_ID);
+        formData.append("client_secret", CLIENT_SECRET);
+        formData.append("grant_type", "refresh_token");
+        formData.append("refresh_token", refreshToken);
+        const data = await fetch("https://discord.com/api/oauth2/token", {
+            method: "POST",
+            body: formData,
+        });
+        const resObj = await data.json();
+        res.status(data.status).send({
+            access_token: resObj.access_token,
+            refresh_token: resObj.refresh_token,
+        });
     }),
 );
 
