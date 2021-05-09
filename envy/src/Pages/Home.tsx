@@ -76,13 +76,17 @@ export default function Home() {
                 </tbody>
                 <tbody>
                     <tr>
-                        <td></td>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
                         <td>Polish the looks</td>
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <td></td>
+                        <td>
+                            <AiFillCheckCircle size={25} />
+                        </td>
                         <td>Add Discord Auth (following will req this)</td>
                     </tr>
                 </tbody>
