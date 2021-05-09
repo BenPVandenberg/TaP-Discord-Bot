@@ -1,14 +1,8 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-const cors = require("cors");
 
 const router = express.Router();
-
-const corsOptions = {
-    origin: "*",
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
 
 /* GET sounds listing. */
 router.get("/", (req, res, next) => {
@@ -17,7 +11,7 @@ router.get("/", (req, res, next) => {
     res.status(200).send(rawData);
 });
 
-router.post("/upload", cors(corsOptions), (req, res, next) => {
+router.post("/upload", (req, res, next) => {
     if (!req.files) {
         return res.status(400).send({ msg: "No file was uploaded" });
     }
