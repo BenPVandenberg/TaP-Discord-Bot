@@ -8,17 +8,18 @@
 | Codebase |     Description |
 | :------- | --------------: |
 | envy     |  React frontend |
-| gala     | express backend |
+| gala     | Express backend |
 | opal     |           mySQL |
 
 ## How to run locally
 
 ### Envy
 
-1. Run ```npm install``` + ```npm start```
+1. Create a .env file following the example
+2. Run ```npm install``` + ```npm start```
 
 ### Gala
 
-1. Create a .env file following the example
-2. Crate an SSL certificate with ```openssl req -nodes -new -x509 -keyout server.key -out server.cert```
+1. Crate an SSL certificate with ```openssl req -nodes -new -x509 -keyout server.key -out server.cert```
+2. Create a .env file following the example
 3. Run ```npm install``` + ```npm start```

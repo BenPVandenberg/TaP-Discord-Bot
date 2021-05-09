@@ -1,7 +1,12 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { BiLogIn, BiLogOut } from "react-icons/bi/";
 import { FaHome, FaMusic } from "react-icons/fa";
 import { ImDatabase } from "react-icons/im";
-import { IoSend, IoPerson } from "react-icons/io5";
+import { IoSend } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { logOut } from "../store/User/user.actions";
+import { clearTokens } from "../utils/user";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -30,7 +35,39 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function NavBar() {
+    const user = useAppSelector((state) => state.user);
+    const dispatch = useAppDispatch();
     const classes = useStyles();
+
+    const logout = () => {
+        clearTokens();
+        dispatch(logOut());
+    };
+
+    let accountButton;
+    if (user.isLoggedIn) {
+        accountButton = (
+            // <Link to={"/account"} className={classes.aLink}>
+            <div className={classes.navEntry} onClick={logout}>
+                <BiLogOut size={35} />
+                <p>Log Out</p>
+            </div>
+            // </Link>
+        );
+    } else {
+        accountButton = (
+            <a
+                href={process.env.REACT_APP_BACKEND_ADDRESS + "/auth/login"}
+                className={classes.aLink}
+            >
+                <div className={classes.navEntry}>
+                    <BiLogIn size={35} />
+                    <p>Log In</p>
+                </div>
+            </a>
+        );
+    }
+
     return (
         <div>
             <img
@@ -39,34 +76,31 @@ export default function NavBar() {
                 alt="logo"
             />
 
-            <a href={"/"} className={classes.aLink}>
+            <Link to={"/"} className={classes.aLink}>
                 <div className={classes.navEntry}>
                     <FaHome size={35} />
                     <p>Home</p>
                 </div>
-            </a>
-            <a href={"/sounds"} className={classes.aLink}>
+            </Link>
+            <Link to={"/sounds"} className={classes.aLink}>
                 <div className={classes.navEntry}>
                     <FaMusic size={35} />
                     <p>Sounds</p>
                 </div>
-            </a>
-            <a href={"/data"} className={classes.aLink}>
+            </Link>
+            <Link to={"/data"} className={classes.aLink}>
                 <div className={classes.navEntry}>
                     <ImDatabase size={35} />
                     <p>Data</p>
                 </div>
-            </a>
-            <a href={"/suggest"} className={classes.aLink}>
+            </Link>
+            <Link to={"/suggest"} className={classes.aLink}>
                 <div className={classes.navEntry}>
                     <IoSend size={35} />
                     <p>Suggest</p>
                 </div>
-            </a>
-            <div className={classes.navEntry}>
-                <IoPerson size={35} />
-                <p>Profile</p>
-            </div>
+            </Link>
+            {accountButton}
         </div>
     );
 }

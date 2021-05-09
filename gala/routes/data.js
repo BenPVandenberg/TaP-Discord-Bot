@@ -43,7 +43,7 @@ router.get("/:file", (req, res, next) => {
                     res.status(200).send(rtnDataArr);
                 },
             );
-            return;
+            break;
 
         case "game":
             con.query(
@@ -66,7 +66,7 @@ router.get("/:file", (req, res, next) => {
                     res.status(200).send(rtnDataArr);
                 },
             );
-            return;
+            break;
 
         case "voice":
             con.query(
@@ -89,10 +89,11 @@ router.get("/:file", (req, res, next) => {
                     res.status(200).send(rtnDataArr);
                 },
             );
-            return;
+            break;
 
         default:
-            return res.status(404).send();
+            res.status(404).send();
+            break;
     }
 });
 

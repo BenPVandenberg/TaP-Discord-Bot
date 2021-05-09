@@ -6,11 +6,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-interface TableProps {
+export interface TableProps {
     className: string;
 }
 
-interface Column {
+export interface Column {
     title: string;
     width: string;
     value: string;

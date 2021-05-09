@@ -5,13 +5,18 @@ import {
     ThemeProvider,
 } from "@material-ui/core/styles";
 import "fontsource-roboto";
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import NavBar from "./Components/NavBar";
+import Account from "./Pages/Account";
 import Data from "./Pages/Data";
 import Home from "./Pages/Home";
+import Login from "./Pages/Login";
 import Sounds from "./Pages/Sounds";
 import Suggest from "./Pages/Suggest";
+import { useAppDispatch } from "./store/hooks";
+import { logIn } from "./store/User/user.actions";
+import { recoverUser } from "./utils/user";
 
 // dark theme
 const darkTheme = responsiveFontSizes(
@@ -71,26 +76,37 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
     const classes = useStyles(darkTheme);
+    const dispatch = useAppDispatch();
     // @ts-ignore: CSSStyleDeclaration
     document.body.style = `background: ${darkTheme.palette.background.default}`;
+
+    useEffect(() => {
+        recoverUser().then((userInfo) => {
+            if (userInfo) {
+                dispatch(logIn(userInfo));
+            }
+        });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className={classes.root}>
             <ThemeProvider theme={darkTheme}>
-                {/* navbar and pageWrapper side by side */}
-                <div className={classes.navWrapper}>
-                    <NavBar />
-                </div>
-                <div className={classes.pageWrapper}>
-                    <div className={classes.contentWrapper}>
-                        <Router>
+                <Router>
+                    {/* navbar and pageWrapper side by side */}
+                    <div className={classes.navWrapper}>
+                        <NavBar />
+                    </div>
+                    <div className={classes.pageWrapper}>
+                        <div className={classes.contentWrapper}>
                             <Route exact path="/" component={Home} />
                             <Route path="/sounds" component={Sounds} />
                             <Route path="/data" component={Data} />
                             <Route path="/suggest" component={Suggest} />
-                        </Router>
+                            <Route path="/login" component={Login} />
+                            <Route path="/account" component={Account} />
+                        </div>
                     </div>
-                </div>
+                </Router>
             </ThemeProvider>
         </div>
     );
