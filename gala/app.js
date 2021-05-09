@@ -10,6 +10,7 @@ require("dotenv").config();
 const indexRouter = require("./routes/index");
 const soundsRouter = require("./routes/sounds");
 const dataRouter = require("./routes/data");
+const suggestionRouter = require("./routes/suggestion");
 const authRouter = require("./routes/auth");
 
 const app = express();
@@ -26,20 +27,16 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors()); // it enables all cors requests
 app.use(
     fileUpload({
-        limits: { fileSize: 50 * 1024 * 1024 * 1024 },
-        abortOnLimit: true,
+        limits: { fileSize: 1024 * 1024 * 1024 * 1024 },
+        abortOnLimit: false,
     }),
 );
 
 app.use("/", indexRouter);
 app.use("/sounds", soundsRouter);
 app.use("/data", dataRouter);
+app.use("/suggestion", suggestionRouter);
 app.use("/auth", authRouter);
-
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    next();
-});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
