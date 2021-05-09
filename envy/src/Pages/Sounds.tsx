@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DataTable from "../Components/DataTable";
 import SoundUpload from "../Components/SoundUpload";
+import { useAppSelector } from "../store/hooks";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -48,6 +49,8 @@ const soundCols = [
 ];
 
 export default function Sounds() {
+    const classes = useStyles();
+    const user = useAppSelector((state) => state.user);
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
     const updateSounds = async () => {
@@ -116,12 +119,13 @@ export default function Sounds() {
         setAllSounds(newAllSounds);
     };
 
+    // only signed in users can upload sounds
+    const uploadButton = user.isLoggedIn ? <SoundUpload /> : "";
+
     // run on mount
     useEffect(() => {
         updateSounds();
     }, []); // * This empty array makes useEffect act like componentDidMount
-
-    const classes = useStyles();
 
     return (
         <div className={classes.wrapper}>
@@ -134,9 +138,7 @@ export default function Sounds() {
                         rows={allSounds}
                     />
                 </Grid>
-                <Grid item>
-                    <SoundUpload />
-                </Grid>
+                <Grid item>{uploadButton}</Grid>
             </Grid>
         </div>
     );

@@ -1,13 +1,13 @@
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
-import DataTable from "../Components/DataTable";
+import DataTable, { Column } from "../Components/DataTable";
 import { GameLog, VoiceLog } from "../types";
-import { Column } from "../Components/DataTable";
+import { useAppSelector } from "../store/hooks";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -81,10 +81,14 @@ const voiceLogCols: Column[] = [
 ];
 
 export default function Data() {
+    const user = useAppSelector((state) => state.user);
     const [tableView, setTableView] = useState<"game" | "voice">("game");
-    const [userId, setUserId] = useState<string>("");
     const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
+    // if user is logged in, fill the box with their username
+    const [userId, setUserId] = useState<string>(
+        user.isLoggedIn ? user.username : "",
+    );
 
     // this function will update the data on the visible table
     const fetchLogs = async () => {
