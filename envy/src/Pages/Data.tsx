@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DataTable, { Column } from "../Components/DataTable";
 import { GameLog, VoiceLog } from "../types";
@@ -85,10 +85,7 @@ export default function Data() {
     const [tableView, setTableView] = useState<"game" | "voice">("game");
     const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
-    // if user is logged in, fill the box with their username
-    const [userId, setUserId] = useState<string>(
-        user.isLoggedIn ? user.username : "",
-    );
+    const [userId, setUserId] = useState<string>("");
 
     // this function will update the data on the visible table
     const fetchLogs = async () => {
@@ -169,6 +166,17 @@ export default function Data() {
         // stop loading
         Swal.close();
     };
+
+    // if the user is logged in set the box to their user name and fetch logs
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        if (gameLogs.length === 0 && voiceLogs.length === 0) {
+            setUserId(user.isLoggedIn ? user.username : "");
+            if (userId !== "") {
+                fetchLogs();
+            }
+        }
+    });
 
     const classes = useStyles();
     return (
