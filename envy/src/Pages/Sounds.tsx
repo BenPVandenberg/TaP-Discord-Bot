@@ -27,7 +27,7 @@ type Sound = {
     name: string;
     occurrences: number;
     ownerID: number | null;
-    ownerName: string;
+    ownerName: string | null;
 };
 
 const soundCols = [
@@ -54,31 +54,13 @@ export default function Sounds() {
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
     const updateSounds = async () => {
-        const newAllSounds: Sound[] = [];
         let soundsSQL: Sound[] = []; // res responce
-        let soundList: string[] = [];
 
         // get /play statistics
         await axios
-            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/play")
-            .then((res) => {
-                soundsSQL = res.data;
-            })
-            .catch((err) => {
-                Swal.fire({
-                    title: "Error with the server: GET /data/play",
-                    text:
-                        err.response.data.msg ||
-                        `HTTP Code ${err.response.status}`,
-                    icon: "error",
-                });
-            });
-
-        // get all available sounds
-        await axios
             .get(process.env.REACT_APP_BACKEND_ADDRESS + "/sounds")
             .then((res) => {
-                soundList = res.data;
+                soundsSQL = res.data;
             })
             .catch((err) => {
                 Swal.fire({
@@ -90,33 +72,10 @@ export default function Sounds() {
                 });
             });
 
-        // if we have data for a song then update allSounds
-        soundList.forEach((sound) => {
-            sound = sound.slice(0, -4);
-
-            const soundData = soundsSQL.find((el) => el.name === sound);
-
-            if (soundData === undefined) {
-                newAllSounds.push({
-                    name: sound,
-                    occurrences: 0,
-                    ownerID: null,
-                    ownerName: "",
-                });
-            } else {
-                newAllSounds.push({
-                    name: sound,
-                    occurrences: soundData.occurrences,
-                    ownerID: soundData.ownerID,
-                    ownerName: soundData.ownerName,
-                });
-            }
-        });
-
         // sort by highest frequency
-        newAllSounds.sort((a, b) => b.occurrences - a.occurrences);
+        soundsSQL.sort((a, b) => b.occurrences - a.occurrences);
 
-        setAllSounds(newAllSounds);
+        setAllSounds(soundsSQL);
     };
 
     // only signed in users can upload sounds

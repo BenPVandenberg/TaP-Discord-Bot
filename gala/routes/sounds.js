@@ -7,9 +7,34 @@ const router = express.Router();
 
 /* GET sounds listing. */
 router.get("/", (req, res, next) => {
-    // send contents of sounds folder
-    const rawData = fs.readdirSync(process.env.SOUNDS_DIR);
-    res.status(200).send(rawData);
+    const rtnDataArr = [];
+    sql.query(
+        "SELECT Sound.SoundName, Count(PlayLog.ID) AS Occurrences, UserID as OwnerID, Username as OwnerName " +
+            "FROM Sound left join PlayLog on Sound.SoundName = PlayLog.SoundName " +
+            "left join User on Sound.Owner = User.UserID " +
+            "GROUP BY SoundName;",
+        (err, result) => {
+            if (err) {
+                res.status(400).send({ msg: err.message });
+                return;
+            }
+            if (result === undefined) {
+                res.status(400).send({ msg: "DB reporting no sounds" });
+                return;
+            }
+
+            result.forEach((element) => {
+                rtnDataArr.push({
+                    name: element.SoundName,
+                    occurrences: element.Occurrences,
+                    ownerID: element.OwnerID,
+                    ownerName: element.OwnerName,
+                });
+            });
+
+            res.status(200).send(rtnDataArr);
+        },
+    );
 });
 
 router.post("/upload", (req, res, next) => {
