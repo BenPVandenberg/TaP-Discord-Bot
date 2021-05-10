@@ -4,6 +4,7 @@ import axios from "axios";
 import React from "react";
 import { MdCloudUpload } from "react-icons/md";
 import Swal from "sweetalert2";
+import { useAppSelector } from "../store/hooks";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -18,27 +19,30 @@ const isCorrectSoundName = (name: string) => {
     return name.indexOf(" ") === -1;
 };
 
-const uploadSound = async (sound: any) => {
-    const formData = new FormData();
-    formData.append("file", sound);
-
-    return await axios
-        .post(
-            process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/upload",
-            formData,
-            {
-                headers: { "Content-Type": "multipart/form-data" },
-            },
-        )
-        .then((response) => {
-            return response;
-        })
-        .catch((error) => {
-            return error;
-        });
-};
-
 export default function SoundUpload() {
+    const userID = useAppSelector((state) => state.user.id);
+
+    const uploadSound = async (sound: any) => {
+        const formData = new FormData();
+        formData.append("file", sound);
+        formData.append("user", userID);
+
+        return await axios
+            .post(
+                process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/upload",
+                formData,
+                {
+                    headers: { "Content-Type": "multipart/form-data" },
+                },
+            )
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                return error;
+            });
+    };
+
     // called when a file is selected for upload
     const fileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
         // files could be null leading to index error

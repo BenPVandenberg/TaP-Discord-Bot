@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const sql = require("../utilities/sql");
 
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.post("/upload", (req, res, next) => {
 
     // accessing the file
     const myFile = req.files.file;
+    const userID = req.body.user;
 
     // verify the file is valid
     if (!myFile.name.endsWith(".mp3") || myFile.mimetype !== "audio/mpeg") {
@@ -43,19 +45,27 @@ router.post("/upload", (req, res, next) => {
         return res.status(400).send({ msg: "That file already exists" });
     }
 
-    //  mv() method places the file inside public directory
+    // all checks are done now to add the sound
+    // mv() method places the file inside public directory
     myFile.mv(fullFilePath, (err) => {
         if (err) {
             return res.status(500).send({
                 msg: "Error occurred: Unable to move file to bot dir",
             });
         }
+    });
+    const localName = myFile.name.slice(0, -4).toLowerCase();
 
-        // returning the response with file name
-        return res.status(201).send({
-            fileName: myFile.name.toLowerCase(),
-            name: myFile.name.slice(0, -4).toLowerCase(),
-        });
+    // add sound to the db
+    sql.query(`INSERT INTO Sound (SoundName, Owner) VALUES (?, ?);`, [
+        localName,
+        userID || null,
+    ]);
+
+    // returning the response with file name
+    return res.status(201).send({
+        fileName: myFile.name.toLowerCase(),
+        name: localName,
     });
 });
 
