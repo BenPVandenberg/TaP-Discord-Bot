@@ -15,8 +15,8 @@ router.get(
             case "game":
                 rows = await sql.query(
                     "SELECT UserID, Username, Game, Start, End FROM GameLogsView;",
-                )[0];
-                rows.forEach((element) => {
+                );
+                rows[0].forEach((element) => {
                     rtnDataArr.push({
                         userID: element.UserID,
                         username: element.Username,
@@ -33,8 +33,8 @@ router.get(
             case "voice":
                 rows = await sql.query(
                     "SELECT UserID, Username, Channel, Start, End FROM VoiceLogsView;",
-                )[0];
-                rows.forEach((element) => {
+                );
+                rows[0].forEach((element) => {
                     rtnDataArr.push({
                         userID: element.UserID,
                         username: element.Username,
