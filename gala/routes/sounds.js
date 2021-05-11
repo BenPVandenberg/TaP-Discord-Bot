@@ -12,7 +12,7 @@ router.get(
     asyncHandler(async (req, res, next) => {
         const rtnDataArr = [];
         const [rows] = await sql.query(
-            "SELECT Sound.SoundName, Count(PlayLog.ID) AS Occurrences, UserID as OwnerID, Username as OwnerName " +
+            "SELECT PlayLog.SoundName, Count(PlayLog.ID) AS Occurrences, UserID as OwnerID, Username as OwnerName " +
                 "FROM Sound left join PlayLog on Sound.SoundName = PlayLog.SoundName " +
                 "left join User on Sound.Owner = User.UserID " +
                 "GROUP BY SoundName;",
