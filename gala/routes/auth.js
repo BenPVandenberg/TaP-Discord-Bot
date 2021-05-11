@@ -2,19 +2,12 @@ const express = require("express");
 const fetch = require("node-fetch");
 const FormData = require("form-data");
 const btoa = require("btoa");
+const asyncHandler = require("express-async-handler");
 
 const { CLIENT_ID, CLIENT_SECRET } = process.env;
 const redirect = process.env.DISCORD_CALLBACK_URL;
 
 const router = express.Router();
-
-// async/await error catcher
-const catchAsync = (fn) => (req, res, next) => {
-    const routePromise = fn(req, res, next);
-    if (routePromise.catch) {
-        routePromise.catch((err) => next(err));
-    }
-};
 
 router.get("/login", (req, res) => {
     res.redirect(
@@ -26,7 +19,7 @@ router.get("/login", (req, res) => {
 
 router.get(
     "/callback",
-    catchAsync(async (req, res) => {
+    asyncHandler(async (req, res) => {
         if (!req.query.code) throw new Error("NoCodeProvided");
         const { code } = req.query;
         const creds = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
@@ -57,7 +50,7 @@ router.get(
 
 router.get(
     "/refresh",
-    catchAsync(async (req, res) => {
+    asyncHandler(async (req, res) => {
         const { refreshToken } = req.query;
         if (!refreshToken) {
             res.status(400).send("No refresh token provided");
