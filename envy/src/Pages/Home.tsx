@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { AiFillCheckCircle } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -27,7 +28,7 @@ export default function Home() {
             </p>
             <p>
                 This project is a WIP so expect it to change frequently. Please
-                report bugs on the project's <a href="/suggest">Github</a>.
+                report bugs on the project's <Link to="/suggest">Github</Link>.
             </p>
             <Table
                 className="text-white w-50"

@@ -86,6 +86,7 @@ export default function Data() {
     const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
     const [userId, setUserId] = useState<string>("");
+    let emptyResults = false; // used to prevent an infinite loop when a user has no logs
 
     // this function will update the data on the visible table
     const fetchLogs = async () => {
@@ -107,38 +108,34 @@ export default function Data() {
         });
         Swal.showLoading();
 
-        let gameDownloaded: GameLog[] = [];
-        await axios
-            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/game")
-            .then((res) => {
-                gameDownloaded = res.data;
-            })
-            .catch((err) => {
-                Swal.fire({
-                    title: "Error with the server: GET /data/game",
-                    text:
-                        err.response.data.msg ||
-                        `HTTP Code ${err.response.status}`,
-                    icon: "error",
-                });
+        // run queries for game and voice data
+        let gameResponce = { data: [] };
+        let voiceResponce = { data: [] };
+        try {
+            const response = await Promise.all([
+                axios.get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/game"),
+                axios.get(
+                    process.env.REACT_APP_BACKEND_ADDRESS + "/data/voice",
+                ),
+            ]);
+            gameResponce = response[0];
+            voiceResponce = response[1];
+        } catch (err) {
+            // an error returned for one of the queries
+            Swal.fire({
+                title: `Error with the server: GET ${err.config.url}`,
+                text: err.response
+                    ? err.response.data.msg
+                    : `HTTP Code ${err.response.status}`,
+                icon: "error",
             });
+            emptyResults = true;
+            return;
+        }
 
-        let voiceDownloaded: VoiceLog[] = [];
-        await axios
-            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/voice")
-            .then((res) => {
-                voiceDownloaded = res.data;
-            })
-            .catch((err) => {
-                Swal.close();
-                Swal.fire({
-                    title: "Error with the server: GET /data/voice",
-                    text:
-                        err.response.data.msg ||
-                        `HTTP Code ${err.response.status}`,
-                    icon: "error",
-                });
-            });
+        // get + filter data for responses
+        let gameDownloaded: GameLog[] = gameResponce.data;
+        let voiceDownloaded: VoiceLog[] = voiceResponce.data;
 
         // filter the data
         gameDownloaded = gameDownloaded.filter(
@@ -153,7 +150,8 @@ export default function Data() {
                 data.username.toLowerCase() === userId.toLowerCase(),
         );
 
-        if (!gameDownloaded.length && !voiceDownloaded.length) {
+        emptyResults = !gameDownloaded.length && !voiceDownloaded.length;
+        if (emptyResults) {
             await Swal.fire({
                 title: `No results for this ${inputType}`,
                 icon: "error",
@@ -170,7 +168,7 @@ export default function Data() {
     // if the user is logged in set the box to their user name and fetch logs
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-        if (gameLogs.length === 0 && voiceLogs.length === 0) {
+        if (gameLogs.length === 0 && voiceLogs.length === 0 && !emptyResults) {
             setUserId(user.isLoggedIn ? user.username : "");
             if (userId !== "") {
                 fetchLogs();
