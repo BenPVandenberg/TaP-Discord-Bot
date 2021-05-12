@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core/styles";
 import "fontsource-roboto";
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import NavBar from "./Components/NavBar";
 import Account from "./Pages/Account";
 import Data from "./Pages/Data";
@@ -14,6 +14,7 @@ import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Sounds from "./Pages/Sounds";
 import Suggest from "./Pages/Suggest";
+import NotFound from "./Pages/NotFound";
 import { useAppDispatch } from "./store/hooks";
 import { logIn } from "./store/User/user.actions";
 import { recoverUser } from "./utils/user";
@@ -98,12 +99,15 @@ export default function App() {
                     </div>
                     <div className={classes.pageWrapper}>
                         <div className={classes.contentWrapper}>
-                            <Route exact path="/" component={Home} />
-                            <Route path="/sounds" component={Sounds} />
-                            <Route path="/data" component={Data} />
-                            <Route path="/suggest" component={Suggest} />
-                            <Route path="/login" component={Login} />
-                            <Route path="/account" component={Account} />
+                            <Switch>
+                                <Route exact path="/" component={Home} />
+                                <Route path="/sounds" component={Sounds} />
+                                <Route path="/data" component={Data} />
+                                <Route path="/suggest" component={Suggest} />
+                                <Route path="/login" component={Login} />
+                                <Route path="/account" component={Account} />
+                                <Route component={NotFound} />
+                            </Switch>
                         </div>
                     </div>
                 </Router>
