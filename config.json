@@ -13,7 +13,7 @@
     "in_voice_role_id": "831948388689903636",
     "commands": {
         "rank": {
-            "free_ranks": ["minecraft", "valorant", "valheim"]
+            "free_ranks": ["minecraft", "valorant"]
         },
         "secret_santa": {
             "active": false
