@@ -166,7 +166,8 @@ export default function Data() {
     // if the user is logged in set the box to their user name and fetch logs
     useEffect(() => {
         setUserId(user.isLoggedIn ? user.username : "");
-        if (user.username !== "") {
+
+        if (user.isLoggedIn && user.username) {
             fetchLogs(user.username);
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
