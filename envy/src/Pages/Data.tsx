@@ -86,16 +86,15 @@ export default function Data() {
     const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
     const [userId, setUserId] = useState<string>("");
-    let emptyResults = false; // used to prevent an infinite loop when a user has no logs
 
     // this function will update the data on the visible table
-    const fetchLogs = async () => {
+    const fetchLogs = async (user: string) => {
         // verify we have a string
-        if (!userId) return;
+        if (!user) return;
 
-        const userIdNum: number = Number(userId);
+        const userNum: number = Number(user);
 
-        let inputType: "userID" | "username" = isNaN(userIdNum)
+        let inputType: "userID" | "username" = isNaN(userNum)
             ? "username"
             : "userID";
 
@@ -129,7 +128,6 @@ export default function Data() {
                     : `HTTP Code ${err.response.status}`,
                 icon: "error",
             });
-            emptyResults = true;
             return;
         }
 
@@ -140,18 +138,18 @@ export default function Data() {
         // filter the data
         gameDownloaded = gameDownloaded.filter(
             (data) =>
-                data.userID === userIdNum ||
-                data.username.toLowerCase() === userId.toLowerCase(),
+                data.userID === userNum ||
+                data.username.toLowerCase() === user.toLowerCase(),
         );
 
         voiceDownloaded = voiceDownloaded.filter(
             (data) =>
-                data.userID === userIdNum ||
-                data.username.toLowerCase() === userId.toLowerCase(),
+                data.userID === userNum ||
+                data.username.toLowerCase() === user.toLowerCase(),
         );
 
-        emptyResults = !gameDownloaded.length && !voiceDownloaded.length;
-        if (emptyResults) {
+        // if no data on user
+        if (!gameDownloaded.length && !voiceDownloaded.length) {
             await Swal.fire({
                 title: `No results for this ${inputType}`,
                 icon: "error",
@@ -166,15 +164,12 @@ export default function Data() {
     };
 
     // if the user is logged in set the box to their user name and fetch logs
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-        if (gameLogs.length === 0 && voiceLogs.length === 0 && !emptyResults) {
-            setUserId(user.isLoggedIn ? user.username : "");
-            if (userId !== "") {
-                fetchLogs();
-            }
+        setUserId(user.isLoggedIn ? user.username : "");
+        if (user.username !== "") {
+            fetchLogs(user.username);
         }
-    });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const classes = useStyles();
     return (
@@ -189,7 +184,7 @@ export default function Data() {
                     value={userId}
                     onChange={(event) => setUserId(event.target.value)}
                     onKeyPress={(event) => {
-                        if (event.key === "Enter") fetchLogs();
+                        if (event.key === "Enter") fetchLogs(userId);
                     }}
                 />
             </div>
