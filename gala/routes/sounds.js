@@ -99,10 +99,10 @@ router.post(
         const localName = myFile.name.slice(0, -4).toLowerCase();
 
         // add sound to the db
-        sql.query(`INSERT INTO Sound (SoundName, Owner) VALUES (?, ?);`, [
-            localName,
-            userID || null,
-        ]);
+        await sql.query(
+            `INSERT INTO Sound (SoundName, UploadDate, Owner) VALUES (?, CONVERT_TZ(NOW(), 'UTC', 'America/New_York'), ?);`,
+            [localName, userID || null],
+        );
 
         // returning the response with file name
         return res.status(201).send({
