@@ -5,10 +5,6 @@ import { LOG_IN, LOG_OUT } from "./user.types";
 // TODO find out what variables we can store
 export const INITIAL_STATE: UserState = {
     isLoggedIn: false,
-    id: "",
-    username: "",
-    avatar: "",
-    discriminator: "",
 };
 
 const reducer = (state = INITIAL_STATE, action: AnyAction) => {
@@ -21,7 +17,6 @@ const reducer = (state = INITIAL_STATE, action: AnyAction) => {
 
         case LOG_OUT:
             return {
-                ...state,
                 isLoggedIn: false,
             };
 

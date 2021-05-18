@@ -6,7 +6,7 @@ import { IoSend } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { logOut } from "../store/User/user.actions";
-import { clearTokens } from "../utils/user";
+import { logOutUser } from "../utils/user";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -40,7 +40,7 @@ export default function NavBar() {
     const classes = useStyles();
 
     const logout = () => {
-        clearTokens();
+        logOutUser();
         dispatch(logOut());
     };
 
