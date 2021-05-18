@@ -11,12 +11,7 @@ router.get(
     "/",
     asyncHandler(async (req, res, next) => {
         const rtnDataArr = [];
-        const [rows] = await sql.query(
-            "SELECT PlayLog.SoundName, Count(PlayLog.ID) AS Occurrences, UserID as OwnerID, Username as OwnerName " +
-                "FROM Sound left join PlayLog on Sound.SoundName = PlayLog.SoundName " +
-                "left join User on Sound.Owner = User.UserID " +
-                "GROUP BY SoundName;",
-        );
+        const [rows] = await sql.query("SELECT * FROM Discord_Bot.SoundStats;");
         if (rows.length === 0) {
             res.status(400).send({ msg: "DB reporting no sounds" });
             return;
