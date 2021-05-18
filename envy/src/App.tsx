@@ -1,4 +1,3 @@
-import "@fontsource/roboto/400.css";
 import {
     createMuiTheme,
     makeStyles,
@@ -7,6 +6,7 @@ import {
 } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import "typeface-roboto";
 import NavBar from "./Components/NavBar";
 import Account from "./Pages/Account";
 import Data from "./Pages/Data";
