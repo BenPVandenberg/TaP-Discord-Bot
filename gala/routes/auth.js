@@ -53,7 +53,7 @@ router.get(
     asyncHandler(async (req, res) => {
         const { refreshToken } = req.query;
         if (!refreshToken) {
-            res.status(400).send("No refresh token provided");
+            return res.status(400).send({ msg: "No refresh token provided" });
         }
         const formData = new FormData();
         formData.append("client_id", CLIENT_ID);
@@ -69,6 +69,29 @@ router.get(
             access_token: resObj.access_token,
             refresh_token: resObj.refresh_token,
         });
+    }),
+);
+
+router.get(
+    "/revoke",
+    asyncHandler(async (req, res) => {
+        const { refreshToken } = req.query;
+        if (!refreshToken) {
+            return res.status(400).send({ msg: "No access token provided" });
+        }
+        const formData = new FormData();
+        formData.append("client_id", CLIENT_ID);
+        formData.append("client_secret", CLIENT_SECRET);
+        formData.append("token", refreshToken);
+        const data = await fetch(
+            "https://discord.com/api/oauth2/token/revoke",
+            {
+                method: "POST",
+                body: formData,
+            },
+        );
+
+        res.status(data.status).send();
     }),
 );
 
