@@ -31,6 +31,17 @@ const useStyles = makeStyles((theme) => {
                 cursor: "pointer",
             },
         },
+        profileNavEntry: {
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            color: theme.palette.getContrastText("#1b1e21"),
+            "&:hover": {},
+        },
+        profilePicture: {
+            borderRadius: "50%",
+            height: "55px",
+        },
     };
 });
 
@@ -47,12 +58,20 @@ export default function NavBar() {
     let accountButton;
     if (user.isLoggedIn) {
         accountButton = (
-            // <Link to={"/account"} className={classes.aLink}>
-            <div className={classes.navEntry} onClick={logout}>
-                <BiLogOut size={35} />
-                <p>Log Out</p>
+            <div>
+                <div className={classes.navEntry} onClick={logout}>
+                    <BiLogOut size={35} />
+                    <p>Log Out</p>
+                </div>
+                <div className={classes.profileNavEntry}>
+                    <img
+                        className={classes.profilePicture}
+                        src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.jpg`}
+                        alt="profile"
+                    />
+                    <p>{user.username}</p>
+                </div>
             </div>
-            // </Link>
         );
     } else {
         accountButton = (
