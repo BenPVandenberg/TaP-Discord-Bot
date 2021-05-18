@@ -59,7 +59,7 @@ router.post(
 
         // verify the file is valid
         if (!myFile.name.endsWith(".mp3") || myFile.mimetype !== "audio/mpeg") {
-            return res.status(400).send({
+            return res.status(415).send({
                 msg: "File uploaded isn't a correct format. Must be a .mp3 file",
             });
         }
@@ -81,9 +81,23 @@ router.post(
             return res.status(400).send({ msg: "That file already exists" });
         }
 
+        const localName = myFile.name.slice(0, -4).toLowerCase();
+        // add sound to the db
+        try {
+            await sql.query(
+                `INSERT INTO Sound (SoundName, UploadDate, Owner) VALUES (?, CONVERT_TZ(NOW(), 'UTC', 'America/New_York'), ?);`,
+                [localName, userID || null],
+            );
+        } catch (err) {
+            if (err.code === "ER_DUP_ENTRY") {
+                return res
+                    .status(409)
+                    .send({ msg: "That file already exists in the database" });
+            }
+        }
+
         // all checks are done now to add the sound
         // mv() method places the file inside public directory
-
         myFile.mv(fullFilePath, (err) => {
             if (err) {
                 return res.status(500).send({
@@ -91,13 +105,6 @@ router.post(
                 });
             }
         });
-        const localName = myFile.name.slice(0, -4).toLowerCase();
-
-        // add sound to the db
-        await sql.query(
-            `INSERT INTO Sound (SoundName, UploadDate, Owner) VALUES (?, CONVERT_TZ(NOW(), 'UTC', 'America/New_York'), ?);`,
-            [localName, userID || null],
-        );
 
         // returning the response with file name
         return res.status(201).send({
