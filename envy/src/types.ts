@@ -1,23 +1,23 @@
-export interface GameLog {
+interface TimeLog {
     userID: number;
     username: string;
-    game: string;
     start: Date;
     end: Date | null;
 }
 
-export interface VoiceLog {
-    userID: number;
-    username: string;
+export interface GameLog extends TimeLog {
+    game: string;
+}
+
+export interface VoiceLog extends TimeLog {
     channel: string;
-    start: Date;
-    end: Date | null;
 }
 
 export interface UserState {
     isLoggedIn: boolean;
-    id: string;
-    username: string;
-    avatar: string;
-    discriminator: string;
+    id?: string;
+    username?: string;
+    avatar?: string;
+    discriminator?: string;
+    isAdmin?: boolean;
 }
