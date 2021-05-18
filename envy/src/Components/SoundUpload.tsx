@@ -97,9 +97,7 @@ export default function SoundUpload() {
                     // server gave us error code
                     else if (res.response !== undefined) {
                         Swal.fire({
-                            title:
-                                res.response.data.msg ||
-                                `Error code ${res.status}: ${res.statusText}`,
+                            title: res.response.data.msg || res.message,
                             icon: "error",
                         });
                     }
