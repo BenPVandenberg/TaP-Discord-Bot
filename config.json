@@ -17,6 +17,9 @@
         },
         "secret_santa": {
             "active": false
+        },
+        "play": {
+            "hidden_sounds": ["stfu0", "stfu1", "stfu2", "timeout"]
         }
     }
 }

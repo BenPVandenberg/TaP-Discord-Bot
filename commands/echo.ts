@@ -4,6 +4,7 @@ import Discord from "discord.js";
 module.exports = {
     name: "echo",
     description: "echos the message given",
+    alias: ["say"],
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         message.delete();

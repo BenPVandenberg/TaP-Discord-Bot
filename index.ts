@@ -8,9 +8,10 @@ import * as channels from "./utilities/channels";
 import * as colors from "./utilities/colors";
 import * as log from "./utilities/log";
 import * as sql from "./utilities/sql";
+import { Command } from "./utilities/types";
 
 const bot = new Discord.Client();
-const bot_commands = new Discord.Collection<string, any>();
+const bot_commands: Command[] = [];
 
 let bot_voice_ready = true;
 
@@ -21,8 +22,8 @@ const commandFiles = fs
 
 // add commands to bot
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    bot_commands.set(command.name, command);
+    const command: Command = require(`./commands/${file}`);
+    bot_commands.push(command);
 }
 
 // ready
@@ -96,7 +97,19 @@ bot.on("message", async (message) => {
     command = command.toLowerCase();
 
     // check if the bot has the command
-    if (!bot_commands.has(command)) return;
+    let cmd: Command | null = null;
+    for (const currentCommand of bot_commands) {
+        // check if command matches name or any alias
+        if (
+            currentCommand.name === command ||
+            (currentCommand.alias && currentCommand.alias.includes(command))
+        ) {
+            cmd = currentCommand;
+        }
+    }
+
+    // if no command found return
+    if (!cmd) return;
 
     // log command received
     assert(message.member instanceof Discord.GuildMember);
@@ -105,7 +118,6 @@ bot.on("message", async (message) => {
     );
 
     try {
-        const cmd = bot_commands.get(command);
         // check if the bot is already talking
         if (cmd.requireVoice) {
             if (!bot_voice_ready) {
@@ -198,7 +210,11 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
 
     if (oldMember.channelID !== null && newMember.channelID === null) {
         // leave event
-        await sql.dbCloseVoiceLog(newMember.member, oldMember.channelID, sessionID);
+        await sql.dbCloseVoiceLog(
+            newMember.member,
+            oldMember.channelID,
+            sessionID,
+        );
 
         // remove in voice role
         if (in_voice_role) {
@@ -283,7 +299,7 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
             await sql.dbCloseGameLog(newMember.member, game);
         }
     }
-    
+
     for (const game of new_activities) {
         // look for app in old_activities
         const search = old_activities.find((app) => app.name === game.name);
@@ -301,7 +317,7 @@ bot.on(
         user: Discord.User | Discord.PartialUser,
     ) => {
         const emoji = reaction.emoji;
-        if (emoji.name === "pngcliparthotdoghamburgerfrenchf"){
+        if (emoji.name === "pngcliparthotdoghamburgerfrenchf") {
             reaction.message.react(emoji);
         }
     },

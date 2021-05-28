@@ -36,7 +36,7 @@ module.exports = {
                 );
 
                 // if member already has the role
-                assert(message.member !== null);
+                assert(message.member instanceof Discord.GuildMember);
                 assert(roleToAdd instanceof Discord.Role);
 
                 if (message.member.roles.cache.has(roleToAdd.id)) {
@@ -52,7 +52,9 @@ module.exports = {
                             );
                         })
                         .catch((err) => {
-                            assert(message.member !== null);
+                            assert(
+                                message.member instanceof Discord.GuildMember,
+                            );
                             message.reply(
                                 `Unable to add ${roleToAdd.name} to ${message.member.nickname}.`,
                             );
