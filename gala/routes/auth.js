@@ -20,7 +20,13 @@ router.get("/login", (req, res) => {
 router.get(
     "/callback",
     asyncHandler(async (req, res) => {
-        if (!req.query.code) throw new Error("NoCodeProvided");
+        if (!req.query.code) {
+            return res.redirect(
+                `${process.env.FRONTEND_URL}/login` +
+                    `?error=${req.query.error}` +
+                    `&error_description=${req.query.error_description}`,
+            );
+        }
         const { code } = req.query;
         const creds = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`);
         const data = {
