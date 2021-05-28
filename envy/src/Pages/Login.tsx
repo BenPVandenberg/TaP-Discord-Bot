@@ -9,6 +9,22 @@ import { logInUser } from "../utils/user";
 export default function Login() {
     const dispatch = useDispatch();
 
+    let errorTitle: string | null = null;
+    let errorMessage: string | null = null;
+
+    // STEP 1
+    // check for errors from backend
+    const errorParam = new URLSearchParams(window.location.search).get("error");
+    const errorDescription = new URLSearchParams(window.location.search).get(
+        "error_description",
+    );
+
+    if (errorParam === "access_denied") {
+        errorTitle = "Access Denied";
+        errorMessage = errorDescription;
+    }
+
+    // STEP 2
     // get tokens from url search pararms
     const accessToken = new URLSearchParams(window.location.search).get(
         "access_token",
@@ -25,10 +41,17 @@ export default function Login() {
                 dispatch(logIn(userInfo));
             }
         });
-    } else {
+    } else if (!errorTitle) {
+        errorTitle = "Something went wrong";
+        errorMessage = "No token provided";
+    }
+
+    // STEP 3
+    // display any errors
+    if (errorTitle) {
         Swal.fire({
-            title: "Something went wrong",
-            text: "No token provided",
+            title: errorTitle,
+            text: errorMessage ?? undefined,
             icon: "error",
         });
     }
