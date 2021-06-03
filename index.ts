@@ -54,7 +54,7 @@ bot.on("message", async (message) => {
         log.logToDiscord(
             'Unable to get role "674039470084849691"\n' +
                 "Formally chief of military tactics'",
-            log.getDefaultChannel(message.guild),
+            log.WARNING,
         );
         return;
     }
@@ -70,6 +70,11 @@ bot.on("message", async (message) => {
             message.content.startsWith("-")) &&
         !config.command_channels.includes(message.channel.id)
     ) {
+        log.logToDiscord(
+            `${message.author} tried to use bot command "${message.content}"` +
+                ` in a non command channel ${message.channel}`,
+            log.INFO,
+        );
         message.author.send("Oi! Bot commands are not allowed there.");
         message.delete();
     }
@@ -80,6 +85,10 @@ bot.on("message", async (message) => {
         config.restricted_bots.includes(message.author.id) &&
         !config.command_channels.includes(message.channel.id)
     ) {
+        log.logToDiscord(
+            `Restricted bot ${message.author} is talking in ${message.channel}`,
+            log.INFO,
+        );
         message.delete();
     }
 
@@ -135,11 +144,7 @@ bot.on("message", async (message) => {
     } catch (error) {
         console.error(error);
         message.reply("there was an error trying to execute that command!");
-        log.logToDiscord(
-            error,
-            log.getDefaultChannel(message.guild),
-            log.ERROR,
-        );
+        log.logToDiscord(error, log.ERROR);
     }
 });
 
@@ -176,19 +181,14 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
     // Check if sessionID is valid
     if (!sessionID) {
         log.logToDiscord(
-            "No Session for both states",
-            log.getDefaultChannel(newMember.guild),
-            log.ERROR,
+            "voiceStateUpdate: No Session for both states",
+            log.WARNING,
         );
         return;
     }
     // Assert member is not null
     if (!newMember.member) {
-        log.logToDiscord(
-            "Member Exception",
-            log.getDefaultChannel(newMember.guild),
-            log.ERROR,
-        );
+        log.logToDiscord("voiceStateUpdate: Member Exception", log.WARNING);
         return;
     }
 
@@ -203,8 +203,7 @@ bot.on("voiceStateUpdate", async (oldMember, newMember) => {
     if (!in_voice_role) {
         log.logToDiscord(
             `Cant find role ${config["in_voice_role_id"]}`,
-            log.getDefaultChannel(newMember.guild),
-            log.ERROR,
+            log.WARNING,
         );
     }
 
@@ -265,11 +264,7 @@ bot.on("presenceUpdate", async (oldMember, newMember) => {
     if (!newMember.member) {
         assert(newMember.guild);
 
-        log.logToDiscord(
-            "Member Exception",
-            log.getDefaultChannel(newMember.guild),
-            log.ERROR,
-        );
+        log.logToDiscord("presenceUpdate: Member Exception", log.WARNING);
         return;
     }
 
@@ -324,10 +319,12 @@ bot.on(
 );
 
 bot.on("shardError", async (error) => {
+    log.logToDiscord(`shardError: ${error.message}`, log.ERROR);
     console.error("A websocket connection encountered an error:", error);
 });
 
 process.on("unhandledRejection", async (error) => {
+    log.logToDiscord(`unhandledRejection: ${error}`, log.ERROR);
     console.error("Unhandled promise rejection:", error);
 });
 

@@ -1,22 +1,16 @@
-import Discord from "discord.js";
-import * as channels from "./channels";
+export const INFO = "INFO";
+export const WARNING = "WARNING";
+export const ERROR = "ERROR";
 
-export const INFO = 0;
-export const WARNING = 1;
-export const ERROR = 2;
-const levelText = ["INFO", "WARNING", "ERROR"];
+const discord_webhook = process.env.LOG_WEBHOOK;
 
-export function getDefaultChannel(guild: Discord.Guild) {
-    // returns channel "tp-bot-testing"
-    const defaultChannel = guild.channels.cache.get("740332251103101048");
+export function logToDiscord(message: string, level: string = INFO) {
+    // if no webhook then don't do anything
+    if (!discord_webhook) return;
 
-    return channels.toTextChannel(defaultChannel);
-}
-
-export function logToDiscord(
-    message: string,
-    channel: Discord.TextChannel,
-    level: number = 0,
-) {
-    channel.send(`<@142668923660140544> ${levelText[level]}: ${message}`);
+    let data = { content: `<@142668923660140544> ${level}: ${message}` };
+    fetch(discord_webhook, {
+        method: "POST",
+        body: JSON.stringify(data),
+    });
 }
