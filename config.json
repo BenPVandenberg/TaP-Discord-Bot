@@ -1,6 +1,10 @@
 {
     "prefix": ".",
-    "command_channels": ["522935673964199936", "831947692179062795"],
+    "command_channels": [
+        "522935673964199936",
+        "740332251103101048",
+        "831947692179062795"
+    ],
     "restricted_bots": ["234395307759108106"],
     "ignore_games": [
         "Divinity: Original Sin 2",
