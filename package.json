@@ -5,14 +5,14 @@
     "main": "index.js",
     "scripts": {
         "pm2": "pm2 start --name Discord_Bot npm -- start",
-        "start": "ts-node .",
-        "stop": "pm2 kill"
+        "start": "ts-node ."
     },
     "author": "Ben Vandenberg",
     "license": "ISC",
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
         "@types/node": "^14.14.31",
+        "axios": "^0.21.1",
         "console-stamp": "^0.2.9",
         "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",

@@ -47,7 +47,10 @@ module.exports = {
             for (const sound in all_sounds) {
                 const cur_sound = all_sounds[sound].slice(0, -4);
 
-                if (!hidden_sounds.includes(cur_sound)) {
+                if (
+                    all_sounds[sound].endsWith(".mp3") &&
+                    !hidden_sounds.includes(cur_sound)
+                ) {
                     sound_list += "-" + cur_sound + "\n";
                 }
             }

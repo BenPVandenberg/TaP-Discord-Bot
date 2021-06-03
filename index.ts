@@ -70,9 +70,14 @@ bot.on("message", async (message) => {
             message.content.startsWith("-")) &&
         !config.command_channels.includes(message.channel.id)
     ) {
+        const cur_channel = message.channel!;
+        if (cur_channel instanceof Discord.DMChannel) {
+            return;
+        }
+
         log.logToDiscord(
-            `${message.author} tried to use bot command "${message.content}"` +
-                ` in a non command channel ${message.channel}`,
+            `<@${message.author}> tried to use bot command "${message.content}"` +
+                ` in a non command channel #${cur_channel.name}`,
             log.INFO,
         );
         message.author.send("Oi! Bot commands are not allowed there.");
@@ -85,8 +90,13 @@ bot.on("message", async (message) => {
         config.restricted_bots.includes(message.author.id) &&
         !config.command_channels.includes(message.channel.id)
     ) {
+        const cur_channel = message.channel!;
+        if (cur_channel instanceof Discord.DMChannel) {
+            return;
+        }
+
         log.logToDiscord(
-            `Restricted bot ${message.author} is talking in ${message.channel}`,
+            `Restricted bot <@${message.author}> is talking in #${cur_channel.name}`,
             log.INFO,
         );
         message.delete();
