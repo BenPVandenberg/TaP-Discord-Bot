@@ -115,8 +115,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# binary for pulling on aws
-git_pull
-
-# data logging folder
-data/
+# audio files
+audio/*.mp3
