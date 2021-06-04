@@ -15,7 +15,7 @@ module.exports = {
         // put arg to lowercase if it exists
         try {
             // if this doesn't exist then this will throw an error
-            args[0] = args[0].toLowerCase();
+            const soundName = args[0].toLowerCase();
             assert(message.member);
 
             const voiceChannel = message.member.voice.channel;
@@ -24,7 +24,7 @@ module.exports = {
             }
 
             // check if file exists
-            if (!fs.existsSync(`./audio/${args[0]}.mp3`)) {
+            if (!fs.existsSync(`./audio/${soundName}.mp3`)) {
                 throw "not a valid sound";
             }
 
@@ -32,12 +32,12 @@ module.exports = {
 
             // join and play yt audio
             await voiceChannel.join().then((connection) => {
-                const dispatcher = connection.play(`./audio/${args[0]}.mp3`);
+                const dispatcher = connection.play(`./audio/${soundName}.mp3`);
                 dispatcher.on("finish", () => voiceChannel.leave());
             });
 
             // sound played successfully, therefore update database
-            sql.dbMakeSoundLog(args[0], message.member);
+            sql.dbMakeSoundLog(soundName, message.member);
         } catch (e) {
             const all_sounds = fs.readdirSync("./audio");
             const hidden_sounds = config.commands.play.hidden_sounds;

@@ -1,5 +1,6 @@
 import Discord from "discord.js";
-import * as mysql from "mysql2";
+import * as mysql from "mysql2/promise";
+import * as log from "./log";
 
 abstract class PoolClass {
     public static connectionPool = mysql.createPool({
@@ -12,8 +13,8 @@ abstract class PoolClass {
 }
 
 export async function makeSQLQuery(query: string) {
-    PoolClass.connectionPool.query('SET time_zone = "EST";');
-    PoolClass.connectionPool.query(query);
+    await PoolClass.connectionPool.query('SET time_zone = "EST";');
+    return await PoolClass.connectionPool.query(query);
 }
 
 export async function verifyUser(user: Discord.GuildMember) {
@@ -30,6 +31,7 @@ export async function verifyUser(user: Discord.GuildMember) {
                 `WHERE UserID = ${user.id}`,
         );
     } catch (e) {
+        log.logToDiscord(e, log.ERROR);
         console.error(e);
     }
 }
@@ -49,6 +51,7 @@ export async function dbMakeSoundLog(
                 `VALUES (${requestor.id}, '${soundName}');`,
         );
     } catch (e) {
+        log.logToDiscord(e, log.ERROR);
         console.error(e);
     }
 }
@@ -72,6 +75,7 @@ export async function dbMakeGameLog(
                 `VALUES (${user.id}, "${game.name}");`,
         );
     } catch (e) {
+        log.logToDiscord(e, log.ERROR);
         console.error(e);
     }
 }
@@ -95,6 +99,7 @@ export async function dbCloseGameLog(
                 ");",
         );
     } catch (e) {
+        log.logToDiscord(e, log.ERROR);
         console.error(e);
     }
 }
@@ -107,7 +112,6 @@ export async function dbMakeVoiceLog(
 ) {
     try {
         await verifyUser(user);
-
         await makeSQLQuery(
             `INSERT IGNORE INTO VoiceSession (SessionID, UserID) ` +
                 `VALUES ('${sessionID}', ${user.id});`,
@@ -121,6 +125,7 @@ export async function dbMakeVoiceLog(
                 `('${sessionID}', ${channelID});`,
         );
     } catch (e) {
+        log.logToDiscord(e, log.ERROR);
         console.error(e);
     }
 }
@@ -132,7 +137,6 @@ export async function dbCloseVoiceLog(
 ) {
     try {
         await verifyUser(user);
-
         await makeSQLQuery(
             "UPDATE VoiceLog " +
                 "SET End = NOW() " +
@@ -145,6 +149,26 @@ export async function dbCloseVoiceLog(
                 "WHERE (End IS NULL));",
         );
     } catch (e) {
+        log.logToDiscord(e, log.ERROR);
         console.error(e);
+    }
+}
+
+export async function isAdmin(
+    user: Discord.GuildMember | null,
+): Promise<boolean> {
+    if (!user) return false;
+    try {
+        await verifyUser(user);
+
+        const result = await makeSQLQuery(
+            `SELECT isAdmin FROM Discord_Bot.User where UserID = ${user.id};`,
+        );
+        // @ts-ignore
+        return result[0][0].isAdmin === 1;
+    } catch (e) {
+        log.logToDiscord(e, log.ERROR);
+        console.log(e);
+        return false;
     }
 }

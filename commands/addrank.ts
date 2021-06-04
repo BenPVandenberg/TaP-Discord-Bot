@@ -1,6 +1,8 @@
 import assert from "assert";
-import Discord from "discord.js";
+import Discord, { GuildMember } from "discord.js";
 const config = require("../config.json");
+import { isAdmin } from "../utilities/sql";
+import * as log from "../utilities/log";
 
 // addrank.js
 // ========
@@ -10,6 +12,8 @@ module.exports = {
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         const rank_config = config.commands.rank;
+        const userIsAdmin = isAdmin(message.member);
+        let memberToEdit: Discord.GuildMember | null = message.member;
 
         // give user list of ranks
         if (!args.length) {
@@ -24,27 +28,35 @@ module.exports = {
             return;
         }
 
-        // user gave some ranks, lets go through them
-        for (let arg in args) {
-            arg = args[arg].toLowerCase();
+        let mentionedUserList: Discord.Collection<string, GuildMember> =
+            message.mentions.members!;
+        let mentionedUser: GuildMember | undefined = mentionedUserList.first();
+        if (mentionedUser) {
+            memberToEdit = mentionedUser;
+            args.shift();
+        }
 
-            if (rank_config.free_ranks.includes(arg)) {
+        // user gave a rank
+        const rankToAdd = args.join(" ").toLowerCase().trim();
+
+        try {
+            if (rank_config.free_ranks.includes(rankToAdd) || userIsAdmin) {
                 assert(message.guild !== null);
                 // is is a role we can manipulate
                 const roleToAdd = message.guild.roles.cache.find(
-                    (role) => role.name.toLowerCase() === arg,
+                    (role) => role.name.toLowerCase() === rankToAdd,
                 );
 
                 // if member already has the role
-                assert(message.member instanceof Discord.GuildMember);
+                assert(memberToEdit instanceof Discord.GuildMember);
                 assert(roleToAdd instanceof Discord.Role);
 
-                if (message.member.roles.cache.has(roleToAdd.id)) {
+                if (memberToEdit.roles.cache.has(roleToAdd.id)) {
                     message.reply(`User already has ${roleToAdd.name} rank!`);
                 }
                 // if member doesn't have the role
                 else {
-                    message.member.roles
+                    memberToEdit.roles
                         .add(roleToAdd)
                         .then(() => {
                             message.reply(
@@ -52,18 +64,19 @@ module.exports = {
                             );
                         })
                         .catch((err) => {
-                            assert(
-                                message.member instanceof Discord.GuildMember,
-                            );
+                            assert(memberToEdit instanceof Discord.GuildMember);
                             message.reply(
-                                `Unable to add ${roleToAdd.name} to ${message.member.nickname}.`,
+                                `Unable to add ${roleToAdd.name} to ${memberToEdit.nickname}.`,
                             );
                             throw err;
                         });
                 }
             } else {
-                message.reply(`${arg} is not a role I can assign.`);
+                message.reply(`${rankToAdd} is not a role I can assign.`);
             }
+        } catch (err) {
+            log.logToDiscord(err, log.WARNING);
+            console.log(err);
         }
     },
 };
