@@ -17,6 +17,7 @@ export default function NotFound() {
     const classes = useStyles();
     return (
         <div className={classes.wrapper}>
+            <h1>404 Not Found</h1>
             <img src={notFoundPicture} alt="404 not found meme" />
         </div>
     );
