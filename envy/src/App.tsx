@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core/styles";
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
-import "typeface-roboto";
+import "typeface-roboto/index.css";
 import NavBar from "./Components/NavBar";
 import Account from "./Pages/Account";
 import Data from "./Pages/Data";
@@ -73,6 +73,10 @@ const useStyles = makeStyles((theme) => ({
         background: "rgba(0, 0, 0, 0.54)",
         color: darkTheme.palette.getContrastText("rgba(0, 0, 0, 0.54)"),
     },
+    copyrightText: {
+        color: "grey",
+        fontSize: "small",
+    },
 }));
 
 export default function App() {
@@ -107,6 +111,10 @@ export default function App() {
                             <Route path="/account" component={Account} />
                             <Route component={NotFound} />
                         </Switch>
+                        <p className={classes.copyrightText}>
+                            © {new Date().getFullYear()}. Made by Ben
+                            Vandenberg.
+                        </p>
                     </div>
                 </div>
             </ThemeProvider>
