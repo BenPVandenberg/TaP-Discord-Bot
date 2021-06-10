@@ -75,8 +75,8 @@ const useStyles = makeStyles((theme) => ({
     },
     copyrightText: {
         color: "grey",
-        fontSize: "small"
-    }
+        fontSize: "small",
+    },
 }));
 
 export default function App() {
@@ -111,7 +111,10 @@ export default function App() {
                             <Route path="/account" component={Account} />
                             <Route component={NotFound} />
                         </Switch>
-                        <p className={classes.copyrightText}>© { new Date().getFullYear() }. Made by Ben Vandenberg.</p>
+                        <p className={classes.copyrightText}>
+                            © {new Date().getFullYear()}. Made by Ben
+                            Vandenberg.
+                        </p>
                     </div>
                 </div>
             </ThemeProvider>
