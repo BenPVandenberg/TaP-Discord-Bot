@@ -3,18 +3,37 @@ import * as mysql from "mysql2/promise";
 import * as log from "./log";
 
 abstract class PoolClass {
-    public static connectionPool = mysql.createPool({
-        connectionLimit: 10,
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: "Discord_Bot",
-    });
+    // set pool as undefined to start
+    private static connectionPool: mysql.Pool | undefined = undefined;
+
+    public static getPool(): mysql.Pool | undefined {
+        // if the pool is undefined see if we can connect
+        if (
+            !this.connectionPool &&
+            process.env.DB_HOST &&
+            process.env.DB_USER
+            // password not a required parameter
+        ) {
+            // if yes set the pool to the new object
+            this.connectionPool = mysql.createPool({
+                connectionLimit: 10,
+                host: process.env.DB_HOST,
+                user: process.env.DB_USER,
+                password: process.env.DB_PASSWORD,
+                database: "Discord_Bot",
+            });
+        }
+
+        return this.connectionPool;
+    }
 }
 
 export async function makeSQLQuery(query: string) {
-    await PoolClass.connectionPool.query('SET time_zone = "EST";');
-    return await PoolClass.connectionPool.query(query);
+    const sqlConnectionPool = PoolClass.getPool();
+    if (sqlConnectionPool) {
+        await sqlConnectionPool.query('SET time_zone = "EST";');
+        return await sqlConnectionPool.query(query);
+    }
 }
 
 export async function verifyUser(user: Discord.GuildMember) {
