@@ -42,7 +42,7 @@ bot.on("message", async (message) => {
     if (!message.guild) {
         if (!message.author.bot) {
             log.logToDiscord(
-                `Private Message from ${message.author.username}: ${message.content}`,
+                `Private Message from <@${message.author.id}>: ${message.content}`,
             );
             message.reply(
                 "Wow someone actually messaged me... don't like it, fuck off!",
