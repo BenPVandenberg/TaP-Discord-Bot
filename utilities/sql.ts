@@ -31,8 +31,7 @@ abstract class PoolClass {
 export async function makeSQLQuery(query: string) {
     const sqlConnectionPool = PoolClass.getPool();
     if (sqlConnectionPool) {
-        await sqlConnectionPool.query('SET time_zone = "EST";');
-        return await sqlConnectionPool.query(query);
+        return await sqlConnectionPool.query(`SET time_zone = "EST";${query}`);
     }
 }
 
