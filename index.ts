@@ -41,6 +41,9 @@ bot.on("message", async (message) => {
     // nested if required to guarantee guild isn't null
     if (!message.guild) {
         if (!message.author.bot) {
+            log.logToDiscord(
+                `Private Message from ${message.author.username}: ${message.content}`,
+            );
             message.reply(
                 "Wow someone actually messaged me... don't like it, fuck off!",
             );
