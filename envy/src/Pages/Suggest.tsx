@@ -27,9 +27,7 @@ export default function Suggest() {
 
     return (
         <div className={classes.wrapper}>
-            <h1>
-                <p>Suggestion Page</p>
-            </h1>
+            <h1>Suggestion Page</h1>
             {/* GitHub button */}
             <a
                 style={{ textDecoration: "none" }}

@@ -17,6 +17,7 @@ export interface UserState {
     isLoggedIn: boolean;
     id?: string;
     username?: string;
+    displayName?: string;
     avatar?: string;
     discriminator?: string;
     isAdmin?: boolean;

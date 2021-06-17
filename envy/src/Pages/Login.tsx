@@ -36,7 +36,7 @@ export default function Login() {
     if (accessToken && refreshToken) {
         setTokens(accessToken, refreshToken);
 
-        logInUser().then((userInfo: UserState | null) => {
+        logInUser().then((userInfo) => {
             if (userInfo) {
                 dispatch(logIn(userInfo));
             }
