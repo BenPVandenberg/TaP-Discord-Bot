@@ -1,7 +1,9 @@
 import assert from "assert";
 import Discord from "discord.js";
 import fs from "fs";
+import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
+import { playMP3 } from "../utilities/voice";
 const config = require("../config.json");
 
 // ranks.js
@@ -18,23 +20,21 @@ module.exports = {
             const soundName = args[0].toLowerCase();
             assert(message.member);
 
-            const voiceChannel = message.member.voice.channel;
+            const voiceChannel = toVoiceChannel(message.member.voice.channel);
             if (!voiceChannel) {
                 return message.reply("please join a voice channel first!");
             }
 
+            const filePath = `./audio/${soundName}.mp3`;
             // check if file exists
-            if (!fs.existsSync(`./audio/${soundName}.mp3`)) {
+            if (!fs.existsSync(filePath)) {
                 throw "not a valid sound";
             }
 
             message.react("👍");
 
             // join and play yt audio
-            await voiceChannel.join().then((connection) => {
-                const dispatcher = connection.play(`./audio/${soundName}.mp3`);
-                dispatcher.on("finish", () => voiceChannel.leave());
-            });
+            await playMP3(voiceChannel, filePath);
 
             // sound played successfully, therefore update database
             sql.dbMakeSoundLog(soundName, message.member);
@@ -56,15 +56,17 @@ module.exports = {
             }
 
             assert(message.member);
-            const member_embed = new Discord.MessageEmbed()
-                .setTitle("__**Available sounds**__")
-                .setDescription(sound_list)
-                .setColor(message.member.displayHexColor)
-                .setThumbnail(
-                    "https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png",
-                ); // Their icon
-
-            message.channel.send(member_embed);
+            message.channel.send({
+                embeds: [
+                    new Discord.MessageEmbed()
+                        .setTitle("__**Available sounds**__")
+                        .setDescription(sound_list)
+                        .setColor(message.member.displayHexColor)
+                        .setThumbnail(
+                            "https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png",
+                        ),
+                ],
+            });
         }
     },
 };

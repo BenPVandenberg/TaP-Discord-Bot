@@ -17,10 +17,12 @@ export function toTextChannel(channel: Discord.GuildChannel | undefined) {
     return channel;
 }
 
-export function toVoiceChannel(channel: Discord.GuildChannel | undefined) {
+export function toVoiceChannel(
+    channel: Discord.GuildChannel | Discord.StageChannel | undefined | null,
+) {
     // check its not null
     if (!channel) {
-        throw new Error("Invalid channel");
+        return null;
     }
 
     // convert to textchannel

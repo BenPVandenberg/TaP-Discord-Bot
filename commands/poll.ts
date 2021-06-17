@@ -22,9 +22,11 @@ module.exports = {
             .setColor(message.member.displayHexColor)
             .setFooter(`Asked By: ${message.member.displayName}`);
 
-        return message.channel.send(poll_embed).then(async (pollMessage) => {
-            await pollMessage.react("👍");
-            await pollMessage.react("👎");
-        });
+        return message.channel
+            .send({ embeds: [poll_embed] })
+            .then(async (pollMessage) => {
+                await pollMessage.react("👍");
+                await pollMessage.react("👎");
+            });
     },
 };

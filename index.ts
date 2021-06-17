@@ -1,16 +1,34 @@
 require("dotenv").config();
 require("console-stamp")(console, { pattern: "dd/mm/yyyy HH:MM:ss.l" });
 import assert from "assert";
-import Discord from "discord.js";
+import Discord, { Client, Intents } from "discord.js";
 import fs from "fs";
-import config from "./config.json";
 import * as channels from "./utilities/channels";
 import * as colors from "./utilities/colors";
 import * as log from "./utilities/log";
 import * as sql from "./utilities/sql";
 import { Command } from "./utilities/types";
+const config = require("./config.json");
 
-const bot = new Discord.Client();
+const bot = new Client({
+    intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILD_BANS,
+        Intents.FLAGS.GUILD_EMOJIS,
+        Intents.FLAGS.GUILD_INTEGRATIONS,
+        Intents.FLAGS.GUILD_WEBHOOKS,
+        Intents.FLAGS.GUILD_INVITES,
+        Intents.FLAGS.GUILD_VOICE_STATES,
+        Intents.FLAGS.GUILD_PRESENCES,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.GUILD_MESSAGE_TYPING,
+        Intents.FLAGS.DIRECT_MESSAGES,
+        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+        Intents.FLAGS.DIRECT_MESSAGE_TYPING,
+    ],
+});
 const bot_commands: Command[] = [];
 
 let bot_voice_ready = true;
@@ -22,8 +40,10 @@ const commandFiles = fs
 
 // add commands to bot
 for (const file of commandFiles) {
-    const command: Command = require(`./commands/${file}`);
-    bot_commands.push(command);
+    if (["play.ts"].includes(file)) {
+        const command: Command = require(`./commands/${file}`);
+        bot_commands.push(command);
+    }
 }
 
 // ready

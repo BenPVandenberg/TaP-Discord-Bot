@@ -8,7 +8,7 @@ module.exports = {
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         message.delete();
-        const echoTest = args.join(" ");
-        return message.channel.send(echoTest);
+        const echoText = args.join(" ");
+        return message.channel.send(echoText);
     },
 };

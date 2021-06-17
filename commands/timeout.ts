@@ -1,6 +1,7 @@
 import Discord from "discord.js";
 import * as channels from "../utilities/channels";
 import assert from "assert";
+import { playMP3 } from "../utilities/voice";
 // timeout.js
 // ========
 module.exports = {
@@ -46,19 +47,7 @@ module.exports = {
         // the magic
         message.react("👍");
         member_to_timeout.voice.setChannel(eligible_channel);
-
-        // join and play yt audio
-        await eligible_channel.join().then((connection) => {
-            const dispatcher = connection.play("./audio/timeout.mp3");
-
-            dispatcher.on("finish", () => {
-                // return member
-                member_to_timeout.voice.setChannel(original_channel);
-                assert(eligible_channel);
-                eligible_channel.leave();
-            });
-        });
-
-        return;
+        await playMP3(eligible_channel, "./audio/timeout.mp3");
+        member_to_timeout.voice.setChannel(original_channel);
     },
 };

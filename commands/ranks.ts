@@ -20,7 +20,6 @@ module.exports = {
             .setColor("#0099ff")
             .addField("All Server Ranks", all_ranks_string, false);
 
-        message.reply(all_ranks_embedded);
-        return;
+        return message.reply({ embeds: [all_ranks_embedded] });
     },
 };

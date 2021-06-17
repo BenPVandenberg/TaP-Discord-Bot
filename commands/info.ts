@@ -11,11 +11,11 @@ module.exports = {
         assert(message.guild);
 
         try {
-            const memberToSearch =
-                message.mentions.users.first() ||
+            rMember =
+                message.mentions.members?.first() ??
+                // @ts-ignore ts(2345)
                 message.guild.members.cache.get(args[0]);
-            assert(memberToSearch);
-            rMember = message.guild.member(memberToSearch);
+            assert(rMember);
         } catch (e) {
             return message.reply("usage: .info <@user | userid>");
         }
@@ -39,6 +39,8 @@ module.exports = {
             roles_display = "\u200B";
         }
 
+        assert(rMember.joinedAt);
+
         const member_embed = new Discord.MessageEmbed()
             .setDescription("__**Member Information**__")
             .setColor(rMember.displayHexColor)
@@ -46,9 +48,9 @@ module.exports = {
             .addField("Name", `${rUser.username}#${rUser.discriminator}`)
             .addField("ID", rMember.id) // Their ID
             .addField("Status", rUser.presence.status)
-            .addField("Joined at", rMember.joinedAt) // When they joined
+            .addField("Joined at", rMember.joinedAt.toLocaleString()) // When they joined
             .addField("Roles", roles_display);
 
-        message.channel.send(member_embed);
+        message.channel.send({ embeds: [member_embed] });
     },
 };
