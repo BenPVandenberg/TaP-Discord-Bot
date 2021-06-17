@@ -11,6 +11,7 @@ const indexRouter = require("./routes/index");
 const soundsRouter = require("./routes/sounds");
 const dataRouter = require("./routes/data");
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/", indexRouter);
 app.use("/sounds", soundsRouter);
 app.use("/data", dataRouter);
 app.use("/auth", authRouter);
+app.use("/user", userRouter);
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
