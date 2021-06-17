@@ -4,7 +4,6 @@ import fs from "fs";
 import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
 import { playMP3 } from "../utilities/voice";
-const config = require("../config.json");
 
 // ranks.js
 // ========
@@ -20,6 +19,7 @@ module.exports = {
             const soundName = args[0].toLowerCase();
             assert(message.member);
 
+            // check that the user is in a voice channel
             const voiceChannel = toVoiceChannel(message.member.voice.channel);
             if (!voiceChannel) {
                 return message.reply("please join a voice channel first!");
@@ -31,16 +31,19 @@ module.exports = {
                 throw "not a valid sound";
             }
 
+            // user in channel and sound is valid
             message.react("👍");
 
+            const volume = await sql.getSoundVolume(soundName);
+
             // join and play yt audio
-            await playMP3(voiceChannel, filePath);
+            await playMP3(voiceChannel, filePath, volume);
 
             // sound played successfully, therefore update database
-            sql.dbMakeSoundLog(soundName, message.member);
+            await sql.dbMakeSoundLog(soundName, message.member);
         } catch (e) {
             const all_sounds = fs.readdirSync("./audio");
-            const hidden_sounds = config.commands.play.hidden_sounds;
+            const hidden_sounds = await sql.getHiddenSounds();
             let sound_list = "";
 
             // get all current sounds

@@ -10,14 +10,18 @@ abstract class SharedAudio {
     public static player = createAudioPlayer();
 }
 
-export async function playMP3(channel: VoiceChannel, filePath: string) {
+export async function playMP3(
+    channel: VoiceChannel,
+    filePath: string,
+    volume: number = 1,
+) {
     const sharedPlayer = SharedAudio.player;
 
     const resource = createAudioResource(filePath, {
         inputType: StreamType.Arbitrary,
         inlineVolume: true,
     });
-    resource.volume?.setVolume(1);
+    resource.volume?.setVolume(volume);
 
     const connection = joinVoiceChannel({
         channelId: channel.id,

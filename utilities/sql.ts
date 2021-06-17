@@ -190,3 +190,38 @@ export async function isAdmin(
         return false;
     }
 }
+
+export async function getHiddenSounds(): Promise<string[]> {
+    try {
+        const result = await makeSQLQuery(
+            `SELECT SoundName FROM Discord_Bot.Sound where isHidden = True;`,
+        );
+
+        const output: string[] = [];
+        // @ts-ignore
+        result[0].forEach((element) => {
+            if (element) output.push(element.SoundName);
+        });
+
+        // @ts-ignore
+        return output;
+    } catch (e) {
+        log.logToDiscord(e, log.ERROR);
+        console.log(e);
+        return [];
+    }
+}
+
+export async function getSoundVolume(soundName: string): Promise<number> {
+    try {
+        const result = await makeSQLQuery(
+            `SELECT Volume FROM Discord_Bot.Sound where SoundName = "${soundName}";`,
+        );
+        // @ts-ignore
+        return result[0][0].Volume;
+    } catch (e) {
+        log.logToDiscord(e, log.ERROR);
+        console.log(e);
+        return 1;
+    }
+}
