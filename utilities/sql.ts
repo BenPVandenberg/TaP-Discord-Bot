@@ -49,8 +49,8 @@ export async function verifyUser(user: Discord.GuildMember) {
                 `WHERE UserID = ${user.id}`,
         );
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.error(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
     }
 }
 
@@ -69,8 +69,8 @@ export async function dbMakeSoundLog(
                 `VALUES (${requestor.id}, '${soundName}');`,
         );
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.error(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
     }
 }
 
@@ -93,8 +93,8 @@ export async function dbMakeGameLog(
                 `VALUES (${user.id}, "${game.name}");`,
         );
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.error(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
     }
 }
 
@@ -117,8 +117,8 @@ export async function dbCloseGameLog(
                 ");",
         );
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.error(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
     }
 }
 
@@ -143,8 +143,8 @@ export async function dbMakeVoiceLog(
                 `('${sessionID}', ${channelID});`,
         );
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.error(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
     }
 }
 
@@ -167,8 +167,8 @@ export async function dbCloseVoiceLog(
                 "WHERE (End IS NULL));",
         );
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.error(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
     }
 }
 
@@ -185,8 +185,8 @@ export async function isAdmin(
         // @ts-ignore
         return result[0][0].isAdmin === 1;
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.log(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
         return false;
     }
 }
@@ -206,8 +206,8 @@ export async function getHiddenSounds(): Promise<string[]> {
         // @ts-ignore
         return output;
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.log(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
         return [];
     }
 }
@@ -220,8 +220,8 @@ export async function getSoundVolume(soundName: string): Promise<number> {
         // @ts-ignore
         return result[0][0].Volume;
     } catch (e) {
-        log.logToDiscord(e, log.ERROR);
-        console.log(e);
+        log.logToDiscord(e, log.WARNING);
+        console.warn(e);
         return 1;
     }
 }

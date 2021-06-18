@@ -76,7 +76,7 @@ module.exports = {
             }
         } catch (err) {
             log.logToDiscord(err, log.WARNING);
-            console.log(err);
+            console.warn(err);
         }
     },
 };
