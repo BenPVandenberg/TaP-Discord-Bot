@@ -3,11 +3,37 @@ import {
     createAudioResource,
     joinVoiceChannel,
     StreamType,
+    VoiceConnection,
 } from "@discordjs/voice";
 import { VoiceChannel } from "discord.js";
+const config = require("../config.json");
 
-abstract class SharedAudio {
+export abstract class SharedAudio {
     public static player = createAudioPlayer();
+    private static currentConnection: VoiceConnection | null = null;
+    private static timeToLeave: Date | null = null;
+
+    public static newActivity(connection: VoiceConnection) {
+        this.currentConnection = connection;
+
+        const now = new Date();
+        // time to leave is voice_timeout_min min after last activity
+        this.timeToLeave = new Date(
+            now.getTime() + config.voice_timeout_min * 60000,
+        );
+    }
+
+    public static checkTimeout() {
+        const now = new Date();
+        if (this.currentConnection && this.timeToLeave! < now) {
+            this.currentConnection.destroy();
+
+            this.currentConnection = null;
+            this.timeToLeave = null;
+
+            console.log("Disconnecting due to timeout");
+        }
+    }
 }
 
 export async function playMP3(
@@ -33,6 +59,9 @@ export async function playMP3(
     connection.subscribe(sharedPlayer);
     sharedPlayer.play(resource);
 
+    // store this activity
+    SharedAudio.newActivity(connection);
+
     // following code can be used to disconnect the bot after the audio is finished
     // // while the sound is streaming
     // while (
@@ -47,8 +76,4 @@ export async function playMP3(
     // }
     // // disconnect
     // connection.destroy();
-}
-
-function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
 }

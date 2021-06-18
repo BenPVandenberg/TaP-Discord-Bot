@@ -8,6 +8,7 @@ import * as colors from "./utilities/colors";
 import * as log from "./utilities/log";
 import * as sql from "./utilities/sql";
 import { Command } from "./utilities/types";
+import { SharedAudio } from "./utilities/voice";
 const config = require("./config.json");
 
 const bot = new Client({
@@ -360,5 +361,20 @@ process.on("unhandledRejection", async (error) => {
     log.logToDiscord(`unhandledRejection: ${error}`, log.ERROR);
     console.error("Unhandled promise rejection:", error);
 });
+
+async function maintainance() {
+    function delay(ms: number) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    while (config.maintainance_loop_min) {
+        await delay(config.maintainance_loop_min * 60000);
+
+        SharedAudio.checkTimeout();
+    }
+}
+
+// init maintainance loop on separate thread
+maintainance();
 
 bot.login(process.env.DISCORD_LOGIN_TOKEN);
