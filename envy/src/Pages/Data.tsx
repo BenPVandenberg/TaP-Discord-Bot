@@ -6,8 +6,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DataTable, { Column } from "../Components/DataTable";
-import { GameLog, VoiceLog } from "../types";
 import { useAppSelector } from "../store/hooks";
+import { GameLog, UserState, VoiceLog } from "../types";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -81,7 +81,7 @@ const voiceLogCols: Column[] = [
 ];
 
 export default function Data() {
-    const user = useAppSelector((state) => state.user);
+    const user: UserState = useAppSelector((state) => state.user);
     const [tableView, setTableView] = useState<"game" | "voice">("game");
     const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
@@ -165,12 +165,13 @@ export default function Data() {
 
     // if the user is logged in set the box to their user name and fetch logs
     useEffect(() => {
-        setUserId(user.isLoggedIn ? user.username : "");
+        setUserId(user.isLoggedIn ? user.username! : userId);
 
         if (user.isLoggedIn && user.username) {
             fetchLogs(user.username);
         }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user.isLoggedIn, user.username]);
 
     const classes = useStyles();
     return (
