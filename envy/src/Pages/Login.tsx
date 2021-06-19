@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Swal from "sweetalert2";
 import { logIn } from "../store/User/user.actions";
-import { UserState } from "../types";
 import { setTokens } from "../utils/tokens";
 import { logInUser } from "../utils/user";
 
@@ -36,7 +35,7 @@ export default function Login() {
     if (accessToken && refreshToken) {
         setTokens(accessToken, refreshToken);
 
-        logInUser().then((userInfo: UserState | null) => {
+        logInUser().then((userInfo) => {
             if (userInfo) {
                 dispatch(logIn(userInfo));
             }

@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import DataTable from "../Components/DataTable";
 import SoundUpload from "../Components/SoundUpload";
 import { useAppSelector } from "../store/hooks";
+import { UserState } from "../types";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -50,7 +51,7 @@ const soundCols = [
 
 export default function Sounds() {
     const classes = useStyles();
-    const user = useAppSelector((state) => state.user);
+    const user: UserState = useAppSelector((state) => state.user);
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
     const updateSounds = async () => {

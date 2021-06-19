@@ -18,22 +18,30 @@ async function fetchUserInfo(): Promise<UserState | null> {
         responseType: "json",
     };
 
-    let response;
+    let discordResponse;
+    let galaResponse;
     try {
-        response = await axios.get(DISCORD_API_URL, config);
+        discordResponse = await axios.get(DISCORD_API_URL, config);
+        galaResponse = await axios.get(
+            process.env.REACT_APP_BACKEND_ADDRESS! +
+                `/user?id=${discordResponse.data.id}`,
+        );
     } catch (err) {
         if (err.isAxiosError) return null;
         else throw err;
     }
 
-    const { data } = response;
+    const discordData = discordResponse.data;
+    const galaData = galaResponse.data;
 
     const payload: UserState = {
         isLoggedIn: true,
-        id: data.id,
-        username: data.username,
-        avatar: data.avatar,
-        discriminator: data.discriminator,
+        id: discordData.id,
+        username: discordData.username,
+        avatar: discordData.avatar,
+        discriminator: discordData.discriminator,
+        displayName: galaData.displayName,
+        isAdmin: galaData.isAdmin,
     };
 
     return payload;
@@ -41,7 +49,6 @@ async function fetchUserInfo(): Promise<UserState | null> {
 
 export async function logInUser() {
     // try to log in user
-
     // check if we can get a valid user
     let userInfo: UserState | null = await fetchUserInfo();
 
