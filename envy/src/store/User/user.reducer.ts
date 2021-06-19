@@ -2,7 +2,6 @@ import { AnyAction } from "redux";
 import { UserState } from "../../types";
 import { LOG_IN, LOG_OUT } from "./user.types";
 
-// TODO find out what variables we can store
 export const INITIAL_STATE: UserState = {
     isLoggedIn: false,
 };

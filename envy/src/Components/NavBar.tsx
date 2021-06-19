@@ -6,6 +6,7 @@ import { IoSend } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { logOut } from "../store/User/user.actions";
+import { UserState } from "../types";
 import { logOutUser } from "../utils/user";
 
 const useStyles = makeStyles((theme) => {
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function NavBar() {
-    const user = useAppSelector((state) => state.user);
+    const user: UserState = useAppSelector((state) => state.user);
     const dispatch = useAppDispatch();
     const classes = useStyles();
 

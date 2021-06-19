@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useAppSelector } from "../store/hooks";
 import { Redirect } from "react-router-dom";
 import Swal from "sweetalert2";
+import { UserState } from "../types";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 export default function Account() {
-    const user = useAppSelector((state) => state.user);
+    const user: UserState = useAppSelector((state) => state.user);
     const classes = useStyles();
 
     // check we have a user logged in
