@@ -58,23 +58,22 @@ export default function Sounds() {
         let soundsSQL: Sound[] = []; // res responce
 
         // get /play statistics
-        await axios
-            .get(process.env.REACT_APP_BACKEND_ADDRESS + "/sounds")
-            .then((res) => {
-                soundsSQL = res.data;
-            })
-            .catch((err) => {
-                const errorText = err.response
-                    ? err.response.data.msg ||
-                      `HTTP Code ${err.response.status}`
-                    : `Cant reach ${err.config.url}`;
+        try {
+            const response = await axios.get(
+                process.env.REACT_APP_BACKEND_ADDRESS + "/sounds",
+            );
+            soundsSQL = response.data;
+        } catch (err) {
+            const errorText = err.response
+                ? err.response.data.msg || `HTTP Code ${err.response.status}`
+                : `Cant reach ${err.config.url}`;
 
-                Swal.fire({
-                    title: "Error with the server: GET /sounds",
-                    text: errorText,
-                    icon: "error",
-                });
+            Swal.fire({
+                title: "Error with the server: GET /sounds",
+                text: errorText,
+                icon: "error",
             });
+        }
 
         // sort by highest frequency
         soundsSQL.sort((a, b) => b.occurrences - a.occurrences);
