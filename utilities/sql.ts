@@ -82,15 +82,15 @@ export async function dbMakeGameLog(
         await verifyUser(user);
         await makeSQLQuery(
             `INSERT IGNORE INTO Game (Title, GameID) ` +
-                `VALUES ("${game.name}", ${game.applicationID});`,
+                `VALUES ("${game.name.trim().trim()}", ${game.applicationID});`,
         );
         await makeSQLQuery(
             `UPDATE Game SET GameID = ${game.applicationID} ` +
-                `WHERE Title = "${game.name}";`,
+                `WHERE Title = "${game.name.trim()}";`,
         );
         await makeSQLQuery(
             `INSERT IGNORE INTO GameLog (UserID, Game) ` +
-                `VALUES (${user.id}, "${game.name}");`,
+                `VALUES (${user.id}, "${game.name.trim()}");`,
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -111,7 +111,7 @@ export async function dbCloseGameLog(
                 "(SELECT ID FROM " +
                 "(SELECT * FROM GameLog " +
                 `WHERE (UserID = ${user.id}) AND ` +
-                `(Game = "${game.name}") ` +
+                `(Game = "${game.name.trim()}") ` +
                 "ORDER BY Start DESC LIMIT 1) AS Sub " +
                 "WHERE (End IS NULL)" +
                 ");",
