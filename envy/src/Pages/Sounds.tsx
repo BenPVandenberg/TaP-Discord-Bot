@@ -64,11 +64,14 @@ export default function Sounds() {
                 soundsSQL = res.data;
             })
             .catch((err) => {
+                const errorText = err.response
+                    ? err.response.data.msg ||
+                      `HTTP Code ${err.response.status}`
+                    : `Cant reach ${err.config.url}`;
+
                 Swal.fire({
                     title: "Error with the server: GET /sounds",
-                    text:
-                        err.response.data.msg ||
-                        `HTTP Code ${err.response.status}`,
+                    text: errorText,
                     icon: "error",
                 });
             });

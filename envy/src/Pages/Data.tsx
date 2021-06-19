@@ -120,15 +120,16 @@ export default function Data() {
             gameResponce = response[0];
             voiceResponce = response[1];
         } catch (err) {
+            const errorText = err.response
+                ? err.response.data.msg || `HTTP Code ${err.response.status}`
+                : `Cant reach ${err.config.url}`;
+
             // an error returned for one of the queries
             Swal.fire({
                 title: `Error with the server: GET ${err.config.url}`,
-                text: err.response
-                    ? err.response.data.msg
-                    : `HTTP Code ${err.response.status}`,
+                text: errorText,
                 icon: "error",
             });
-            return;
         }
 
         // get + filter data for responses
