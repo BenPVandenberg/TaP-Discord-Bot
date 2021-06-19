@@ -28,7 +28,7 @@ router.get(
             displayName: rows[0].DisplayName,
             username: rows[0].Username,
             discriminator: rows[0].Discriminator,
-            isAdmin: rows[0].isAdmin,
+            isAdmin: rows[0].isAdmin === 1,
         });
     }),
 );
