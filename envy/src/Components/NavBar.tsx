@@ -67,7 +67,7 @@ export default function NavBar() {
                 <div className={classes.profileNavEntry}>
                     <img
                         className={classes.profilePicture}
-                        src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.jpg`}
+                        src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`}
                         alt="profile"
                     />
                     <p>{user.username}</p>
