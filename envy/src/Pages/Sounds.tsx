@@ -8,6 +8,9 @@ import SoundUpload from "../Components/SoundUpload";
 import { useAppSelector } from "../store/hooks";
 import { UserState } from "../types";
 
+// used to prevent Swal popups when not on the page
+let userOnPage = true;
+
 const useStyles = makeStyles((theme) => {
     return {
         wrapper: {
@@ -55,6 +58,8 @@ export default function Sounds() {
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
     const updateSounds = async () => {
+        if (!userOnPage) return;
+
         let soundsSQL: Sound[] = []; // res responce
 
         // get /play statistics
@@ -64,6 +69,8 @@ export default function Sounds() {
             );
             soundsSQL = response.data;
         } catch (err) {
+            if (!userOnPage) return;
+
             const errorText = err.response
                 ? err.response.data.msg || `HTTP Code ${err.response.status}`
                 : `Cant reach ${err.config.url}`;
@@ -84,10 +91,16 @@ export default function Sounds() {
     // only signed in users can upload sounds
     const uploadButton = user.isLoggedIn ? <SoundUpload /> : "";
 
-    // run on mount
     useEffect(() => {
+        // called on mount
+        userOnPage = true;
         updateSounds();
-    }, []); // * This empty array makes useEffect act like componentDidMount
+        return () => {
+            // called on unmount
+            userOnPage = false;
+            Swal.close();
+        };
+    }, []);
 
     return (
         <div className={classes.wrapper}>
