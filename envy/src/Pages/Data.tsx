@@ -9,6 +9,9 @@ import DataTable, { Column } from "../Components/DataTable";
 import { useAppSelector } from "../store/hooks";
 import { GameLog, UserState, VoiceLog } from "../types";
 
+// used to prevent Swal popups when not on the page
+let userOnPage = true;
+
 const useStyles = makeStyles((theme) => {
     return {
         wrapper: {
@@ -91,6 +94,7 @@ export default function Data() {
     const fetchLogs = async (user: string) => {
         // verify we have a string
         if (!user) return;
+        if (!userOnPage) return;
 
         const userNum: number = Number(user);
 
@@ -120,15 +124,19 @@ export default function Data() {
             gameResponce = response[0];
             voiceResponce = response[1];
         } catch (err) {
+            // check if user still on page (may have left due to async)
+            if (!userOnPage) return;
+
+            const errorText = err.response
+                ? err.response.data.msg || `HTTP Code ${err.response.status}`
+                : `Cant reach ${err.config.url}`;
+
             // an error returned for one of the queries
             Swal.fire({
                 title: `Error with the server: GET ${err.config.url}`,
-                text: err.response
-                    ? err.response.data.msg
-                    : `HTTP Code ${err.response.status}`,
+                text: errorText,
                 icon: "error",
             });
-            return;
         }
 
         // get + filter data for responses
@@ -172,6 +180,16 @@ export default function Data() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user.isLoggedIn, user.username]);
+
+    useEffect(() => {
+        // called on mount
+        userOnPage = true;
+        return () => {
+            // called on unmount
+            userOnPage = false;
+            Swal.close();
+        };
+    }, []);
 
     const classes = useStyles();
     return (

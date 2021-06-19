@@ -16,6 +16,7 @@ COPY . .
 # build app
 RUN npm run build
 
+EXPOSE 3000
 # RUN serve -s build
 
 # build with "docker build -t benpv/bot-frontend:latest ."
