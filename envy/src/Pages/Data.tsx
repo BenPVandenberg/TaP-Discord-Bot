@@ -173,6 +173,7 @@ export default function Data() {
 
     // if the user is logged in set the box to their user name and fetch logs
     useEffect(() => {
+        userOnPage = true;
         setUserId(user.isLoggedIn ? user.username! : userId);
 
         if (user.isLoggedIn && user.username) {
