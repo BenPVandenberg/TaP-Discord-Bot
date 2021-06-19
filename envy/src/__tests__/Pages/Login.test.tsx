@@ -1,8 +1,8 @@
-import { render, screen } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
-import store from "../../store";
+import { BrowserRouter as Router } from "react-router-dom";
 import Login from "../../Pages/Login";
+import store from "../../store";
 
 describe("<Login />", () => {
     test("renders without crashing", () => {

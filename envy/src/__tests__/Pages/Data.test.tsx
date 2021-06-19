@@ -1,6 +1,6 @@
-import { render, fireEvent, screen } from "@testing-library/react";
-import Data from "../../Pages/Data";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
+import Data from "../../Pages/Data";
 import store from "../../store";
 
 describe("<Data />", () => {
