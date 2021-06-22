@@ -198,10 +198,12 @@ export async function getHiddenSounds(): Promise<string[]> {
         );
 
         const output: string[] = [];
-        // @ts-ignore
-        result[0].forEach((element) => {
-            if (element) output.push(element.SoundName);
-        });
+        if (result && result.length > 0) {
+            // @ts-ignore
+            result[0].forEach((element) => {
+                if (element) output.push(element.SoundName);
+            });
+        }
 
         // @ts-ignore
         return output;
