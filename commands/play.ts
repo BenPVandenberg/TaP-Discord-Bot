@@ -56,15 +56,18 @@ module.exports = {
                 );
 
             // get all current sounds
-            for (const sound in allSounds) {
-                const curSound = allSounds[sound].slice(0, -4);
+            for (const soundIndex in allSounds) {
+                const curSound = allSounds[soundIndex].slice(0, -4);
 
                 if (
-                    allSounds[sound].endsWith(".mp3") &&
+                    allSounds[soundIndex].endsWith(".mp3") &&
                     !hiddenSounds.includes(curSound)
                 ) {
+                    currentfield = Math.floor(
+                        // @ts-ignore: soundIndex is a number
+                        soundIndex / (allSounds.length / 3),
+                    );
                     embedFields[currentfield] += "-" + curSound + "\n";
-                    currentfield = (currentfield + 1) % embedFields.length;
                 }
             }
 
