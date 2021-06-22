@@ -42,33 +42,43 @@ module.exports = {
             // sound played successfully, therefore update database
             await sql.dbMakeSoundLog(soundName, message.member);
         } catch (e) {
-            const all_sounds = fs.readdirSync("./audio");
-            const hidden_sounds = await sql.getHiddenSounds();
-            let sound_list = "";
+            assert(message.member);
+
+            const allSounds = fs.readdirSync("./audio");
+            const hiddenSounds = await sql.getHiddenSounds();
+            const embedFields: string[] = ["", "", ""];
+            let currentfield: number = 0;
+            const soundList: Discord.MessageEmbed = new Discord.MessageEmbed()
+                .setTitle("__**Available sounds**__")
+                .setColor(message.member.displayHexColor)
+                .setThumbnail(
+                    "https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png",
+                );
 
             // get all current sounds
-            for (const sound in all_sounds) {
-                const cur_sound = all_sounds[sound].slice(0, -4);
+            for (const sound in allSounds) {
+                const curSound = allSounds[sound].slice(0, -4);
 
                 if (
-                    all_sounds[sound].endsWith(".mp3") &&
-                    !hidden_sounds.includes(cur_sound)
+                    allSounds[sound].endsWith(".mp3") &&
+                    !hiddenSounds.includes(curSound)
                 ) {
-                    sound_list += "-" + cur_sound + "\n";
+                    embedFields[currentfield] += "-" + curSound + "\n";
+                    currentfield = (currentfield + 1) % embedFields.length;
                 }
             }
 
-            assert(message.member);
+            embedFields.forEach((embed) => {
+                if (embed !== "")
+                    soundList.addField(
+                        "-------------------------",
+                        embed,
+                        true,
+                    );
+            });
+
             message.channel.send({
-                embeds: [
-                    new Discord.MessageEmbed()
-                        .setTitle("__**Available sounds**__")
-                        .setDescription(sound_list)
-                        .setColor(message.member.displayHexColor)
-                        .setThumbnail(
-                            "https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png",
-                        ),
-                ],
+                embeds: [soundList],
             });
         }
     },
