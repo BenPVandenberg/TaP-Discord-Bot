@@ -10,7 +10,7 @@ import { useAppSelector } from "../store/hooks";
 import { GameLog, UserState, VoiceLog } from "../types";
 
 // used to prevent Swal popups when not on the page
-let userOnPage = true;
+let clientOnPage = true;
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -94,11 +94,11 @@ export default function Data() {
     const fetchLogs = async (user: string) => {
         // verify we have a string
         if (!user) return;
-        if (!userOnPage) return;
+        if (!clientOnPage) return;
+        let errorOccurred = false;
 
-        const userNum: number = Number(user);
-
-        let inputType: "userID" | "username" = isNaN(userNum)
+        // learn if we have a username or id
+        let inputType: "userID" | "username" = isNaN(Number(user))
             ? "username"
             : "userID";
 
@@ -112,68 +112,73 @@ export default function Data() {
         Swal.showLoading();
 
         // run queries for game and voice data
-        let gameResponce = { data: [] };
-        let voiceResponce = { data: [] };
+        let gameResponse = { data: [] };
+        let voiceResponse = { data: [] };
         try {
+            // if we got a username then find an id
+            if (inputType === "username") {
+                const searchResponse = await axios.get(
+                    process.env.REACT_APP_BACKEND_ADDRESS + "/user/search",
+                    { params: { username: user } },
+                );
+
+                user = searchResponse.data.userID;
+            }
+
             const response = await Promise.all([
-                axios.get(process.env.REACT_APP_BACKEND_ADDRESS + "/data/game"),
                 axios.get(
-                    process.env.REACT_APP_BACKEND_ADDRESS + "/data/voice",
+                    process.env.REACT_APP_BACKEND_ADDRESS +
+                        `/user/${user}/game`,
+                ),
+                axios.get(
+                    process.env.REACT_APP_BACKEND_ADDRESS +
+                        `/user/${user}/voice`,
                 ),
             ]);
-            gameResponce = response[0];
-            voiceResponce = response[1];
+            gameResponse = response[0];
+            voiceResponse = response[1];
         } catch (err) {
             // check if user still on page (may have left due to async)
-            if (!userOnPage) return;
+            if (!clientOnPage) return;
+            errorOccurred = true;
 
-            const errorText = err.response
+            const errorText: string = err.response
                 ? err.response.data.msg || `HTTP Code ${err.response.status}`
                 : `Cant reach ${err.config.url}`;
 
             // an error returned for one of the queries
             Swal.fire({
-                title: `Error with the server: GET ${err.config.url}`,
+                title: `Error with the server`,
                 text: errorText,
                 icon: "error",
             });
         }
 
         // get + filter data for responses
-        let gameDownloaded: GameLog[] = gameResponce.data;
-        let voiceDownloaded: VoiceLog[] = voiceResponce.data;
-
-        // filter the data
-        gameDownloaded = gameDownloaded.filter(
-            (data) =>
-                data.userID === userNum ||
-                data.username.toLowerCase() === user.toLowerCase(),
-        );
-
-        voiceDownloaded = voiceDownloaded.filter(
-            (data) =>
-                data.userID === userNum ||
-                data.username.toLowerCase() === user.toLowerCase(),
-        );
-
-        // if no data on user
-        if (!gameDownloaded.length && !voiceDownloaded.length) {
-            await Swal.fire({
-                title: `No results for this ${inputType}`,
-                icon: "error",
-            });
-        }
-
+        let gameDownloaded: GameLog[] = gameResponse.data;
+        let voiceDownloaded: VoiceLog[] = voiceResponse.data;
         setGameLogs(gameDownloaded);
         setVoiceLogs(voiceDownloaded);
 
         // stop loading
-        Swal.close();
+        if (!errorOccurred) Swal.close();
+
+        // if no data on user
+        if (
+            !gameDownloaded.length &&
+            !voiceDownloaded.length &&
+            !errorOccurred
+        ) {
+            Swal.fire({
+                title: `No results for this ${inputType}`,
+                icon: "error",
+            });
+        }
     };
 
     // if the user is logged in set the box to their user name and fetch logs
     useEffect(() => {
-        userOnPage = true;
+        clientOnPage = true;
         setUserId(user.isLoggedIn ? user.username! : userId);
 
         if (user.isLoggedIn && user.username) {
@@ -184,10 +189,10 @@ export default function Data() {
 
     useEffect(() => {
         // called on mount
-        userOnPage = true;
+        clientOnPage = true;
         return () => {
             // called on unmount
-            userOnPage = false;
+            clientOnPage = false;
             Swal.close();
         };
     }, []);
