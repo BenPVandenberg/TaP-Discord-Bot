@@ -9,7 +9,6 @@ require("dotenv").config();
 
 const indexRouter = require("./routes/index");
 const soundsRouter = require("./routes/sounds");
-const dataRouter = require("./routes/data");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 
@@ -34,7 +33,6 @@ app.use(
 
 app.use("/", indexRouter);
 app.use("/sounds", soundsRouter);
-app.use("/data", dataRouter);
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 

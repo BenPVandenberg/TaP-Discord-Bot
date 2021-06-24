@@ -9,7 +9,7 @@ import { useAppSelector } from "../store/hooks";
 import { UserState } from "../types";
 
 // used to prevent Swal popups when not on the page
-let userOnPage = true;
+let clientOnPage = true;
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -58,7 +58,7 @@ export default function Sounds() {
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
     const updateSounds = async () => {
-        if (!userOnPage) return;
+        if (!clientOnPage) return;
 
         let soundsSQL: Sound[] = []; // res responce
 
@@ -69,7 +69,7 @@ export default function Sounds() {
             );
             soundsSQL = response.data;
         } catch (err) {
-            if (!userOnPage) return;
+            if (!clientOnPage) return;
 
             const errorText = err.response
                 ? err.response.data.msg || `HTTP Code ${err.response.status}`
@@ -93,11 +93,11 @@ export default function Sounds() {
 
     useEffect(() => {
         // called on mount
-        userOnPage = true;
+        clientOnPage = true;
         updateSounds();
         return () => {
             // called on unmount
-            userOnPage = false;
+            clientOnPage = false;
             Swal.close();
         };
     }, []);
