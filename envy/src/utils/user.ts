@@ -24,7 +24,7 @@ async function fetchUserInfo(): Promise<UserState | null> {
         discordResponse = await axios.get(DISCORD_API_URL, config);
         galaResponse = await axios.get(
             process.env.REACT_APP_BACKEND_ADDRESS! +
-                `/user?id=${discordResponse.data.id}`,
+                `/user/${discordResponse.data.id}`,
         );
     } catch (err) {
         if (err.isAxiosError) return null;
