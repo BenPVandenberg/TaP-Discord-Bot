@@ -125,6 +125,7 @@ export default function Data() {
                 user = searchResponse.data.userID;
             }
 
+            // now with user id get the logs from the backend
             const response = await Promise.all([
                 axios.get(
                     process.env.REACT_APP_BACKEND_ADDRESS +
@@ -154,21 +155,14 @@ export default function Data() {
             });
         }
 
-        // get + filter data for responses
-        let gameDownloaded: GameLog[] = gameResponse.data;
-        let voiceDownloaded: VoiceLog[] = voiceResponse.data;
-        setGameLogs(gameDownloaded);
-        setVoiceLogs(voiceDownloaded);
+        setGameLogs(gameResponse.data);
+        setVoiceLogs(voiceResponse.data);
 
         // stop loading
         if (!errorOccurred) Swal.close();
 
         // if no data on user
-        if (
-            !gameDownloaded.length &&
-            !voiceDownloaded.length &&
-            !errorOccurred
-        ) {
+        if (!gameLogs.length && !voiceLogs.length && !errorOccurred) {
             Swal.fire({
                 title: `No results for this ${inputType}`,
                 icon: "error",
@@ -176,7 +170,7 @@ export default function Data() {
         }
     };
 
-    // if the user is logged in set the box to their user name and fetch logs
+    // if the user is logged in, set the box to their user name and fetch logs
     useEffect(() => {
         clientOnPage = true;
         setUserId(user.isLoggedIn ? user.username! : userId);
@@ -190,8 +184,9 @@ export default function Data() {
     useEffect(() => {
         // called on mount
         clientOnPage = true;
+
+        // called on unmount
         return () => {
-            // called on unmount
             clientOnPage = false;
             Swal.close();
         };
@@ -200,7 +195,10 @@ export default function Data() {
     const classes = useStyles();
     return (
         <div className={classes.wrapper}>
+            {/* header */}
             <h1 className={classes.title}>Data Lookup</h1>
+
+            {/* username/userID input field */}
             <div>
                 <TextField
                     className={classes.textInput}
@@ -214,6 +212,8 @@ export default function Data() {
                     }}
                 />
             </div>
+
+            {/* buttons to switch between voice and game logs view */}
             <div>
                 <ToggleButtonGroup
                     value={tableView}
@@ -228,6 +228,8 @@ export default function Data() {
                     <ToggleButton value="voice">Voice</ToggleButton>
                 </ToggleButtonGroup>
             </div>
+
+            {/* game table view */}
             {gameLogs.length && tableView === "game" ? (
                 <div>
                     <DataTable
@@ -237,6 +239,8 @@ export default function Data() {
                     ></DataTable>
                 </div>
             ) : null}
+
+            {/* voice table view */}
             {voiceLogs.length && tableView === "voice" ? (
                 <div>
                     <DataTable

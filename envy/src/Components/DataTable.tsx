@@ -24,11 +24,14 @@ export default function GameLogTable(props: {
     return (
         <TableContainer className={props.table.className} component={Paper}>
             <Table size="small">
+                {/* set colgroup for every column */}
                 <colgroup>
                     {props.columns.map((col, index) => (
                         <col key={index} style={{ width: col.width }} />
                     ))}
                 </colgroup>
+
+                {/* put column titles at top */}
                 <TableHead>
                     <TableRow>
                         {props.columns.map((col, index) => (
@@ -36,6 +39,8 @@ export default function GameLogTable(props: {
                         ))}
                     </TableRow>
                 </TableHead>
+
+                {/* fill data top to bottom, left to right */}
                 <TableBody>
                     {props.rows.map((row, index) => (
                         <TableRow key={index}>

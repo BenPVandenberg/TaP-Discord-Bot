@@ -57,6 +57,7 @@ export default function Sounds() {
     const user: UserState = useAppSelector((state) => state.user);
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
+    // gets the latest sound data from backend
     const updateSounds = async () => {
         if (!clientOnPage) return;
 
@@ -69,6 +70,7 @@ export default function Sounds() {
             );
             soundsSQL = response.data;
         } catch (err) {
+            // possible that client left page, do a check
             if (!clientOnPage) return;
 
             const errorText = err.response
@@ -82,9 +84,6 @@ export default function Sounds() {
             });
         }
 
-        // sort by highest frequency
-        soundsSQL.sort((a, b) => b.occurrences - a.occurrences);
-
         setAllSounds(soundsSQL);
     };
 
@@ -95,8 +94,9 @@ export default function Sounds() {
         // called on mount
         clientOnPage = true;
         updateSounds();
+
+        // called on unmount
         return () => {
-            // called on unmount
             clientOnPage = false;
             Swal.close();
         };

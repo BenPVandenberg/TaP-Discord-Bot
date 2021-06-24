@@ -4,7 +4,7 @@ import {
     responsiveFontSizes,
     ThemeProvider,
 } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import "typeface-roboto/index.css";
 import NavBar from "./Components/NavBar";
@@ -85,7 +85,7 @@ export default function App() {
     document.body.style = `background: ${darkTheme.palette.background.default}`;
 
     useEffect(() => {
-        // try to login
+        // try to login user using previously stored tokens
         logInUser().then((userInfo) => {
             if (userInfo) {
                 dispatch(logIn(userInfo));

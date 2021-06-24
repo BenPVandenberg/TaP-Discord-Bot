@@ -56,14 +56,19 @@ export default function NavBar() {
         dispatch(logOut());
     };
 
+    // the bottom most button that will either sign you in or out
     let accountButton;
+
     if (user.isLoggedIn) {
         accountButton = (
             <div>
+                {/* login button */}
                 <div className={classes.navEntry} onClick={logout}>
                     <BiLogOut size={35} />
                     <p>Log Out</p>
                 </div>
+
+                {/* we have a user, indicate that they are logged in with a profile photo */}
                 <div className={classes.profileNavEntry}>
                     <img
                         className={classes.profilePicture}

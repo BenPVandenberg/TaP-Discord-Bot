@@ -18,8 +18,10 @@ export default function Login() {
         "error_description",
     );
 
-    if (errorParam === "access_denied") {
-        errorTitle = "Access Denied";
+    if (errorParam) {
+        // most common error is the access_denied error
+        errorTitle =
+            errorParam === "access_denied" ? "Access Denied" : errorParam;
         errorMessage = errorDescription;
     }
 
