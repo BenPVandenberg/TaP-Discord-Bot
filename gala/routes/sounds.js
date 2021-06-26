@@ -23,6 +23,7 @@ router.get(
                 occurrences: element.Occurrences,
                 ownerID: element.OwnerID,
                 ownerName: element.OwnerName,
+                volume: element.Volume,
             });
         });
 
