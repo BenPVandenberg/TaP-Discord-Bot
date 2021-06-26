@@ -97,6 +97,16 @@ export default function Sounds() {
             process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
             { user: user.id, volume: value },
         );
+
+        Swal.fire({
+            toast: true,
+            icon: "success",
+            title: `Sound ${soundName} updated!`,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
     };
     const hiddenOnChange = async (rowIndex: number, value: boolean) => {
         const newAllSounds = [...allSounds];
@@ -109,6 +119,16 @@ export default function Sounds() {
             process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
             { user: user.id, hidden: value ? 1 : 0 },
         );
+
+        Swal.fire({
+            toast: true,
+            icon: "success",
+            title: `Sound ${soundName} updated!`,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
     };
 
     const soundCols: Column[] = [
