@@ -20,10 +20,7 @@ const useStyles = makeStyles((theme) => {
         pageHeader: {
             paddingBottom: "10px",
         },
-        dataTable: {
-            minWidth: "310px",
-            // maxWidth: "340px",
-        },
+        dataTable: {},
     };
 });
 
