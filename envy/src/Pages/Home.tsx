@@ -1,7 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
-import Table from "react-bootstrap/Table";
-import { AiFillCheckCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => {
