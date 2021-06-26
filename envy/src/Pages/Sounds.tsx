@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import DataTable from "../Components/DataTable";
+import DataTable, { Column } from "../Components/DataTable";
 import SoundUpload from "../Components/SoundUpload";
 import { useAppSelector } from "../store/hooks";
 import { UserState } from "../types";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => {
         },
         dataTable: {
             minWidth: "310px",
-            maxWidth: "340px",
+            // maxWidth: "340px",
         },
     };
 });
@@ -32,25 +32,9 @@ type Sound = {
     occurrences: number;
     ownerID: number | null;
     ownerName: string | null;
+    volume: number;
+    hidden: boolean;
 };
-
-const soundCols = [
-    {
-        title: "Sound Name",
-        width: "50%",
-        value: "name",
-    },
-    {
-        title: "# of plays",
-        width: "15%",
-        value: "occurrences",
-    },
-    {
-        title: "Owner",
-        width: "20%",
-        value: "ownerName",
-    },
-];
 
 export default function Sounds() {
     const classes = useStyles();
@@ -102,14 +86,80 @@ export default function Sounds() {
         };
     }, []);
 
+    const volumeOnChange = async (rowIndex: number, value: number) => {
+        const newAllSounds = [...allSounds];
+        newAllSounds[rowIndex].volume = value;
+        setAllSounds(newAllSounds);
+
+        // make the update on the backend
+        const soundName = newAllSounds[rowIndex].name;
+        await axios.put(
+            process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
+            { user: user.id, volume: value },
+        );
+    };
+    const hiddenOnChange = async (rowIndex: number, value: boolean) => {
+        const newAllSounds = [...allSounds];
+        newAllSounds[rowIndex].hidden = value;
+        setAllSounds(newAllSounds);
+
+        // make the update on the backend
+        const soundName = newAllSounds[rowIndex].name;
+        await axios.put(
+            process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
+            { user: user.id, hidden: value ? 1 : 0 },
+        );
+    };
+
+    const soundCols: Column[] = [
+        {
+            title: "Sound Name",
+            value: "name",
+        },
+        {
+            title: "# of plays",
+            value: "occurrences",
+        },
+        {
+            title: "Owner",
+            value: "ownerName",
+        },
+    ];
+
+    const soundAdminCols: Column[] = [
+        {
+            title: "Volume",
+            value: "volume",
+            colProps: { style: { width: "100%" } },
+            inputType: "slider",
+            inputProps: {
+                min: 0,
+                max: 3,
+                step: 0.01,
+                valueLabelDisplay: "auto",
+            },
+            onChange: volumeOnChange,
+        },
+        {
+            title: "Hidden",
+            value: "hidden",
+            inputType: "checkbox",
+            onChange: hiddenOnChange,
+        },
+    ];
+
     return (
         <div className={classes.wrapper}>
             <h1 className={classes.pageHeader}>Sounds</h1>
             <Grid container direction="row" justify="center" spacing={5}>
                 <Grid item>
                     <DataTable
-                        table={{ className: classes.dataTable }}
-                        columns={soundCols}
+                        tableProps={{ className: classes.dataTable }}
+                        columns={
+                            user.isAdmin
+                                ? [...soundCols, ...soundAdminCols]
+                                : soundCols
+                        }
                         rows={allSounds}
                     />
                 </Grid>

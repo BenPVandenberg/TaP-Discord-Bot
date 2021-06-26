@@ -40,22 +40,18 @@ const useStyles = makeStyles((theme) => {
 const gameLogCols: Column[] = [
     {
         title: "Username",
-        width: "20%",
         value: "username",
     },
     {
         title: "Game",
-        width: "40%",
         value: "game",
     },
     {
         title: "Start",
-        width: "20%",
         value: "start",
     },
     {
         title: "End",
-        width: "20%",
         value: "end",
     },
 ];
@@ -63,22 +59,18 @@ const gameLogCols: Column[] = [
 const voiceLogCols: Column[] = [
     {
         title: "Username",
-        width: "20%",
         value: "username",
     },
     {
         title: "Channel",
-        width: "20%",
         value: "channel",
     },
     {
         title: "Start",
-        width: "30%",
         value: "start",
     },
     {
         title: "End",
-        width: "30%",
         value: "end",
     },
 ];
@@ -233,7 +225,7 @@ export default function Data() {
             {gameLogs.length && tableView === "game" ? (
                 <div>
                     <DataTable
-                        table={{ className: classes.dataTable }}
+                        tableProps={{ className: classes.dataTable }}
                         columns={gameLogCols}
                         rows={gameLogs}
                     ></DataTable>
@@ -244,7 +236,7 @@ export default function Data() {
             {voiceLogs.length && tableView === "voice" ? (
                 <div>
                     <DataTable
-                        table={{ className: classes.dataTable }}
+                        tableProps={{ className: classes.dataTable }}
                         columns={voiceLogCols}
                         rows={voiceLogs}
                     ></DataTable>
