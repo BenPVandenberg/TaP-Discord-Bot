@@ -24,6 +24,7 @@ router.get(
                 ownerID: element.OwnerID,
                 ownerName: element.OwnerName,
                 volume: element.Volume,
+                hidden: element.isHidden === 1,
             });
         });
 
