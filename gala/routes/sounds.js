@@ -39,15 +39,19 @@ router.put(
         const { user: userID, volume, hidden } = req.body;
 
         // verify that all parameters are provided
-        if (!userID && !volume && !hidden) {
+        if (
+            !userID === undefined &&
+            !volume === undefined &&
+            !hidden === undefined
+        ) {
             return res
                 .status(400)
                 .send({ msg: "Missing user + volume and/or hidden in body" });
         }
-        if (!userID) {
+        if (userID === undefined) {
             return res.status(400).send({ msg: "Missing user in body" });
         }
-        if (!volume && !hidden) {
+        if (!volume === undefined && !hidden === undefined) {
             return res
                 .status(400)
                 .send({ msg: "Missing volume and/or hidden in body" });
@@ -68,17 +72,17 @@ router.put(
         let sqlResponse;
 
         // make change to database
-        if (volume && hidden) {
+        if (volume !== undefined && hidden !== undefined) {
             [sqlResponse] = await sql.query(
                 "UPDATE Sound SET Volume = ?, isHidden = ? WHERE (SoundName = ?);",
                 [volume, hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
             );
-        } else if (volume) {
+        } else if (volume !== undefined) {
             [sqlResponse] = await sql.query(
                 "UPDATE Sound SET Volume = ? WHERE (SoundName = ?);",
                 [volume, soundName],
             );
-        } else if (hidden) {
+        } else if (hidden !== undefined) {
             [sqlResponse] = await sql.query(
                 "UPDATE Sound SET isHidden = ? WHERE (SoundName = ?);",
                 [hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
