@@ -154,7 +154,11 @@ export default function Data() {
         if (!errorOccurred) Swal.close();
 
         // if no data on user
-        if (!gameLogs.length && !voiceLogs.length && !errorOccurred) {
+        if (
+            !gameResponse.data.length &&
+            !voiceResponse.data.length &&
+            !errorOccurred
+        ) {
             Swal.fire({
                 title: `No results for this ${inputType}`,
                 icon: "error",
