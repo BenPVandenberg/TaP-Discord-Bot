@@ -68,11 +68,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "20px",
         marginBottom: "20px",
         width: "95%",
-        borderRadius: "0.75rem 0.75rem 0.75rem 0.75rem",
+        borderRadius: "0.75rem",
         background: "rgba(0, 0, 0, 0.54)",
         color: darkTheme.palette.getContrastText("rgba(0, 0, 0, 0.54)"),
     },
-    copyrightText: {
+    footer: {
+        paddingTop: "15px",
         color: "grey",
         fontSize: "small",
     },
@@ -112,7 +113,7 @@ export default function App() {
                             <Route component={NotFound} />
                         </Switch>
                         {/* copyright text */}
-                        <p className={classes.copyrightText}>
+                        <p className={classes.footer}>
                             © {new Date().getFullYear()}. Made by Ben
                             Vandenberg.
                         </p>
