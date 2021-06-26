@@ -36,19 +36,21 @@ router.put(
     "/:soundName",
     asyncHandler(async (req, res, next) => {
         const { soundName } = req.params;
-        const { user: userID, volume } = req.body;
+        const { user: userID, volume, hidden } = req.body;
 
         // verify that all parameters are provided
-        if (!userID && !volume) {
+        if (!userID && !volume && !hidden) {
             return res
                 .status(400)
-                .send({ msg: "Missing user and volume in body" });
+                .send({ msg: "Missing user + volume and/or hidden in body" });
         }
         if (!userID) {
             return res.status(400).send({ msg: "Missing user in body" });
         }
-        if (!volume) {
-            return res.status(400).send({ msg: "Missing volume in body" });
+        if (!volume && !hidden) {
+            return res
+                .status(400)
+                .send({ msg: "Missing volume and/or hidden in body" });
         }
 
         // verify user is an admin
@@ -63,11 +65,25 @@ router.put(
                 .send({ msg: "You are not authorized to update sounds" });
         }
 
+        let sqlResponse;
+
         // make change to database
-        const [sqlResponse] = await sql.query(
-            "UPDATE Sound SET Volume = ? WHERE (SoundName = ?);",
-            [volume, soundName],
-        );
+        if (volume && hidden) {
+            [sqlResponse] = await sql.query(
+                "UPDATE Sound SET Volume = ?, isHidden = ? WHERE (SoundName = ?);",
+                [volume, hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
+            );
+        } else if (volume) {
+            [sqlResponse] = await sql.query(
+                "UPDATE Sound SET Volume = ? WHERE (SoundName = ?);",
+                [volume, soundName],
+            );
+        } else if (hidden) {
+            [sqlResponse] = await sql.query(
+                "UPDATE Sound SET isHidden = ? WHERE (SoundName = ?);",
+                [hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
+            );
+        }
 
         if (!sqlResponse.affectedRows) {
             res.status(404).send({ msg: "Sound doesn't exist" });
