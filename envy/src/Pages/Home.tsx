@@ -1,7 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
-import Table from "react-bootstrap/Table";
-import { AiFillCheckCircle } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => {
@@ -27,77 +24,9 @@ export default function Home() {
                 bot/website suggestions, and upload your own sound clips!
             </p>
             <p>
-                This project is a WIP so expect it to change frequently. Please
-                report bugs on the project's <Link to="/suggest">Github</Link>.
+                Please report bugs on the project's{" "}
+                <Link to="/suggest">Github</Link>.
             </p>
-            <Table
-                className="text-white w-50"
-                size="sm"
-                style={{ margin: "auto" }}
-            >
-                <tbody>
-                    <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
-                        <td>View sound data</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
-                        <td>Upload sound clips</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
-                        <td>Better error handling (pop ups)</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
-                        <td>View bot collected data</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
-                        <td>Submit suggestions</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
-                        <td>Polish the looks</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td>
-                            <AiFillCheckCircle size={25} />
-                        </td>
-                        <td>Add Discord Auth (following will req this)</td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td>Permissions for features</td>
-                    </tr>
-                </tbody>
-            </Table>
         </div>
     );
 }

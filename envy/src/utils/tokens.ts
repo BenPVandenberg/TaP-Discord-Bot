@@ -14,11 +14,13 @@ export function setTokens(accessToken: string, refreshToken: string) {
     if (accessToken) {
         Cookies.set("access_token", accessToken, {
             expires: 7,
+            sameSite: "strict",
         });
     }
     if (refreshToken) {
         Cookies.set("refresh_token", refreshToken, {
             expires: 365,
+            sameSite: "strict",
         });
     }
 }
