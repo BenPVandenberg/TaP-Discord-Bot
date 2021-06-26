@@ -31,6 +31,51 @@ router.get(
     }),
 );
 
+router.put(
+    "/:soundName",
+    asyncHandler(async (req, res, next) => {
+        const { soundName } = req.params;
+        const { user: userID, volume } = req.body;
+
+        // verify that all parameters are provided
+        if (!userID && !volume) {
+            return res
+                .status(400)
+                .send({ msg: "Missing user and volume in body" });
+        }
+        if (!userID) {
+            return res.status(400).send({ msg: "Missing user in body" });
+        }
+        if (!volume) {
+            return res.status(400).send({ msg: "Missing volume in body" });
+        }
+
+        // verify user is an admin
+        const [validUsers] = await sql.query(
+            "SELECT UserID FROM Discord_Bot.User where isAdmin = true;",
+        );
+        const userIsValid = validUsers.some((el) => el.UserID === userID);
+
+        if (!userIsValid) {
+            return res
+                .status(401)
+                .send({ msg: "You are not authorized to update sounds" });
+        }
+
+        // make change to database
+        const [sqlResponse] = await sql.query(
+            "UPDATE Sound SET Volume = ? WHERE (SoundName = ?);",
+            [volume, soundName],
+        );
+
+        if (!sqlResponse.affectedRows) {
+            res.status(404).send({ msg: "Sound doesn't exist" });
+        }
+
+        res.status(200).send();
+    }),
+);
+
 router.post(
     "/upload",
     asyncHandler(async (req, res, next) => {
