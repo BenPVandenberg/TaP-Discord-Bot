@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import DataTable from "../Components/DataTable";
+import DataTable, { Column } from "../Components/DataTable";
 import SoundUpload from "../Components/SoundUpload";
 import { useAppSelector } from "../store/hooks";
 import { UserState } from "../types";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => {
         },
         dataTable: {
             minWidth: "310px",
-            maxWidth: "340px",
+            // maxWidth: "340px",
         },
     };
 });
@@ -32,31 +32,16 @@ type Sound = {
     occurrences: number;
     ownerID: number | null;
     ownerName: string | null;
+    volume: number;
+    hidden: boolean;
 };
-
-const soundCols = [
-    {
-        title: "Sound Name",
-        width: "50%",
-        value: "name",
-    },
-    {
-        title: "# of plays",
-        width: "15%",
-        value: "occurrences",
-    },
-    {
-        title: "Owner",
-        width: "20%",
-        value: "ownerName",
-    },
-];
 
 export default function Sounds() {
     const classes = useStyles();
     const user: UserState = useAppSelector((state) => state.user);
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
+    // gets the latest sound data from backend
     const updateSounds = async () => {
         if (!clientOnPage) return;
 
@@ -69,6 +54,7 @@ export default function Sounds() {
             );
             soundsSQL = response.data;
         } catch (err) {
+            // possible that client left page, do a check
             if (!clientOnPage) return;
 
             const errorText = err.response
@@ -82,9 +68,6 @@ export default function Sounds() {
             });
         }
 
-        // sort by highest frequency
-        soundsSQL.sort((a, b) => b.occurrences - a.occurrences);
-
         setAllSounds(soundsSQL);
     };
 
@@ -95,12 +78,95 @@ export default function Sounds() {
         // called on mount
         clientOnPage = true;
         updateSounds();
+
+        // called on unmount
         return () => {
-            // called on unmount
             clientOnPage = false;
             Swal.close();
         };
     }, []);
+
+    const volumeOnChange = async (rowIndex: number, value: number) => {
+        const newAllSounds = [...allSounds];
+        newAllSounds[rowIndex].volume = value;
+        setAllSounds(newAllSounds);
+
+        // make the update on the backend
+        const soundName = newAllSounds[rowIndex].name;
+        await axios.put(
+            process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
+            { user: user.id, volume: value },
+        );
+
+        Swal.fire({
+            toast: true,
+            icon: "success",
+            title: `Sound ${soundName} updated!`,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    };
+    const hiddenOnChange = async (rowIndex: number, value: boolean) => {
+        const newAllSounds = [...allSounds];
+        newAllSounds[rowIndex].hidden = value;
+        setAllSounds(newAllSounds);
+
+        // make the update on the backend
+        const soundName = newAllSounds[rowIndex].name;
+        await axios.put(
+            process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
+            { user: user.id, hidden: value ? 1 : 0 },
+        );
+
+        Swal.fire({
+            toast: true,
+            icon: "success",
+            title: `Sound ${soundName} updated!`,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    };
+
+    const soundCols: Column[] = [
+        {
+            title: "Sound Name",
+            value: "name",
+        },
+        {
+            title: "# of plays",
+            value: "occurrences",
+        },
+        {
+            title: "Owner",
+            value: "ownerName",
+        },
+    ];
+
+    const soundAdminCols: Column[] = [
+        {
+            title: "Volume",
+            value: "volume",
+            colProps: { style: { width: "100%" } },
+            inputType: "slider",
+            inputProps: {
+                min: 0,
+                max: 3,
+                step: 0.01,
+                valueLabelDisplay: "auto",
+            },
+            onChange: volumeOnChange,
+        },
+        {
+            title: "Hidden",
+            value: "hidden",
+            inputType: "checkbox",
+            onChange: hiddenOnChange,
+        },
+    ];
 
     return (
         <div className={classes.wrapper}>
@@ -108,8 +174,12 @@ export default function Sounds() {
             <Grid container direction="row" justify="center" spacing={5}>
                 <Grid item>
                     <DataTable
-                        table={{ className: classes.dataTable }}
-                        columns={soundCols}
+                        tableProps={{ className: classes.dataTable }}
+                        columns={
+                            user.isAdmin
+                                ? [...soundCols, ...soundAdminCols]
+                                : soundCols
+                        }
                         rows={allSounds}
                     />
                 </Grid>

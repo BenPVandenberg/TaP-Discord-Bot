@@ -23,10 +23,77 @@ router.get(
                 occurrences: element.Occurrences,
                 ownerID: element.OwnerID,
                 ownerName: element.OwnerName,
+                volume: element.Volume,
+                hidden: element.isHidden === 1,
             });
         });
 
         res.status(200).send(rtnDataArr);
+    }),
+);
+
+router.put(
+    "/:soundName",
+    asyncHandler(async (req, res, next) => {
+        const { soundName } = req.params;
+        const { user: userID, volume, hidden } = req.body;
+
+        // verify that all parameters are provided
+        if (
+            !userID === undefined &&
+            !volume === undefined &&
+            !hidden === undefined
+        ) {
+            return res
+                .status(400)
+                .send({ msg: "Missing user + volume and/or hidden in body" });
+        }
+        if (userID === undefined) {
+            return res.status(400).send({ msg: "Missing user in body" });
+        }
+        if (!volume === undefined && !hidden === undefined) {
+            return res
+                .status(400)
+                .send({ msg: "Missing volume and/or hidden in body" });
+        }
+
+        // verify user is an admin
+        const [validUsers] = await sql.query(
+            "SELECT UserID FROM Discord_Bot.User where isAdmin = true;",
+        );
+        const userIsValid = validUsers.some((el) => el.UserID === userID);
+
+        if (!userIsValid) {
+            return res
+                .status(401)
+                .send({ msg: "You are not authorized to update sounds" });
+        }
+
+        let sqlResponse;
+
+        // make change to database
+        if (volume !== undefined && hidden !== undefined) {
+            [sqlResponse] = await sql.query(
+                "UPDATE Sound SET Volume = ?, isHidden = ? WHERE (SoundName = ?);",
+                [volume, hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
+            );
+        } else if (volume !== undefined) {
+            [sqlResponse] = await sql.query(
+                "UPDATE Sound SET Volume = ? WHERE (SoundName = ?);",
+                [volume, soundName],
+            );
+        } else if (hidden !== undefined) {
+            [sqlResponse] = await sql.query(
+                "UPDATE Sound SET isHidden = ? WHERE (SoundName = ?);",
+                [hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
+            );
+        }
+
+        if (!sqlResponse.affectedRows) {
+            res.status(404).send({ msg: "Sound doesn't exist" });
+        }
+
+        res.status(200).send();
     }),
 );
 

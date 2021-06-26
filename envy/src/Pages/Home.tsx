@@ -94,15 +94,6 @@ export default function Home() {
                 <tbody>
                     <tr>
                         <td></td>
-                        <td>
-                            Profile page where you can edit how the bot
-                            interacts with you
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td></td>
                         <td>Permissions for features</td>
                     </tr>
                 </tbody>

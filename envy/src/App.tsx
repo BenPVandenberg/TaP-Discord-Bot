@@ -4,11 +4,10 @@ import {
     responsiveFontSizes,
     ThemeProvider,
 } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import "typeface-roboto/index.css";
 import NavBar from "./Components/NavBar";
-import Account from "./Pages/Account";
 import Data from "./Pages/Data";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
@@ -86,6 +85,7 @@ export default function App() {
     document.body.style = `background: ${darkTheme.palette.background.default}`;
 
     useEffect(() => {
+        // try to login user using previously stored tokens
         logInUser().then((userInfo) => {
             if (userInfo) {
                 dispatch(logIn(userInfo));
@@ -102,15 +102,16 @@ export default function App() {
                 </div>
                 <div className={classes.pageWrapper}>
                     <div className={classes.contentWrapper}>
+                        {/* router view */}
                         <Switch>
                             <Route exact path="/" component={Home} />
                             <Route path="/sounds" component={Sounds} />
                             <Route path="/data" component={Data} />
                             <Route path="/suggest" component={Suggest} />
                             <Route path="/login" component={Login} />
-                            <Route path="/account" component={Account} />
                             <Route component={NotFound} />
                         </Switch>
+                        {/* copyright text */}
                         <p className={classes.copyrightText}>
                             © {new Date().getFullYear()}. Made by Ben
                             Vandenberg.

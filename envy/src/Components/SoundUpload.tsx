@@ -14,34 +14,33 @@ const useStyles = makeStyles((theme) => {
     };
 });
 
+// given a string will check if the sound name is valid
 const isCorrectSoundName = (name: string) => {
     // name valid if no spaces
     return name.indexOf(" ") === -1;
 };
 
+// will upload the provided sound to the backend and declare the owner
+const uploadSound = async (sound: File, ownerID: string) => {
+    const formData = new FormData();
+    formData.append("file", sound);
+    formData.append("user", ownerID);
+
+    try {
+        return await axios.post(
+            process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/upload",
+            formData,
+            {
+                headers: { "Content-Type": "multipart/form-data" },
+            },
+        );
+    } catch (err) {
+        return err;
+    }
+};
+
 export default function SoundUpload() {
     const userID = useAppSelector((state) => state.user.id);
-
-    const uploadSound = async (sound: any) => {
-        const formData = new FormData();
-        formData.append("file", sound);
-        formData.append("user", userID);
-
-        return await axios
-            .post(
-                process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/upload",
-                formData,
-                {
-                    headers: { "Content-Type": "multipart/form-data" },
-                },
-            )
-            .then((response) => {
-                return response;
-            })
-            .catch((error) => {
-                return error;
-            });
-    };
 
     // called when a file is selected for upload
     const fileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +78,7 @@ export default function SoundUpload() {
                 Swal.showLoading();
 
                 // upload sound
-                uploadSound(file).then((res) => {
+                uploadSound(file, userID).then((res) => {
                     // close the loading screen
                     Swal.close();
                     // successful upload

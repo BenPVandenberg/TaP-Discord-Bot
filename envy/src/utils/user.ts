@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { UserState } from "../types";
 import { clearTokens, getTokens, refreshTokens, revokeToken } from "./tokens";
 
+// get user info to fill UserState from discord api + our backend
 async function fetchUserInfo(): Promise<UserState | null> {
     const DISCORD_API_URL = "https://discordapp.com/api/users/@me";
     const { accessToken } = getTokens();
@@ -34,7 +35,7 @@ async function fetchUserInfo(): Promise<UserState | null> {
     const discordData = discordResponse.data;
     const galaData = galaResponse.data;
 
-    const payload: UserState = {
+    const output: UserState = {
         isLoggedIn: true,
         id: discordData.id,
         username: discordData.username,
@@ -44,9 +45,10 @@ async function fetchUserInfo(): Promise<UserState | null> {
         isAdmin: galaData.isAdmin,
     };
 
-    return payload;
+    return output;
 }
 
+// attempt to log in the user (find a valid token and get info on user)
 export async function logInUser() {
     // try to log in user
     // check if we can get a valid user
@@ -64,6 +66,7 @@ export async function logInUser() {
     return userInfo;
 }
 
+// log out the user
 export async function logOutUser() {
     revokeToken();
     clearTokens();
