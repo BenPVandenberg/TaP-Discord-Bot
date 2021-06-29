@@ -41,10 +41,8 @@ const commandFiles = fs
 
 // add commands to bot
 for (const file of commandFiles) {
-    if (["play.ts"].includes(file)) {
-        const command: Command = require(`./commands/${file}`);
-        bot_commands.push(command);
-    }
+    const command: Command = require(`./commands/${file}`);
+    bot_commands.push(command);
 }
 
 // ready
