@@ -61,19 +61,4 @@ export async function playMP3(
 
     // store this activity
     SharedAudio.newActivity(connection);
-
-    // following code can be used to disconnect the bot after the audio is finished
-    // // while the sound is streaming
-    // while (
-    //     [
-    //         AudioPlayerStatus.Playing,
-    //         AudioPlayerStatus.Buffering,
-    //         AudioPlayerStatus.AutoPaused,
-    //     ].includes(sharedPlayer.state.status)
-    // ) {
-    //     // check every 500ms
-    //     await delay(500);
-    // }
-    // // disconnect
-    // connection.destroy();
 }
