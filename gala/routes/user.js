@@ -13,6 +13,7 @@ const userExists = async (id) => {
     return rows.length !== 0;
 };
 
+// using a username search for a matching user as return their info
 router.get(
     "/search",
     asyncHandler(async (req, res, next) => {
@@ -43,6 +44,7 @@ router.get(
     }),
 );
 
+// get user info based on user ID
 router.get(
     "/:id",
     asyncHandler(async (req, res, next) => {
@@ -74,6 +76,7 @@ router.get(
     }),
 );
 
+// get a users game logs from their id
 router.get(
     "/:id/game",
     asyncHandler(async (req, res, next) => {
@@ -110,6 +113,7 @@ router.get(
     }),
 );
 
+// get a voice game logs from their id
 router.get(
     "/:id/voice",
     asyncHandler(async (req, res, next) => {

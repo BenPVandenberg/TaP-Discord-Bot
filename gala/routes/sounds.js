@@ -32,6 +32,8 @@ router.get(
     }),
 );
 
+// update the properties of a sound
+// can update volume or isHidden
 router.put(
     "/:soundName",
     asyncHandler(async (req, res, next) => {
@@ -89,6 +91,7 @@ router.put(
             );
         }
 
+        // check changes were made
         if (!sqlResponse.affectedRows) {
             res.status(404).send({ msg: "Sound doesn't exist" });
         }
@@ -97,6 +100,7 @@ router.put(
     }),
 );
 
+// upload a new sound to the bot
 router.post(
     "/upload",
     asyncHandler(async (req, res, next) => {

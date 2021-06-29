@@ -9,14 +9,19 @@ const redirect = process.env.DISCORD_CALLBACK_URL;
 
 const router = express.Router();
 
-router.get("/login", (req, res) => {
-    res.redirect(
-        `https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${encodeURIComponent(
-            redirect,
-        )}`,
-    );
-});
+// redirects to discords login
+router.get(
+    "/login",
+    asyncHandler(async (req, res) => {
+        res.redirect(
+            `https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${encodeURIComponent(
+                redirect,
+            )}`,
+        );
+    }),
+);
 
+// the callback from discords login
 router.get(
     "/callback",
     asyncHandler(async (req, res) => {
@@ -54,6 +59,7 @@ router.get(
     }),
 );
 
+// using a refresh token get a new access token
 router.get(
     "/refresh",
     asyncHandler(async (req, res) => {
@@ -78,6 +84,7 @@ router.get(
     }),
 );
 
+// revoke access to current refresh + access token
 router.get(
     "/revoke",
     asyncHandler(async (req, res) => {
