@@ -4,8 +4,11 @@ const FormData = require("form-data");
 const btoa = require("btoa");
 const asyncHandler = require("express-async-handler");
 
-const { CLIENT_ID, CLIENT_SECRET } = process.env;
-const redirect = process.env.DISCORD_CALLBACK_URL;
+const {
+    CLIENT_ID,
+    CLIENT_SECRET,
+    DISCORD_CALLBACK_URL: redirect,
+} = process.env;
 
 const router = express.Router();
 

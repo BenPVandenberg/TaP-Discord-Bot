@@ -1,6 +1,7 @@
 {
     "name": "discord-bot-admin",
-    "version": "0.1.0",
+    "version": "1.0.0",
+    "author": "Ben Vandenberg",
     "private": true,
     "scripts": {
         "start": "react-scripts start",
