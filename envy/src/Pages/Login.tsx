@@ -2,8 +2,8 @@ import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Swal from "sweetalert2";
 import { logIn } from "../store/User/user.actions";
-import { setTokens } from "../utils/tokens";
-import { logInUser } from "../utils/user";
+import { setTokens } from "../utilities/tokens";
+import { logInUser } from "../utilities/user";
 
 export default function Login() {
     const dispatch = useDispatch();

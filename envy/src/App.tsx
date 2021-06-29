@@ -16,7 +16,7 @@ import Sounds from "./Pages/Sounds";
 import Suggest from "./Pages/Suggest";
 import { useAppDispatch } from "./store/hooks";
 import { logIn } from "./store/User/user.actions";
-import { logInUser } from "./utils/user";
+import { logInUser } from "./utilities/user";
 
 // dark theme
 const darkTheme = responsiveFontSizes(

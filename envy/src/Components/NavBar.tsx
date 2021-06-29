@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { logOut } from "../store/User/user.actions";
 import { UserState } from "../types";
-import { logOutUser } from "../utils/user";
+import { logOutUser } from "../utilities/user";
 
 const useStyles = makeStyles((theme) => {
     return {
