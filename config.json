@@ -1,7 +1,7 @@
 {
     "prefix": ".",
     "maintainance_loop_min": 1,
-    "voice_timeout_min": 30,
+    "voice_timeout_min": 5,
     "command_channels": [
         "522935673964199936",
         "740332251103101048",

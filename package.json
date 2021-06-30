@@ -8,14 +8,14 @@
         "start": "ts-node ."
     },
     "author": "Ben Vandenberg",
-    "license": "ISC",
+    "license": "GNU GPLv3",
     "dependencies": {
         "@discordjs/opus": "^0.5.3",
         "@discordjs/voice": "^0.3.1",
         "@types/node": "^15.12.2",
         "axios": "^0.21.1",
         "console-stamp": "^3.0.2",
-        "discord.js": "^13.0.0-dev.f7eeccba4b7015496df811f10cc2da2b0fab0630",
+        "discord.js": "^13.0.0-dev.acdcb906ae4691374f5d2bda1315a484c8674938",
         "dotenv": "^10.0.0",
         "ffmpeg-static": "^4.3.0",
         "mysql2": "^2.2.5",
