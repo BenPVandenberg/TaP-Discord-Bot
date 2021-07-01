@@ -16,6 +16,7 @@ export default async function onVoiceStateUpdate(
             "voiceStateUpdate: No Session for both states",
             log.WARNING,
         );
+        log.logToDiscord(`${{ oldMember, newMember }}`, log.DEBUG);
         return;
     }
     // Assert member is not null
