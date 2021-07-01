@@ -9,6 +9,7 @@ import * as log from "../utilities/log";
 module.exports = {
     name: "addrank",
     description: "Manage users game ranks",
+    admin: false,
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         const rank_config = config.commands.rank;

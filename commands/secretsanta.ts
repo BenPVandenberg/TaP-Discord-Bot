@@ -7,6 +7,7 @@ const config = require("../config.json");
 module.exports = {
     name: "secretsanta",
     description: "adds or removes sombody from secret santa",
+    admin: false,
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         const secret_santa_config = config.commands.secret_santa;

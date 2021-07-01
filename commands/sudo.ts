@@ -1,13 +1,13 @@
 import Discord from "discord.js";
 import fs from "fs";
 import { Command } from "../utilities/types";
-import assert from "assert";
 // info.js
 // ========
 module.exports = {
     name: "sudo",
     description: "Runs a command as another user (admin only)",
     requireVoice: false,
+    admin: true,
     async execute(message: Discord.Message, args: string[]) {
         // verify we have a user
         if (!message.mentions.members) {

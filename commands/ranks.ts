@@ -5,6 +5,7 @@ const config = require("../config.json");
 module.exports = {
     name: "ranks",
     description: "Display all ranks T&P bot can give",
+    admin: false,
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         const rank_config = config.commands.rank;

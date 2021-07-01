@@ -11,6 +11,7 @@ module.exports = {
     name: "play",
     description: "plays a audio clip",
     alias: ["p", "sound", "sounds"],
+    admin: false,
     requireVoice: true,
     async execute(message: Discord.Message, args: string[]) {
         // put arg to lowercase if it exists

@@ -7,6 +7,7 @@ import StreamManager from "../utilities/streamManager";
 module.exports = {
     name: "timeout",
     description: "Moves the user to their own channel for 1 min",
+    admin: false,
     requireVoice: true,
     async execute(message: Discord.Message) {
         // @ts-ignore

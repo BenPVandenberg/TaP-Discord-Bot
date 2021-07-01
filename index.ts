@@ -159,8 +159,18 @@ bot.on("message", async (message) => {
     );
 
     try {
-        // check if the bot is already talking
+        // check if cmd requires admin and if user is admin
+        if (cmd.admin) {
+            const userIsAdmin = await sql.isAdmin(message.member);
+            if (!userIsAdmin) {
+                // user doesn't have permissions to run this command
+                message.reply("You must be an admin to run this command");
+                return;
+            }
+        }
+
         if (cmd.requireVoice) {
+        // check if the bot is already talking
             if (!bot_voice_ready) {
                 message.reply(
                     "I'm currently busy. Try again in a few seconds.",

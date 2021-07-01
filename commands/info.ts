@@ -5,6 +5,7 @@ import assert from "assert";
 module.exports = {
     name: "info",
     description: "gets info of a user",
+    admin: false,
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         let rMember; // Takes the user mentioned, or the ID of a user

@@ -5,6 +5,7 @@ module.exports = {
     name: "echo",
     description: "echos the message given",
     alias: ["say"],
+    admin: true,
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
         message.delete();

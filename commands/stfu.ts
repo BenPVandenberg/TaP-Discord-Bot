@@ -7,6 +7,7 @@ import StreamManager from "../utilities/streamManager";
 module.exports = {
     name: "stfu",
     description: "Lets a user know they really need to stfu",
+    admin: false,
     requireVoice: true,
     async execute(message: Discord.Message, args: string[]) {
         // @ts-ignore
