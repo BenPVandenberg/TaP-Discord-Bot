@@ -6,7 +6,11 @@ abstract class PoolClass {
     // set pool as undefined to start
     private static connectionPool: mysql.Pool | undefined = undefined;
 
-    public static getPool(): mysql.Pool | undefined {
+    /**
+     * Get/make a sql connection pool
+     * @returns connection pool if possible
+     */
+    private static getPool(): mysql.Pool | undefined {
         // if the pool is undefined see if we can connect
         if (
             !this.connectionPool &&
@@ -26,27 +30,49 @@ abstract class PoolClass {
 
         return this.connectionPool;
     }
-}
 
-export async function makeSQLQuery(query: string) {
-    const sqlConnectionPool = PoolClass.getPool();
-    if (sqlConnectionPool) {
-        return await sqlConnectionPool.query(query);
+    /**
+     * Make a query to the sql db
+     * @param query
+     * @param variables all variable(s) to be inserted into query
+     * @returns Sql response
+     */
+    public static async makeSQLQuery(query: string, variables?: any) {
+        const sqlConnectionPool = this.getPool();
+        if (sqlConnectionPool) {
+            return await sqlConnectionPool.query(query, variables);
+        }
     }
 }
 
+/**
+ * Verifies the user is in the db and updates their info
+ * @param user
+ */
 export async function verifyUser(user: Discord.GuildMember) {
     try {
-        await makeSQLQuery(
+        await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO User (UserID, DisplayName, UserName, Discriminator) " +
-                `VALUES (${user.id}, "${user.displayName}", "${user.user.username}", ${user.user.discriminator});`,
+                "VALUES (?, ?, ?, ?);",
+            [
+                user.id,
+                user.displayName,
+                user.user.username,
+                user.user.discriminator,
+            ],
         );
-        await makeSQLQuery(
+        await PoolClass.makeSQLQuery(
             "UPDATE User SET " +
-                `DisplayName = "${user.displayName}", ` +
-                `UserName = "${user.user.username}", ` +
-                `Discriminator = ${user.user.discriminator} ` +
-                `WHERE UserID = ${user.id}`,
+                "DisplayName = ?, " +
+                "UserName = ?, " +
+                "Discriminator = ? " +
+                "WHERE UserID = ?",
+            [
+                user.displayName,
+                user.user.username,
+                user.user.discriminator,
+                user.id,
+            ],
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -54,19 +80,24 @@ export async function verifyUser(user: Discord.GuildMember) {
     }
 }
 
+/**
+ * Make a new sound log
+ * @param soundName Name of the sound
+ * @param requestor User that made the request to play the sound
+ */
 export async function dbMakeSoundLog(
     soundName: string,
     requestor: Discord.GuildMember,
 ) {
     try {
         await verifyUser(requestor);
-        await makeSQLQuery(
-            `INSERT IGNORE INTO Sound (SoundName) ` +
-                `VALUES ('${soundName}');`,
+        await PoolClass.makeSQLQuery(
+            "INSERT IGNORE INTO Sound (SoundName) VALUES (?);",
+            [soundName],
         );
-        await makeSQLQuery(
-            `INSERT IGNORE INTO PlayLog (Requestor, SoundName) ` +
-                `VALUES (${requestor.id}, '${soundName}');`,
+        await PoolClass.makeSQLQuery(
+            "INSERT IGNORE INTO PlayLog (Requestor, SoundName) VALUES (?, ?);",
+            [requestor.id, soundName],
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -74,23 +105,28 @@ export async function dbMakeSoundLog(
     }
 }
 
+/**
+ * Make a new game log
+ * @param user User to assign the activity to
+ * @param game Game the user started
+ */
 export async function dbMakeGameLog(
     user: Discord.GuildMember,
     game: Discord.Activity,
 ) {
     try {
         await verifyUser(user);
-        await makeSQLQuery(
-            `INSERT IGNORE INTO Game (Title, GameID) ` +
-                `VALUES ("${game.name.trim().trim()}", ${game.applicationID});`,
+        await PoolClass.makeSQLQuery(
+            "INSERT IGNORE INTO Game (Title, GameID) VALUES (?, ?);",
+            [game.name.trim(), game.applicationID],
         );
-        await makeSQLQuery(
-            `UPDATE Game SET GameID = ${game.applicationID} ` +
-                `WHERE Title = "${game.name.trim()}";`,
+        await PoolClass.makeSQLQuery(
+            "UPDATE Game SET GameID = ? WHERE Title = ? AND GameID IS NULL;",
+            [game.applicationID, game.name.trim()],
         );
-        await makeSQLQuery(
-            `INSERT IGNORE INTO GameLog (UserID, Game) ` +
-                `VALUES (${user.id}, "${game.name.trim()}");`,
+        await PoolClass.makeSQLQuery(
+            "INSERT IGNORE INTO GameLog (UserID, Game) VALUES (?, ?);",
+            [user.id, game.name.trim()],
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -98,23 +134,29 @@ export async function dbMakeGameLog(
     }
 }
 
+/**
+ * Close a game log
+ * @param user User to assign the activity to
+ * @param game Game the user started
+ */
 export async function dbCloseGameLog(
     user: Discord.GuildMember,
     game: Discord.Activity,
 ) {
     try {
         await verifyUser(user);
-        await makeSQLQuery(
+        await PoolClass.makeSQLQuery(
             "UPDATE GameLog " +
                 "SET End = NOW() " +
                 "WHERE ID = " +
                 "(SELECT ID FROM " +
                 "(SELECT * FROM GameLog " +
-                `WHERE (UserID = ${user.id}) AND ` +
-                `(Game = "${game.name.trim()}") ` +
+                "WHERE (UserID = ?) AND " +
+                "(Game = ?) " +
                 "ORDER BY Start DESC LIMIT 1) AS Sub " +
                 "WHERE (End IS NULL)" +
                 ");",
+            [user.id, game.name.trim()],
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -122,6 +164,13 @@ export async function dbCloseGameLog(
     }
 }
 
+/**
+ * Make a new voice log
+ * @param user User to assign the activity to
+ * @param channelID Channel ID the user connected to
+ * @param channelName Channel name the user connected to
+ * @param sessionID User's current session ID
+ */
 export async function dbMakeVoiceLog(
     user: Discord.GuildMember,
     channelID: string,
@@ -130,17 +179,20 @@ export async function dbMakeVoiceLog(
 ) {
     try {
         await verifyUser(user);
-        await makeSQLQuery(
-            `INSERT IGNORE INTO VoiceSession (SessionID, UserID) ` +
-                `VALUES ('${sessionID}', ${user.id});`,
+        await PoolClass.makeSQLQuery(
+            "INSERT IGNORE INTO VoiceSession (SessionID, UserID) " +
+                "VALUES (?, ?);",
+            [sessionID, user.id],
         );
-        await makeSQLQuery(
-            `INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) ` +
-                `VALUES (${channelID}, '${channelName}');`,
+        await PoolClass.makeSQLQuery(
+            "INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) " +
+                "VALUES (?, ?);",
+            [channelID, channelName],
         );
-        await makeSQLQuery(
-            `INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) VALUES ` +
-                `('${sessionID}', ${channelID});`,
+        await PoolClass.makeSQLQuery(
+            "INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) " +
+                "VALUES (?, ?);",
+            [sessionID, channelID],
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -148,6 +200,12 @@ export async function dbMakeVoiceLog(
     }
 }
 
+/**
+ * Close an existing voice log
+ * @param user User to assign the activity to
+ * @param channelID Channel ID the user disconnected to
+ * @param sessionID User's current session ID
+ */
 export async function dbCloseVoiceLog(
     user: Discord.GuildMember,
     channelID: string,
@@ -155,16 +213,17 @@ export async function dbCloseVoiceLog(
 ) {
     try {
         await verifyUser(user);
-        await makeSQLQuery(
+        await PoolClass.makeSQLQuery(
             "UPDATE VoiceLog " +
                 "SET End = NOW() " +
                 "WHERE ID = " +
                 "(SELECT ID FROM " +
                 "(SELECT * FROM VoiceLog " +
-                `WHERE (SessionID = '${sessionID}') AND ` +
-                `(ChannelID = ${channelID}) ` +
+                "WHERE (SessionID = ?) AND " +
+                "(ChannelID = ?) " +
                 "ORDER BY Start DESC LIMIT 1) AS Sub " +
                 "WHERE (End IS NULL));",
+            [sessionID, channelID],
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -172,6 +231,11 @@ export async function dbCloseVoiceLog(
     }
 }
 
+/**
+ * Checks to see if a user has admin privileges
+ * @param user
+ * @returns if the user is an admin
+ */
 export async function isAdmin(
     user: Discord.GuildMember | null,
 ): Promise<boolean> {
@@ -179,11 +243,16 @@ export async function isAdmin(
     try {
         await verifyUser(user);
 
-        const result = await makeSQLQuery(
-            `SELECT isAdmin FROM Discord_Bot.User where UserID = ${user.id};`,
+        const result = await PoolClass.makeSQLQuery(
+            "SELECT isAdmin FROM Discord_Bot.User where UserID = ?;",
+            [user.id],
         );
-        // @ts-ignore
-        return result[0][0].isAdmin === 1;
+        if (result) {
+            // @ts-ignore
+            return result[0][0].isAdmin === 1;
+        }
+
+        return false;
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
         console.warn(e);
@@ -191,10 +260,14 @@ export async function isAdmin(
     }
 }
 
+/**
+ * Gets a list of sounds that should be hidden
+ * @returns Array of sounds that should be hidden
+ */
 export async function getHiddenSounds(): Promise<string[]> {
     try {
-        const result = await makeSQLQuery(
-            `SELECT SoundName FROM Discord_Bot.Sound where isHidden = True;`,
+        const result = await PoolClass.makeSQLQuery(
+            "SELECT SoundName FROM Discord_Bot.Sound where isHidden = True;",
         );
 
         const output: string[] = [];
@@ -214,13 +287,22 @@ export async function getHiddenSounds(): Promise<string[]> {
     }
 }
 
+/**
+ * Gets the volume a sound should be played at
+ * @param soundName Name of sound in db
+ * @returns Volume to play sound at
+ */
 export async function getSoundVolume(soundName: string): Promise<number> {
     try {
-        const result = await makeSQLQuery(
-            `SELECT Volume FROM Discord_Bot.Sound where SoundName = "${soundName}";`,
+        const result = await PoolClass.makeSQLQuery(
+            "SELECT Volume FROM Discord_Bot.Sound where SoundName = ?;",
+            [soundName],
         );
-        // @ts-ignore
-        return result[0][0].Volume;
+        if (result) {
+            // @ts-ignore
+            return result[0][0].Volume;
+        }
+        return 1;
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
         console.warn(e);
