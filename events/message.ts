@@ -18,7 +18,7 @@ const commandFiles = fs
 
 // add commands to bot
 for (const file of commandFiles) {
-    const command: Command = require(`./commands/${file}`);
+    const command: Command = require(`../commands/${file}`);
     bot_commands.push(command);
 }
 
