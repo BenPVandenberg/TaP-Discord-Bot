@@ -8,7 +8,7 @@ import * as colors from "./utilities/colors";
 import * as log from "./utilities/log";
 import * as sql from "./utilities/sql";
 import { Command } from "./utilities/types";
-import { SharedAudio } from "./utilities/voice";
+import StreamManager from "./utilities/streamManager";
 const config = require("./config.json");
 
 const bot = new Client({
@@ -371,7 +371,7 @@ async function maintainance() {
     while (config.maintainance_loop_min) {
         await delay(config.maintainance_loop_min * 60000);
 
-        SharedAudio.checkTimeout();
+        StreamManager.checkTimeout();
     }
 }
 

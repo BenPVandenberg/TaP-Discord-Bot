@@ -3,7 +3,7 @@ import Discord from "discord.js";
 import fs from "fs";
 import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
-import { playMP3 } from "../utilities/voice";
+import StreamManager from "../utilities/streamManager";
 
 // ranks.js
 // ========
@@ -37,7 +37,7 @@ module.exports = {
             const volume = await sql.getSoundVolume(soundName);
 
             // join and play yt audio
-            await playMP3(voiceChannel, filePath, volume);
+            await StreamManager.playMP3(voiceChannel, filePath, volume);
 
             // sound played successfully, therefore update database
             await sql.dbMakeSoundLog(soundName, message.member);

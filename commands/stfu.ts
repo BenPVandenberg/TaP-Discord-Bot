@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 import * as channels from "../utilities/channels";
 import assert from "assert";
-import { playMP3 } from "../utilities/voice";
+import StreamManager from "../utilities/streamManager";
 // stfu.js
 // ========
 module.exports = {
@@ -55,7 +55,10 @@ module.exports = {
 
         // join and play yt audio
         const random_index = Math.floor(Math.random() * 3);
-        await playMP3(eligible_channel, `./audio/stfu${random_index}.mp3`);
+        await StreamManager.playMP3(
+            eligible_channel,
+            `./audio/stfu${random_index}.mp3`,
+        );
         member_to_stfu.voice.setChannel(original_channel);
     },
 };
