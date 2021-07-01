@@ -38,7 +38,9 @@ export default function Sounds() {
     const user: UserState = useAppSelector((state) => state.user);
     const [allSounds, setAllSounds] = useState<Sound[]>([]);
 
-    // gets the latest sound data from backend
+    /**
+     * Gets the latest sound data from backend
+     */
     const updateSounds = async () => {
         if (!clientOnPage) return;
 
@@ -83,6 +85,11 @@ export default function Sounds() {
         };
     }, []);
 
+    /**
+     * onChange function for volume
+     * @param rowIndex index of sound in allSounds variable
+     * @param value new volume value
+     */
     const volumeOnChange = async (rowIndex: number, value: number) => {
         const newAllSounds = [...allSounds];
         newAllSounds[rowIndex].volume = value;
@@ -105,6 +112,12 @@ export default function Sounds() {
             timerProgressBar: true,
         });
     };
+
+    /**
+     * onChange function for isHidden
+     * @param rowIndex index of sound in allSounds variable
+     * @param value new isHidden value
+     */
     const hiddenOnChange = async (rowIndex: number, value: boolean) => {
         const newAllSounds = [...allSounds];
         newAllSounds[rowIndex].hidden = value;

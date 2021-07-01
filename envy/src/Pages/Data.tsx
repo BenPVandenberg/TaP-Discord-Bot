@@ -82,7 +82,10 @@ export default function Data() {
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
     const [userId, setUserId] = useState<string>("");
 
-    // this function will update the data on the visible table
+    /**
+     * This function will update the data on the visible table
+     * @param user User's ID or username
+     */
     const fetchLogs = async (user: string) => {
         // verify we have a string
         if (!user) return;

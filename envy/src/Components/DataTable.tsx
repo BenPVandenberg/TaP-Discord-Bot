@@ -32,7 +32,13 @@ export default function GameLogTable(props: {
     // have a local rows storage for better performance with high refresh inputs (slider)
     const [localRowsStorage, setLocalRowsStorage] = useState<any[]>(props.rows);
 
-    // function to render a cell based on the column + row info
+    /**
+     * Function to render a cell based on the column + row info
+     * @param column
+     * @param value
+     * @param rowIndex Index of the row in the rows prop
+     * @returns HTML to be rendered
+     */
     const renderCell = (column: Column, value: any, rowIndex: number) => {
         switch (column.inputType) {
             // render cell based on its type

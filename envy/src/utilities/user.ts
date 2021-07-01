@@ -2,7 +2,10 @@ import axios, { AxiosRequestConfig } from "axios";
 import { UserState } from "../types";
 import { clearTokens, getTokens, refreshTokens, revokeToken } from "./tokens";
 
-// get user info to fill UserState from discord api + our backend
+/**
+ * Get user info to fill UserState from discord api + our backend
+ * @returns The new userstate from backend APIs
+ */
 async function fetchUserInfo(): Promise<UserState | null> {
     const DISCORD_API_URL = "https://discordapp.com/api/users/@me";
     const { accessToken } = getTokens();
@@ -48,7 +51,10 @@ async function fetchUserInfo(): Promise<UserState | null> {
     return output;
 }
 
-// attempt to log in the user (find a valid token and get info on user)
+/**
+ * Attempt to log in the user (find a valid token and get info on user)
+ * @returns the UserState of the signed in user
+ */
 export async function logInUser() {
     // try to log in user
     // check if we can get a valid user
@@ -66,7 +72,9 @@ export async function logInUser() {
     return userInfo;
 }
 
-// log out the user
+/**
+ * Log out the user
+ */
 export async function logOutUser() {
     revokeToken();
     clearTokens();
