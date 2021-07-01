@@ -1,3 +1,7 @@
+/**
+ * Generates a random colour that isn't too dark
+ * @returns a colour hex string
+ */
 export function getRandomColor() {
     const h = (360 * Math.random()) / 360;
     const s = (100 * Math.random()) / 100;

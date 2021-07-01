@@ -360,6 +360,9 @@ process.on("unhandledRejection", async (error) => {
     console.error("Unhandled promise rejection:", error);
 });
 
+/**
+ * Maintenace loop for the bot
+ */
 async function maintainance() {
     function delay(ms: number) {
         return new Promise((resolve) => setTimeout(resolve, ms));

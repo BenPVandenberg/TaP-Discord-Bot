@@ -14,6 +14,11 @@ const levelIcon = [
 
 const discord_webhook = process.env.LOG_WEBHOOK;
 
+/**
+ * Attempts to send a log message to a discord text channel
+ * @param message String to send
+ * @param level The message type
+ */
 export function logToDiscord(message: string, level: 0 | 1 | 2 | 3 = 0) {
     // if no webhook then don't do anything
     if (!discord_webhook) return;

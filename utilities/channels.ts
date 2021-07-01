@@ -1,5 +1,10 @@
 import Discord from "discord.js";
 
+/**
+ * Attempts to convert a GuildChannel to a TextChannel object
+ * @param channel Discord channel to convert
+ * @returns channel as a TextChannel
+ */
 export function toTextChannel(channel: Discord.GuildChannel | undefined) {
     // check its not null
     if (!channel) {
@@ -17,6 +22,11 @@ export function toTextChannel(channel: Discord.GuildChannel | undefined) {
     return channel;
 }
 
+/**
+ * Attempts to convert a GuildChannel to a VoiceChannel object
+ * @param channel Discord channel to convert
+ * @returns channel as a VoiceChannel
+ */
 export function toVoiceChannel(
     channel: Discord.GuildChannel | Discord.StageChannel | undefined | null,
 ) {
