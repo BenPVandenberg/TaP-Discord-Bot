@@ -9,6 +9,6 @@ module.exports = {
     admin: false,
     requireVoice: false,
     async execute(message: Discord.Message, _args: string[]) {
-        message.channel.send(`T&P Bot v${version}`);
+        message.channel.send(`v${version}`);
     },
 };
