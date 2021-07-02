@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-// echo.js
+// echo.ts
 // ========
 module.exports = {
     name: "echo",

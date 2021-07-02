@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 import assert from "assert";
-// info.js
+// info.ts
 // ========
 module.exports = {
     name: "info",

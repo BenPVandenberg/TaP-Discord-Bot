@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 import fs from "fs";
 import { Command } from "../utilities/types";
-// info.js
+// info.ts
 // ========
 module.exports = {
     name: "sudo",

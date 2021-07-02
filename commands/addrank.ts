@@ -4,7 +4,7 @@ const config = require("../config.json");
 import { isAdmin } from "../utilities/sql";
 import * as log from "../utilities/log";
 
-// addrank.js
+// addrank.ts
 // ========
 module.exports = {
     name: "addrank",

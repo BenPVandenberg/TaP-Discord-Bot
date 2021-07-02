@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 const config = require("../config.json");
-// ranks.js
+// ranks.ts
 // ========
 module.exports = {
     name: "ranks",

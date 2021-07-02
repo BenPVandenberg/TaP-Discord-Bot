@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-// echo.js
+// ping.ts
 // ========
 module.exports = {
     name: "ping",

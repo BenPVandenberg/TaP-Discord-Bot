@@ -2,7 +2,7 @@ import Discord from "discord.js";
 import * as channels from "../utilities/channels";
 import assert from "assert";
 import StreamManager from "../utilities/streamManager";
-// timeout.js
+// timeout.ts
 // ========
 module.exports = {
     name: "timeout",

@@ -1,7 +1,7 @@
 import assert from "assert";
 import Discord from "discord.js";
 
-// poll.js
+// poll.ts
 // ========
 module.exports = {
     name: "poll",

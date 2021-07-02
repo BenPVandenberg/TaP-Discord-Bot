@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 import assert from "assert";
 const config = require("../config.json");
-// removerank.js
+// removerank.ts
 // ========
 module.exports = {
     name: "removerank",

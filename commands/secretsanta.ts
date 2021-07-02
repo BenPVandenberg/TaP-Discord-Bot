@@ -2,7 +2,7 @@ import Discord from "discord.js";
 import assert from "assert";
 import * as channels from "../utilities/channels";
 const config = require("../config.json");
-// secretsanta.js
+// secretsanta.ts
 // ========
 module.exports = {
     name: "secretsanta",

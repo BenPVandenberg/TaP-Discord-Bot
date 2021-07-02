@@ -2,7 +2,7 @@ import Discord from "discord.js";
 import * as channels from "../utilities/channels";
 import assert from "assert";
 import StreamManager from "../utilities/streamManager";
-// stfu.js
+// stfu.ts
 // ========
 module.exports = {
     name: "stfu",
