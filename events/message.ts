@@ -52,24 +52,26 @@ export default async function onMessage(message: Discord.Message) {
         color: colors.getRandomColor(),
     });
 
+    const commandRegex = /^[.,!\-+/'?<;:][^_]\D\w/g;
     // check if it is a bot command in a non command channel
     if (
         !message.author.bot &&
-        (message.content.startsWith(config.prefix) ||
-            message.content.startsWith("-")) &&
+        message.content.match(commandRegex) &&
         !config.command_channels.includes(message.channel.id)
     ) {
-        const cur_channel = message.channel!;
-        if (cur_channel instanceof Discord.DMChannel) {
+        const curChannel = message.channel!;
+        if (curChannel instanceof Discord.DMChannel) {
             return;
         }
 
         log.logToDiscord(
             `<@${message.author}> tried to use bot command "${message.content}"` +
-                ` in a non command channel #${cur_channel.name}`,
+                ` in a non command channel ${curChannel.toString()}`,
             log.INFO,
         );
-        message.author.send("Oi! Bot commands are not allowed there.");
+        message.author.send(
+            `Oi! Bot commands are not allowed in ${message.channel.toString()}.`,
+        );
         message.delete();
     }
 

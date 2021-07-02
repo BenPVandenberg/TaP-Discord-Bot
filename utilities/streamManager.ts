@@ -45,20 +45,6 @@ export default abstract class StreamManager {
     }
 
     /**
-     * Kills the current voice connection
-     * @returns if the function killed the connection
-     */
-    public static killConnection() {
-        if (this.currentConnection) {
-            this.currentConnection.destroy();
-            this.currentConnection = null;
-            this.timeToLeave = null;
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Stream a provided resource to a voice channel
      * @param resource Resource to stream
      * @param channel Discord channel to stream in
@@ -101,5 +87,19 @@ export default abstract class StreamManager {
         resource.volume?.setVolume(volume);
 
         await this.streamResource(resource, channel);
+    }
+
+    /**
+     * Kills the current voice connection
+     * @returns if the function killed the connection
+     */
+    public static killConnection() {
+        if (this.currentConnection) {
+            this.currentConnection.destroy();
+            this.currentConnection = null;
+            this.timeToLeave = null;
+            return true;
+        }
+        return false;
     }
 }
