@@ -1,6 +1,6 @@
 {
     "name": "custom-discord-bot",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "First attempt at a discord bot",
     "main": "index.js",
     "scripts": {
