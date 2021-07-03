@@ -174,13 +174,13 @@ export default function Data() {
         clientOnPage = true;
         // if logged in then the username is present
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        setUserId(user.isLoggedIn ? user.username! : userId);
+        setUserId(user.isLoggedIn ? user.id! : userId);
 
-        if (user.isLoggedIn && user.username) {
-            fetchLogs(user.username);
+        if (user.isLoggedIn && user.id) {
+            fetchLogs(user.id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.isLoggedIn, user.username]);
+    }, [user.isLoggedIn, user.id]);
 
     useEffect(() => {
         // called on mount
