@@ -22,12 +22,14 @@ export function setTokens(accessToken: string, refreshToken: string) {
         Cookies.set("access_token", accessToken, {
             expires: 7,
             sameSite: "strict",
+            secure: true,
         });
     }
     if (refreshToken) {
         Cookies.set("refresh_token", refreshToken, {
             expires: 365,
             sameSite: "strict",
+            secure: true,
         });
     }
 }
