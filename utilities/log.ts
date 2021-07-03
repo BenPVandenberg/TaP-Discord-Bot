@@ -12,7 +12,7 @@ const levelIcon = [
     "https://image.shutterstock.com/image-vector/red-alert-icon-caution-symbol-260nw-1671343564.jpg",
 ];
 
-const discord_webhook = process.env.LOG_WEBHOOK;
+const discordWebhook = process.env.LOG_WEBHOOK;
 
 /**
  * Attempts to send a log message to a discord text channel
@@ -21,11 +21,11 @@ const discord_webhook = process.env.LOG_WEBHOOK;
  */
 export function logToDiscord(message: string, level: 0 | 1 | 2 | 3 = 0) {
     // if no webhook then don't do anything
-    if (!discord_webhook) return;
+    if (!discordWebhook) return;
 
     const notifyRollin = level >= WARNING ? "<@142668923660140544> " : "";
-    axios.post(discord_webhook, {
+    axios.post(discordWebhook, {
         content: `${notifyRollin}${levelText[level]}: ${message}`,
-        avatar_url: levelIcon[level],
+        avatar_url: levelIcon[level], // eslint-disable-line camelcase
     });
 }

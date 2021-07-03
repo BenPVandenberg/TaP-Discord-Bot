@@ -11,19 +11,19 @@ module.exports = {
     requireVoice: true,
     async execute(message: Discord.Message) {
         // @ts-ignore
-        const user_to_timeout = message.mentions.members.values().next().value;
+        const userToTimeout = message.mentions.members.values().next().value;
 
         // verify the user @'d someone
-        if (user_to_timeout === undefined) {
+        if (userToTimeout === undefined) {
             message.reply("usage is .timeout @user");
             return;
         }
 
-        const member_to_timeout = user_to_timeout.presence.member;
-        const original_channel = member_to_timeout.voice.channel;
+        const memberToTimeout = userToTimeout.presence.member;
+        const originalChannel = memberToTimeout.voice.channel;
 
         // ensure member_to_stfu is in a voice channel
-        if (!original_channel) {
+        if (!originalChannel) {
             message.reply("user is not in a voice channel.");
             return;
         }
@@ -31,24 +31,24 @@ module.exports = {
         // find a channel to move user to
         assert(message.guild);
         const channelList = message.guild.channels.cache;
-        let eligible_channel: Discord.VoiceChannel | null = null;
+        let eligibleChannel: Discord.VoiceChannel | null = null;
         for (const [, channel] of channelList.entries()) {
             if (["Muahahahahahah"].includes(channel.name)) {
-                eligible_channel = channels.toVoiceChannel(channel);
+                eligibleChannel = channels.toVoiceChannel(channel);
                 break;
             }
         }
 
         // verify we got a channel to move to
-        if (eligible_channel === null) {
+        if (eligibleChannel === null) {
             message.reply("there arn't any eligible channels atm.");
             return;
         }
 
         // the magic
         message.react("👍");
-        member_to_timeout.voice.setChannel(eligible_channel);
-        await StreamManager.playMP3(eligible_channel, "./audio/timeout.mp3");
-        member_to_timeout.voice.setChannel(original_channel);
+        memberToTimeout.voice.setChannel(eligibleChannel);
+        await StreamManager.playMP3(eligibleChannel, "./audio/timeout.mp3");
+        memberToTimeout.voice.setChannel(originalChannel);
     },
 };

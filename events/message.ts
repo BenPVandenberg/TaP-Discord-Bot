@@ -7,9 +7,9 @@ import * as colors from "../utilities/colors";
 import { Command } from "../utilities/types";
 const config = require("../config.json");
 
-let bot_voice_ready = true;
+let botVoiceReady = true;
 
-const bot_commands: Command[] = [];
+const botCommands: Command[] = [];
 
 // find all commands
 const commandFiles = fs
@@ -19,7 +19,7 @@ const commandFiles = fs
 // add commands to bot
 for (const file of commandFiles) {
     const command: Command = require(`../commands/${file}`);
-    bot_commands.push(command);
+    botCommands.push(command);
 }
 
 export default async function onMessage(message: Discord.Message) {
@@ -81,13 +81,13 @@ export default async function onMessage(message: Discord.Message) {
         config.restricted_bots.includes(message.author.id) &&
         !config.command_channels.includes(message.channel.id)
     ) {
-        const cur_channel = message.channel!;
-        if (cur_channel instanceof Discord.DMChannel) {
+        const currentChannel = message.channel!;
+        if (currentChannel instanceof Discord.DMChannel) {
             return;
         }
 
         log.logToDiscord(
-            `Restricted bot <@${message.author}> is talking in #${cur_channel.name}`,
+            `Restricted bot <@${message.author}> is talking in #${currentChannel.name}`,
             log.INFO,
         );
         message.delete();
@@ -108,7 +108,7 @@ export default async function onMessage(message: Discord.Message) {
 
     // check if the bot has the command
     let cmd: Command | null = null;
-    for (const currentCommand of bot_commands) {
+    for (const currentCommand of botCommands) {
         // check if command matches name or any alias
         if (
             currentCommand.name === command ||
@@ -140,15 +140,15 @@ export default async function onMessage(message: Discord.Message) {
 
         if (cmd.requireVoice) {
             // check if the bot is already talking
-            if (!bot_voice_ready) {
+            if (!botVoiceReady) {
                 message.reply(
                     "I'm currently busy. Try again in a few seconds.",
                 );
                 return;
             }
-            bot_voice_ready = false;
+            botVoiceReady = false;
             await cmd.execute(message, args);
-            bot_voice_ready = true;
+            botVoiceReady = true;
         } else {
             cmd.execute(message, args);
         }

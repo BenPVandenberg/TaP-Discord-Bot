@@ -9,10 +9,10 @@ module.exports = {
     description: "adds or removes sombody from secret santa",
     admin: false,
     requireVoice: false,
-    async execute(message: Discord.Message, args: string[]) {
-        const secret_santa_config = config.commands.secret_santa;
+    async execute(message: Discord.Message) {
+        const secretSantaConfig = config.commands.secret_santa;
 
-        if (!secret_santa_config.active) {
+        if (!secretSantaConfig.active) {
             message.reply("sorry you cannot join at this time.");
             return;
         }
@@ -20,7 +20,7 @@ module.exports = {
         assert(message.guild);
         const roleToAdd = message.guild.roles.cache.get("770707823629697025"); // secret santa role
 
-        const text_channel = channels.toTextChannel(
+        const textChannel = channels.toTextChannel(
             message.guild.channels.cache.get("770708204409585704"),
         ); // secret santa text channel
 
@@ -29,13 +29,13 @@ module.exports = {
         // if member already has the role
         if (message.member.roles.cache.has(roleToAdd.id)) {
             message.member.roles.remove(roleToAdd).then(() => {
-                text_channel.send(`${message.member} has left.`);
+                textChannel.send(`${message.member} has left.`);
             });
         }
         // if member doesn't have the role
         else {
             message.member.roles.add(roleToAdd).then(() => {
-                text_channel.send(
+                textChannel.send(
                     `${message.member} has joined the Secret Santa!`,
                 );
             });

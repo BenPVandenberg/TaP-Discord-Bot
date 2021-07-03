@@ -8,7 +8,7 @@ export default async function onGuildMemberAdd(member: Discord.GuildMember) {
         member.guild.channels.cache.find((ch) => ch.name === "general"),
     );
 
-    const rules_string =
+    const rulesString =
         "1. Be wary of the wild DeadAss + Grim, they DO bite! \n" +
         "2. This is NOT a democracy (RIP ur free will) \n" +
         '3. The President is "not racist" -President \n' +
@@ -17,7 +17,7 @@ export default async function onGuildMemberAdd(member: Discord.GuildMember) {
 
     // Send the message, mentioning the member
     generalChannel.send(
-        `Welcome to the server, ${member.toString()}.\n` + rules_string,
+        `Welcome to the server, ${member.toString()}.\n` + rulesString,
     );
 
     await sql.verifyUser(member);

@@ -9,21 +9,21 @@ module.exports = {
     description: "Lets a user know they really need to stfu",
     admin: false,
     requireVoice: true,
-    async execute(message: Discord.Message, args: string[]) {
+    async execute(message: Discord.Message) {
         // @ts-ignore
-        const user_to_stfu = message.mentions.members.values().next().value;
+        const userToStfu = message.mentions.members.values().next().value;
 
         // verify the user @'d someone
-        if (user_to_stfu === undefined) {
+        if (userToStfu === undefined) {
             message.reply("usage is .stfu @user");
             return;
         }
 
-        const member_to_stfu = user_to_stfu.presence.member;
-        const original_channel = member_to_stfu.voice.channel;
+        const memberToStfu = userToStfu.presence.member;
+        const originalChannel = memberToStfu.voice.channel;
 
         // ensure member_to_stfu is in a voice channel
-        if (!original_channel) {
+        if (!originalChannel) {
             message.reply("user is not in a voice channel.");
             return;
         }
@@ -31,7 +31,7 @@ module.exports = {
         // find a channel to move user to
         assert(message.guild);
         const channelList = message.guild.channels.cache;
-        let eligible_channel: Discord.VoiceChannel | null = null;
+        let eligibleChannel: Discord.VoiceChannel | null = null;
         // eslint-disable-next-line no-unused-vars
         for (const [, channel] of channelList.entries()) {
             if (
@@ -39,27 +39,27 @@ module.exports = {
                 !channel.members.size &&
                 !["AFK"].includes(channel.name)
             ) {
-                eligible_channel = channels.toVoiceChannel(channel);
+                eligibleChannel = channels.toVoiceChannel(channel);
                 break;
             }
         }
 
         // verify we got a channel to move to
-        if (eligible_channel === null) {
+        if (eligibleChannel === null) {
             message.reply("there arn't any eligible channels atm.");
             return;
         }
 
         // the magic
         message.react("👍");
-        member_to_stfu.voice.setChannel(eligible_channel);
+        memberToStfu.voice.setChannel(eligibleChannel);
 
         // join and play yt audio
-        const random_index = Math.floor(Math.random() * 3);
+        const randomIndex = Math.floor(Math.random() * 3);
         await StreamManager.playMP3(
-            eligible_channel,
-            `./audio/stfu${random_index}.mp3`,
+            eligibleChannel,
+            `./audio/stfu${randomIndex}.mp3`,
         );
-        member_to_stfu.voice.setChannel(original_channel);
+        memberToStfu.voice.setChannel(originalChannel);
     },
 };

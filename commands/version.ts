@@ -8,7 +8,7 @@ module.exports = {
     alias: ["v"],
     admin: false,
     requireVoice: false,
-    async execute(message: Discord.Message, _args: string[]) {
+    async execute(message: Discord.Message) {
         message.channel.send(`v${version}`);
     },
 };

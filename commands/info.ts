@@ -28,21 +28,21 @@ module.exports = {
         const rUser = rMember.user;
         const micon = `https://cdn.discordapp.com/avatars/${rMember.id}/${rUser.avatar}.jpg`;
 
-        let roles_display;
+        let rolesDisplay;
         try {
-            roles_display =
+            rolesDisplay =
                 // @ts-ignore
                 rMember._roles
                     // @ts-ignore
                     .map((r) => `${message.guild.roles.cache.get(r).name}`)
                     .join(" | ") || "\u200B";
         } catch (e) {
-            roles_display = "\u200B";
+            rolesDisplay = "\u200B";
         }
 
         assert(rMember.joinedAt);
 
-        const member_embed = new Discord.MessageEmbed()
+        const memberEmbed = new Discord.MessageEmbed()
             .setDescription("__**Member Information**__")
             .setColor(rMember.displayHexColor)
             .setThumbnail(micon) // Their icon
@@ -50,8 +50,8 @@ module.exports = {
             .addField("ID", rMember.id) // Their ID
             .addField("Status", rUser.presence.status)
             .addField("Joined at", rMember.joinedAt.toLocaleString()) // When they joined
-            .addField("Roles", roles_display);
+            .addField("Roles", rolesDisplay);
 
-        message.channel.send({ embeds: [member_embed] });
+        message.channel.send({ embeds: [memberEmbed] });
     },
 };

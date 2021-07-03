@@ -23,29 +23,29 @@ export default async function onPresenceUpdate(
     if (!newMember || !oldMember) return;
 
     // remove any activities that aren't a game
-    const new_activities = newMember.activities.filter(
+    const newActivities = newMember.activities.filter(
         (act) =>
             act.type === "PLAYING" && !config.ignore_games.includes(act.name),
     );
-    const old_activities = oldMember.activities.filter(
+    const oldActivities = oldMember.activities.filter(
         (act) =>
             act.type === "PLAYING" && !config.ignore_games.includes(act.name),
     );
 
     // TODO: Need a way to put identical games together in the db
 
-    for (const game of old_activities) {
+    for (const game of oldActivities) {
         // look for app in new_activities
-        const search = new_activities.find((app) => app.name === game.name);
+        const search = newActivities.find((app) => app.name === game.name);
         if (search === undefined) {
             // no app in new presense, therefore close log
             await sql.dbCloseGameLog(newMember.member, game);
         }
     }
 
-    for (const game of new_activities) {
+    for (const game of newActivities) {
         // look for app in old_activities
-        const search = old_activities.find((app) => app.name === game.name);
+        const search = oldActivities.find((app) => app.name === game.name);
         if (search === undefined) {
             // no app in prev presense, therefore new log
             await sql.dbMakeGameLog(newMember.member, game);

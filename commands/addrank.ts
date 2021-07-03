@@ -12,20 +12,20 @@ module.exports = {
     admin: false,
     requireVoice: false,
     async execute(message: Discord.Message, args: string[]) {
-        const rank_config = config.commands.rank;
+        const rankConfig = config.commands.rank;
         const userIsAdmin = isAdmin(message.member);
         let memberToEdit: Discord.GuildMember | null = message.member;
 
         // give user list of ranks
         if (!args.length) {
             // make string of ranks
-            const all_ranks_string = "-" + rank_config.free_ranks.join("\n-");
+            const allRanksString = "-" + rankConfig.free_ranks.join("\n-");
 
-            const all_ranks_embeded = new Discord.MessageEmbed()
+            const allRanksEmbeded = new Discord.MessageEmbed()
                 .setColor("#0099ff")
-                .addField("All Server Ranks", all_ranks_string, false);
+                .addField("All Server Ranks", allRanksString, false);
 
-            message.reply({ embeds: [all_ranks_embeded] });
+            message.reply({ embeds: [allRanksEmbeded] });
             return;
         }
 
@@ -41,7 +41,7 @@ module.exports = {
         const rankToAdd = args.join(" ").toLowerCase().trim();
 
         try {
-            if (rank_config.free_ranks.includes(rankToAdd) || userIsAdmin) {
+            if (rankConfig.free_ranks.includes(rankToAdd) || userIsAdmin) {
                 assert(message.guild !== null);
                 // is is a role we can manipulate
                 const roleToAdd = message.guild.roles.cache.find(

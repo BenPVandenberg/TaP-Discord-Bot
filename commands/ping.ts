@@ -6,7 +6,7 @@ module.exports = {
     description: "pong!",
     admin: false,
     requireVoice: false,
-    async execute(message: Discord.Message, args: string[]) {
+    async execute(message: Discord.Message) {
         message.channel.send("pong!");
     },
 };

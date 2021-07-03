@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Discord from "discord.js";
 
 export interface Command {

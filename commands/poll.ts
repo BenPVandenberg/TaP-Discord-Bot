@@ -18,13 +18,13 @@ module.exports = {
 
         const pollDescription = args.join(" ");
 
-        const poll_embed = new Discord.MessageEmbed()
+        const pollEmbed = new Discord.MessageEmbed()
             .setTitle(`**${pollDescription}**`)
             .setColor(message.member.displayHexColor)
             .setFooter(`Asked By: ${message.member.displayName}`);
 
         return message.channel
-            .send({ embeds: [poll_embed] })
+            .send({ embeds: [pollEmbed] })
             .then(async (pollMessage) => {
                 await pollMessage.react("👍");
                 await pollMessage.react("👎");

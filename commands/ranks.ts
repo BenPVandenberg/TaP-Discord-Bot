@@ -7,20 +7,20 @@ module.exports = {
     description: "Display all ranks T&P bot can give",
     admin: false,
     requireVoice: false,
-    async execute(message: Discord.Message, args: string[]) {
-        const rank_config = config.commands.rank;
+    async execute(message: Discord.Message) {
+        const rankConfig = config.commands.rank;
 
         // give user list of ranks
         // make string of ranks
-        const all_ranks_string =
+        const allRanksString =
             "-" +
-            rank_config.free_ranks.join("\n-") +
+            rankConfig.free_ranks.join("\n-") +
             "\n\nUse with:\n/addrank or /removerank";
 
-        const all_ranks_embedded = new Discord.MessageEmbed()
+        const allRanksEmbedded = new Discord.MessageEmbed()
             .setColor("#0099ff")
-            .addField("All Server Ranks", all_ranks_string, false);
+            .addField("All Server Ranks", allRanksString, false);
 
-        return message.reply({ embeds: [all_ranks_embedded] });
+        return message.reply({ embeds: [allRanksEmbedded] });
     },
 };

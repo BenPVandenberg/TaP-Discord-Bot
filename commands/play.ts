@@ -5,7 +5,7 @@ import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
 import StreamManager from "../utilities/streamManager";
 
-// ranks.ts
+// play.ts
 // ========
 module.exports = {
     name: "play",

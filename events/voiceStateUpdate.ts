@@ -28,12 +28,12 @@ export default async function onVoiceStateUpdate(
     // if a bot
     if (newMember.member.user.bot) return;
 
-    const in_voice_role = await newMember.guild.roles.fetch(
+    const inVoiceRole = await newMember.guild.roles.fetch(
         config["in_voice_role_id"],
     );
 
     // send an error if we cant find the role
-    if (!in_voice_role) {
+    if (!inVoiceRole) {
         log.logToDiscord(
             `Cant find role ${config["in_voice_role_id"]}`,
             log.WARNING,
@@ -49,8 +49,8 @@ export default async function onVoiceStateUpdate(
         );
 
         // remove in voice role
-        if (in_voice_role) {
-            newMember.member.roles.remove(in_voice_role);
+        if (inVoiceRole) {
+            newMember.member.roles.remove(inVoiceRole);
         }
     } else if (oldMember.channelID === null && newMember.channelID !== null) {
         // Join event
@@ -63,8 +63,8 @@ export default async function onVoiceStateUpdate(
         );
 
         // add the invoice role
-        if (in_voice_role) {
-            newMember.member.roles.add(in_voice_role);
+        if (inVoiceRole) {
+            newMember.member.roles.add(inVoiceRole);
         }
     } else if (
         oldMember.channelID !== null &&

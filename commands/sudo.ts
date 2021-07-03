@@ -30,7 +30,7 @@ module.exports = {
             return;
         }
 
-        let bot_commands = [];
+        let botCommands = [];
         // find all commands
         const commandFiles = fs
             .readdirSync("./commands")
@@ -39,10 +39,10 @@ module.exports = {
         // add commands to bot_commands
         for (const file of commandFiles) {
             const command: Command = require(`./${file}`);
-            bot_commands.push(command);
+            botCommands.push(command);
         }
 
-        const commandObj = bot_commands.find(
+        const commandObj = botCommands.find(
             (cmd) =>
                 cmd.name === commandString ||
                 (cmd.alias && cmd.alias.includes(commandString)),
