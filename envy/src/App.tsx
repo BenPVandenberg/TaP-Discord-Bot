@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
     const classes = useStyles(darkTheme);
     const dispatch = useAppDispatch();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: CSSStyleDeclaration
     document.body.style = `background: ${darkTheme.palette.background.default}`;
 

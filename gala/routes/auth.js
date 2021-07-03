@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const express = require("express");
 const fetch = require("node-fetch");
 const FormData = require("form-data");

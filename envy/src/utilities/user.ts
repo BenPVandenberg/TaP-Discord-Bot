@@ -27,6 +27,7 @@ async function fetchUserInfo(): Promise<UserState | null> {
     try {
         discordResponse = await axios.get(DISCORD_API_URL, config);
         galaResponse = await axios.get(
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             process.env.REACT_APP_BACKEND_ADDRESS! +
                 `/user/${discordResponse.data.id}`,
         );

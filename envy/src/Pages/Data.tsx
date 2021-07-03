@@ -93,7 +93,7 @@ export default function Data() {
         let errorOccurred = false;
 
         // learn if we have a username or id
-        let inputType: "userID" | "username" = isNaN(Number(user))
+        const inputType: "userID" | "username" = isNaN(Number(user))
             ? "username"
             : "userID";
 
@@ -172,6 +172,8 @@ export default function Data() {
     // if the user is logged in, set the box to their user name and fetch logs
     useEffect(() => {
         clientOnPage = true;
+        // if logged in then the username is present
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         setUserId(user.isLoggedIn ? user.username! : userId);
 
         if (user.isLoggedIn && user.username) {
