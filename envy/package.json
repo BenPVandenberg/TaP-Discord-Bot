@@ -1,6 +1,8 @@
 {
     "name": "discord-bot-admin",
-    "version": "0.1.0",
+    "version": "1.0.0",
+    "author": "Ben Vandenberg",
+    "license": "GNU GPLv3",
     "private": true,
     "scripts": {
         "start": "react-scripts start",
@@ -38,8 +40,11 @@
         "@types/jest": "^26.0.15",
         "@types/js-cookie": "^2.2.6",
         "@types/react-router-dom": "^5.1.7",
+        "@typescript-eslint/eslint-plugin": "^4.28.1",
+        "@typescript-eslint/parser": "^4.28.1",
         "css-loader": "^5.0.1",
         "eslint": "^7.20.0",
+        "eslint-plugin-react": "^7.24.0",
         "identity-obj-proxy": "^3.0.0",
         "style-loader": "^2.0.0",
         "ts-jest": "^26.5.6",

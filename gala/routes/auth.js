@@ -1,22 +1,31 @@
+/* eslint-disable camelcase */
 const express = require("express");
 const fetch = require("node-fetch");
 const FormData = require("form-data");
 const btoa = require("btoa");
 const asyncHandler = require("express-async-handler");
 
-const { CLIENT_ID, CLIENT_SECRET } = process.env;
-const redirect = process.env.DISCORD_CALLBACK_URL;
+const {
+    CLIENT_ID,
+    CLIENT_SECRET,
+    DISCORD_CALLBACK_URL: redirect,
+} = process.env;
 
 const router = express.Router();
 
-router.get("/login", (req, res) => {
-    res.redirect(
-        `https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${encodeURIComponent(
-            redirect,
-        )}`,
-    );
-});
+// redirects to discords login
+router.get(
+    "/login",
+    asyncHandler(async (req, res) => {
+        res.redirect(
+            `https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${encodeURIComponent(
+                redirect,
+            )}`,
+        );
+    }),
+);
 
+// the callback from discords login
 router.get(
     "/callback",
     asyncHandler(async (req, res) => {
@@ -54,6 +63,7 @@ router.get(
     }),
 );
 
+// using a refresh token get a new access token
 router.get(
     "/refresh",
     asyncHandler(async (req, res) => {
@@ -78,6 +88,7 @@ router.get(
     }),
 );
 
+// revoke access to current refresh + access token
 router.get(
     "/revoke",
     asyncHandler(async (req, res) => {

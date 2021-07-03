@@ -42,7 +42,10 @@ const uploadSound = async (sound: File, ownerID: string) => {
 export default function SoundUpload() {
     const userID = useAppSelector((state) => state.user.id);
 
-    // called when a file is selected for upload
+    /**
+     * Called when a file is selected for upload
+     * @param e Event that triggered the function call
+     */
     const fileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
         // files could be null leading to index error
         if (e.target.files === null) return;

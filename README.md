@@ -20,6 +20,6 @@
 
 ### Gala
 
-1. Crate an SSL certificate with ```openssl req -nodes -new -x509 -keyout server.key -out server.cert```
+1. Crate an SSL certificate with ```openssl req -nodes -new -x509 -keyout server.key -out server.cert -days 358000```
 2. Create a .env file following the example
 3. Run ```npm install``` + ```npm start```

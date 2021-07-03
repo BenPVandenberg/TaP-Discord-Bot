@@ -82,7 +82,10 @@ export default function Data() {
     const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
     const [userId, setUserId] = useState<string>("");
 
-    // this function will update the data on the visible table
+    /**
+     * This function will update the data on the visible table
+     * @param user User's ID or username
+     */
     const fetchLogs = async (user: string) => {
         // verify we have a string
         if (!user) return;
@@ -90,7 +93,7 @@ export default function Data() {
         let errorOccurred = false;
 
         // learn if we have a username or id
-        let inputType: "userID" | "username" = isNaN(Number(user))
+        const inputType: "userID" | "username" = isNaN(Number(user))
             ? "username"
             : "userID";
 
@@ -169,13 +172,15 @@ export default function Data() {
     // if the user is logged in, set the box to their user name and fetch logs
     useEffect(() => {
         clientOnPage = true;
-        setUserId(user.isLoggedIn ? user.username! : userId);
+        // if logged in then the username is present
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        setUserId(user.isLoggedIn ? user.id! : userId);
 
-        if (user.isLoggedIn && user.username) {
-            fetchLogs(user.username);
+        if (user.isLoggedIn && user.id) {
+            fetchLogs(user.id);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.isLoggedIn, user.username]);
+    }, [user.isLoggedIn, user.id]);
 
     useEffect(() => {
         // called on mount

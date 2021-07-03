@@ -16,7 +16,7 @@ import Sounds from "./Pages/Sounds";
 import Suggest from "./Pages/Suggest";
 import { useAppDispatch } from "./store/hooks";
 import { logIn } from "./store/User/user.actions";
-import { logInUser } from "./utils/user";
+import { logInUser } from "./utilities/user";
 
 // dark theme
 const darkTheme = responsiveFontSizes(
@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
     const classes = useStyles(darkTheme);
     const dispatch = useAppDispatch();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore: CSSStyleDeclaration
     document.body.style = `background: ${darkTheme.palette.background.default}`;
 
