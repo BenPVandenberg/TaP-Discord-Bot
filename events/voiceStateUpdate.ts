@@ -8,7 +8,7 @@ export default async function onVoiceStateUpdate(
     oldMember: Discord.VoiceState,
     newMember: Discord.VoiceState,
 ) {
-    const sessionID = newMember.sessionID ?? oldMember.sessionID;
+    const sessionID = newMember.sessionId ?? oldMember.sessionId;
 
     // Check if sessionID is valid
     if (!sessionID) {
@@ -40,11 +40,11 @@ export default async function onVoiceStateUpdate(
         );
     }
 
-    if (oldMember.channelID !== null && newMember.channelID === null) {
+    if (oldMember.channelId !== null && newMember.channelId === null) {
         // leave event
         await sql.dbCloseVoiceLog(
             newMember.member,
-            oldMember.channelID,
+            oldMember.channelId,
             sessionID,
         );
 
@@ -52,12 +52,12 @@ export default async function onVoiceStateUpdate(
         if (inVoiceRole) {
             newMember.member.roles.remove(inVoiceRole);
         }
-    } else if (oldMember.channelID === null && newMember.channelID !== null) {
+    } else if (oldMember.channelId === null && newMember.channelId !== null) {
         // Join event
         assert(newMember.channel);
         await sql.dbMakeVoiceLog(
             newMember.member,
-            newMember.channelID,
+            newMember.channelId,
             newMember.channel.name,
             sessionID,
         );
@@ -67,20 +67,20 @@ export default async function onVoiceStateUpdate(
             newMember.member.roles.add(inVoiceRole);
         }
     } else if (
-        oldMember.channelID !== null &&
-        newMember.channelID !== null &&
-        oldMember.channelID !== newMember.channelID
+        oldMember.channelId !== null &&
+        newMember.channelId !== null &&
+        oldMember.channelId !== newMember.channelId
     ) {
         // switch channels event
         await sql.dbCloseVoiceLog(
             newMember.member,
-            oldMember.channelID,
+            oldMember.channelId,
             sessionID,
         );
         assert(newMember.channel);
         await sql.dbMakeVoiceLog(
             newMember.member,
-            newMember.channelID,
+            newMember.channelId,
             newMember.channel.name,
             sessionID,
         );

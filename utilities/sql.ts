@@ -118,11 +118,11 @@ export async function dbMakeGameLog(
         await verifyUser(user);
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO Game (Title, GameID) VALUES (?, ?);",
-            [game.name.trim(), game.applicationID],
+            [game.name.trim(), game.applicationId],
         );
         await PoolClass.makeSQLQuery(
             "UPDATE Game SET GameID = ? WHERE Title = ? AND GameID IS NULL;",
-            [game.applicationID, game.name.trim()],
+            [game.applicationId, game.name.trim()],
         );
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO GameLog (UserID, Game) VALUES (?, ?);",

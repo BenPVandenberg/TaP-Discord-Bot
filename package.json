@@ -11,11 +11,11 @@
     "license": "GNU GPLv3",
     "dependencies": {
         "@discordjs/opus": "^0.5.3",
-        "@discordjs/voice": "^0.3.1",
+        "@discordjs/voice": "^0.5.3",
         "@types/node": "^15.12.2",
         "axios": "^0.21.1",
         "console-stamp": "^3.0.2",
-        "discord.js": "^13.0.0-dev.acdcb906ae4691374f5d2bda1315a484c8674938",
+        "discord.js": "^13.0.0-dev.2e078e4.1625529824",
         "dotenv": "^10.0.0",
         "ffmpeg-static": "^4.3.0",
         "mysql2": "^2.2.5",
@@ -27,7 +27,6 @@
         "@typescript-eslint/eslint-plugin": "^4.28.1",
         "@typescript-eslint/parser": "^4.28.1",
         "eslint": "^7.30.0",
-        "eslint-config-google": "^0.14.0",
         "nodemon": "^2.0.4"
     }
 }

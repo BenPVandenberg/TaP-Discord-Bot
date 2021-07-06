@@ -5,7 +5,7 @@ import * as sql from "../utilities/sql";
 const config = require("../config.json");
 
 export default async function onPresenceUpdate(
-    oldMember: Discord.Presence | undefined,
+    oldMember: Discord.Presence | null,
     newMember: Discord.Presence,
 ) {
     // Assert member is not null

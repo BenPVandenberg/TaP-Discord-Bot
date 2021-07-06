@@ -26,7 +26,7 @@ module.exports = {
             return message.reply("Who that user? I dunno him.");
         }
         const rUser = rMember.user;
-        const micon = `https://cdn.discordapp.com/avatars/${rMember.id}/${rUser.avatar}.jpg`;
+        const micon = `https://cdn.discordapp.com/avatars/${rMember.id}/${rUser.avatar}`;
 
         let rolesDisplay;
         try {
@@ -48,7 +48,7 @@ module.exports = {
             .setThumbnail(micon) // Their icon
             .addField("Name", `${rUser.username}#${rUser.discriminator}`)
             .addField("ID", rMember.id) // Their ID
-            .addField("Status", rUser.presence.status)
+            // .addField("Status", rUser.presence.status)
             .addField("Joined at", rMember.joinedAt.toLocaleString()) // When they joined
             .addField("Roles", rolesDisplay);
 

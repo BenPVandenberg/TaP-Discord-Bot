@@ -1,8 +1,9 @@
+import Discord from "discord.js";
 /**
  * Generates a random colour that isn't too dark
  * @returns a colour hex string
  */
-export function getRandomColor() {
+export function getRandomColor(): Discord.HexColorString {
     const h = (360 * Math.random()) / 360;
     const s = (100 * Math.random()) / 100;
     const l = (30 + 70 * Math.random()) / 100;

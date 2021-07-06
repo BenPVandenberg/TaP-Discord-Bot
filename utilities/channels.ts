@@ -5,7 +5,7 @@ import Discord from "discord.js";
  * @param channel Discord channel to convert
  * @returns channel as a TextChannel
  */
-export function toTextChannel(channel: Discord.GuildChannel | undefined) {
+export function toTextChannel(channel: Discord.Channel | undefined | null) {
     // check its not null
     if (!channel) {
         throw new Error("Invalid channel");
@@ -27,9 +27,7 @@ export function toTextChannel(channel: Discord.GuildChannel | undefined) {
  * @param channel Discord channel to convert
  * @returns channel as a VoiceChannel
  */
-export function toVoiceChannel(
-    channel: Discord.GuildChannel | Discord.StageChannel | undefined | null,
-) {
+export function toVoiceChannel(channel: Discord.Channel | undefined | null) {
     // check its not null
     if (!channel) {
         return null;
