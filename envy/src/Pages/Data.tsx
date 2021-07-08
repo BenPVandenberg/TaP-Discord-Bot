@@ -174,7 +174,7 @@ export default function Data() {
         clientOnPage = true;
         // if logged in then the username is present
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        setUserId(user.isLoggedIn ? user.id! : userId);
+        setUserId(user.isLoggedIn ? user.username! : userId);
 
         if (user.isLoggedIn && user.id) {
             fetchLogs(user.id);
