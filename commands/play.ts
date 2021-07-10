@@ -1,6 +1,7 @@
 import assert from "assert";
 import Discord from "discord.js";
 import fs from "fs";
+import path from "path";
 import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
 import StreamManager from "../utilities/streamManager";
@@ -14,6 +15,7 @@ module.exports = {
     admin: false,
     requireVoice: true,
     async execute(message: Discord.Message, args: string[]) {
+        const audioDir = process.env.AUDIO_DIR ?? "./audio/";
         // put arg to lowercase if it exists
         try {
             // if this doesn't exist then this will throw an error
@@ -26,7 +28,7 @@ module.exports = {
                 return message.reply("please join a voice channel first!");
             }
 
-            const filePath = `./audio/${soundName}.mp3`;
+            const filePath = path.join(audioDir, `${soundName}.mp3`);
             // check if file exists
             if (!fs.existsSync(filePath)) {
                 throw "not a valid sound";
@@ -44,8 +46,6 @@ module.exports = {
             await sql.dbMakeSoundLog(soundName, message.member);
         } catch (e) {
             assert(message.member);
-
-            const audioDir = process.env.AUDIO_DIR ?? "./audio";
             const allSounds = fs.readdirSync(audioDir);
             const hiddenSounds = await sql.getHiddenSounds();
             const embedFields: string[] = ["", "", ""];
