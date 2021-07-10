@@ -1,6 +1,7 @@
-import Discord from "discord.js";
-import * as channels from "../utilities/channels";
 import assert from "assert";
+import Discord from "discord.js";
+import path from "path";
+import * as channels from "../utilities/channels";
 import StreamManager from "../utilities/streamManager";
 // timeout.ts
 // ========
@@ -48,7 +49,11 @@ module.exports = {
         // the magic
         message.react("👍");
         memberToTimeout.voice.setChannel(eligibleChannel);
-        await StreamManager.playMP3(eligibleChannel, "./audio/timeout.mp3");
+        const audioDir = process.env.AUDIO_DIR ?? "./audio/";
+        await StreamManager.playMP3(
+            eligibleChannel,
+            path.join(audioDir, "timeout.mp3"),
+        );
         memberToTimeout.voice.setChannel(originalChannel);
     },
 };

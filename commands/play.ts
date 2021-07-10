@@ -45,7 +45,8 @@ module.exports = {
         } catch (e) {
             assert(message.member);
 
-            const allSounds = fs.readdirSync("./audio");
+            const audioDir = process.env.AUDIO_DIR ?? "./audio";
+            const allSounds = fs.readdirSync(audioDir);
             const hiddenSounds = await sql.getHiddenSounds();
             const embedFields: string[] = ["", "", ""];
             let currentfield: number = 0;
