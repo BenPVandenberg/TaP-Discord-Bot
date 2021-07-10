@@ -38,6 +38,7 @@ bot.on(Events.CLIENT_READY, () => {
 /* Emitted whenever a message is created.
 PARAMETER      TYPE           DESCRIPTION
 message        Message        The created message    */
+// TODO: https://github.com/discordjs/guide/tree/master/guide/commando
 bot.on(Events.MESSAGE_CREATE, onMessage);
 
 /* Emitted whenever a user joins a guild.

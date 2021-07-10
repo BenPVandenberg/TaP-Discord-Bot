@@ -52,7 +52,7 @@ export default async function onMessage(message: Discord.Message) {
         color: colors.getRandomColor(),
     });
 
-    const commandRegex = /^[.,!\-+/'?<;:][^_]\D\w/g;
+    const commandRegex = /^[.,!\-+/'?;:][^_]\D\w/g;
     // check if it is a bot command in a non command channel
     if (
         !message.author.bot &&
