@@ -50,7 +50,10 @@ export default async function onVoiceStateUpdate(
 
         // remove in voice role
         if (inVoiceRole) {
-            newMember.member.roles.remove(inVoiceRole);
+            try {
+                newMember.member.roles.remove(inVoiceRole);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
         }
     } else if (oldMember.channelId === null && newMember.channelId !== null) {
         // Join event
@@ -64,7 +67,10 @@ export default async function onVoiceStateUpdate(
 
         // add the invoice role
         if (inVoiceRole) {
-            newMember.member.roles.add(inVoiceRole);
+            try {
+                newMember.member.roles.add(inVoiceRole);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
         }
     } else if (
         oldMember.channelId !== null &&
