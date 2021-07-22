@@ -15,7 +15,7 @@
         "@types/node": "^15.12.2",
         "axios": "^0.21.1",
         "console-stamp": "^3.0.2",
-        "discord.js": "^13.0.0-dev.2e078e4.1625529824",
+        "discord.js": "^13.0.0-dev.328501b.1626912223",
         "dotenv": "^10.0.0",
         "ffmpeg-static": "^4.3.0",
         "mysql2": "^2.2.5",

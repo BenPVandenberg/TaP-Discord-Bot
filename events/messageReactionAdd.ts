@@ -1,7 +1,7 @@
-import Discord from "discord.js";
+import Discord, { PartialMessageReaction } from "discord.js";
 
 export default async function onMessageReactionAdd(
-    reaction: Discord.MessageReaction,
+    reaction: Discord.MessageReaction | PartialMessageReaction,
     // user: Discord.User | Discord.PartialUser,
 ) {
     const emoji = reaction.emoji;

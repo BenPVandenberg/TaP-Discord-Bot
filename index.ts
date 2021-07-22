@@ -15,7 +15,7 @@ const bot = new Client({
         Intents.FLAGS.GUILDS,
         Intents.FLAGS.GUILD_MEMBERS,
         Intents.FLAGS.GUILD_BANS,
-        Intents.FLAGS.GUILD_EMOJIS,
+        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
         Intents.FLAGS.GUILD_INTEGRATIONS,
         Intents.FLAGS.GUILD_WEBHOOKS,
         Intents.FLAGS.GUILD_INVITES,
@@ -38,7 +38,6 @@ bot.on(Events.CLIENT_READY, () => {
 /* Emitted whenever a message is created.
 PARAMETER      TYPE           DESCRIPTION
 message        Message        The created message    */
-// TODO: https://github.com/discordjs/guide/tree/master/guide/commando
 bot.on(Events.MESSAGE_CREATE, onMessage);
 
 /* Emitted whenever a user joins a guild.
