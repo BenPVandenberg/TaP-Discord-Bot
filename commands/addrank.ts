@@ -1,6 +1,6 @@
 import assert from "assert";
-import Discord, { GuildMember } from "discord.js";
-const config = require("../config.json");
+import Discord from "discord.js";
+import config from "../config.json";
 import { isAdmin } from "../utilities/sql";
 import * as log from "../utilities/log";
 
@@ -14,7 +14,7 @@ module.exports = {
     async execute(message: Discord.Message, args: string[]) {
         const rankConfig = config.commands.rank;
         const userIsAdmin = isAdmin(message.member);
-        let memberToEdit: Discord.GuildMember | null = message.member;
+        let memberToEdit = message.member;
 
         // give user list of ranks
         if (!args.length) {
@@ -29,12 +29,13 @@ module.exports = {
             return;
         }
 
-        let mentionedUserList: Discord.Collection<string, GuildMember> =
-            message.mentions.members!;
-        let mentionedUser: GuildMember | undefined = mentionedUserList.first();
-        if (mentionedUser) {
-            memberToEdit = mentionedUser;
-            args.shift();
+        let mentionedUserList = message.mentions.members;
+        if (mentionedUserList) {
+            let mentionedUser = mentionedUserList.first();
+            if (mentionedUser) {
+                memberToEdit = mentionedUser;
+                args.shift();
+            }
         }
 
         // user gave a rank

@@ -2,7 +2,7 @@ import assert from "assert";
 import Discord from "discord.js";
 import * as log from "../utilities/log";
 import * as sql from "../utilities/sql";
-const config = require("../config.json");
+import config from "../config.json";
 
 export default async function onVoiceStateUpdate(
     oldMember: Discord.VoiceState,
@@ -29,13 +29,13 @@ export default async function onVoiceStateUpdate(
     if (newMember.member.user.bot) return;
 
     const inVoiceRole = await newMember.guild.roles.fetch(
-        config["in_voice_role_id"],
+        config.in_voice_role_id,
     );
 
     // send an error if we cant find the role
     if (!inVoiceRole) {
         log.logToDiscord(
-            `Cant find role ${config["in_voice_role_id"]}`,
+            `Cant find role ${config.in_voice_role_id}`,
             log.WARNING,
         );
     }
@@ -66,7 +66,7 @@ export default async function onVoiceStateUpdate(
         );
 
         // add the invoice role
-        if (inVoiceRole) {
+        if (inVoiceRole && config.assign_in_voice) {
             try {
                 newMember.member.roles.add(inVoiceRole);
                 // eslint-disable-next-line no-empty

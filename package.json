@@ -1,6 +1,6 @@
 {
     "name": "custom-discord-bot",
-    "version": "1.1.3",
+    "version": "1.2.0",
     "description": "First attempt at a discord bot",
     "main": "index.js",
     "scripts": {
@@ -15,7 +15,7 @@
         "@types/node": "^15.12.2",
         "axios": "^0.21.1",
         "console-stamp": "^3.0.2",
-        "discord.js": "^13.0.0-dev.328501b.1626912223",
+        "discord.js": "^13.0.1",
         "dotenv": "^10.0.0",
         "ffmpeg-static": "^4.3.0",
         "mysql2": "^2.2.5",

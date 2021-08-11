@@ -13,9 +13,8 @@ export function toTextChannel(channel: Discord.Channel | undefined | null) {
 
     // convert to textchannel
     if (
-        !((channel): channel is Discord.TextChannel => channel.type === "text")(
-            channel,
-        )
+        !((channel): channel is Discord.TextChannel =>
+            channel.type === "GUILD_TEXT")(channel)
     )
         throw new Error("Unable to make channel a text channel");
 
@@ -36,7 +35,7 @@ export function toVoiceChannel(channel: Discord.Channel | undefined | null) {
     // convert to textchannel
     if (
         !((channel): channel is Discord.VoiceChannel =>
-            channel.type === "voice")(channel)
+            channel.type === "GUILD_VOICE")(channel)
     )
         throw new Error("Unable to make channel a voice channel");
 

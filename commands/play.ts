@@ -39,7 +39,7 @@ module.exports = {
 
             const volume = await sql.getSoundVolume(soundName);
 
-            // join and play yt audio
+            // join and play audio
             await StreamManager.playMP3(voiceChannel, filePath, volume);
 
             // sound played successfully, therefore update database

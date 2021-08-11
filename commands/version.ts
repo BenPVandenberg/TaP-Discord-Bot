@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-const { version } = require("../package.json");
+import { version } from "../package.json";
 // version.ts
 // ========
 module.exports = {

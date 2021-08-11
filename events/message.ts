@@ -76,16 +76,13 @@ export default async function onMessage(message: Discord.Message) {
     }
 
     // check if its a restricted bot out of its channel
+    const currentChannel = message.channel;
     if (
         message.author.bot &&
         config.restricted_bots.includes(message.author.id) &&
-        !config.command_channels.includes(message.channel.id)
+        !config.command_channels.includes(message.channel.id) &&
+        currentChannel.type === "GUILD_TEXT"
     ) {
-        const currentChannel = message.channel!;
-        if (currentChannel instanceof Discord.DMChannel) {
-            return;
-        }
-
         log.logToDiscord(
             `Restricted bot <@${message.author}> is talking in #${currentChannel.name}`,
             log.INFO,

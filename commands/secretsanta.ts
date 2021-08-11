@@ -1,7 +1,7 @@
 import Discord from "discord.js";
 import assert from "assert";
 import * as channels from "../utilities/channels";
-const config = require("../config.json");
+import config from "../config.json";
 // secretsanta.ts
 // ========
 module.exports = {
@@ -18,10 +18,10 @@ module.exports = {
         }
 
         assert(message.guild);
-        const roleToAdd = message.guild.roles.cache.get("770707823629697025"); // secret santa role
+        const roleToAdd = message.guild.roles.cache.get(secretSantaConfig.role); // secret santa role
 
         const textChannel = channels.toTextChannel(
-            message.guild.channels.cache.get("770708204409585704"),
+            message.guild.channels.cache.get(secretSantaConfig.role),
         ); // secret santa text channel
 
         assert(message.member);

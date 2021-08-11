@@ -34,9 +34,9 @@ module.exports = {
         const channelList = message.guild.channels.cache;
         let eligibleChannel: Discord.VoiceChannel | null = null;
         // eslint-disable-next-line no-unused-vars
-        for (const [, channel] of channelList.entries()) {
+        for (const [_channelID, channel] of channelList.entries()) {
             if (
-                channel.type === "voice" &&
+                channel.type === "GUILD_VOICE" &&
                 !channel.members.size &&
                 !["AFK"].includes(channel.name)
             ) {
