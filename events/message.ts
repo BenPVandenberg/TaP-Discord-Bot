@@ -5,7 +5,7 @@ import * as log from "../utilities/log";
 import * as sql from "../utilities/sql";
 import * as colors from "../utilities/colors";
 import { Command } from "../utilities/types";
-const config = require("../config.json");
+import config from "../config.json";
 
 let botVoiceReady = true;
 

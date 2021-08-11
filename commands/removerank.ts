@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 import assert from "assert";
-const config = require("../config.json");
+import config from "../config.json";
 // removerank.ts
 // ========
 module.exports = {

@@ -1,5 +1,5 @@
 import StreamManager from "../utilities/streamManager";
-const config = require("../config.json");
+import config from "../config.json";
 
 /**
  * Maintenace loop for the bot

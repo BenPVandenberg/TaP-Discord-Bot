@@ -2,7 +2,7 @@ import assert from "assert";
 import Discord from "discord.js";
 import * as log from "../utilities/log";
 import * as sql from "../utilities/sql";
-const config = require("../config.json");
+import config from "../config.json";
 
 export default async function onPresenceUpdate(
     oldMember: Discord.Presence | null,

@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-const config = require("../config.json");
+import config from "../config.json";
 // ranks.ts
 // ========
 module.exports = {

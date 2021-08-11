@@ -7,7 +7,7 @@ import {
     VoiceConnection,
 } from "@discordjs/voice";
 import { VoiceChannel } from "discord.js";
-const config = require("../config.json");
+import config from "../config.json";
 
 export default abstract class StreamManager {
     public static player = createAudioPlayer();
