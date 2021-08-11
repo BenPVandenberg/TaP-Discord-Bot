@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
+import * as log from "../utilities/log";
 import StreamManager from "../utilities/streamManager";
 
 // play.ts
@@ -15,7 +16,11 @@ module.exports = {
     admin: false,
     requireVoice: true,
     async execute(message: Discord.Message, args: string[]) {
-        const audioDir = process.env.AUDIO_DIR ?? "./audio/";
+        const audioDir =
+            process.env.AUDIO_DIR && process.env.AUDIO_DIR.trim() !== ""
+                ? process.env.AUDIO_DIR
+                : "./audio/";
+
         // put arg to lowercase if it exists
         try {
             // if this doesn't exist then this will throw an error
