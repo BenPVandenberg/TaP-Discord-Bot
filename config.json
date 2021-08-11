@@ -12,13 +12,15 @@
         "Divinity: Original Sin 2",
         "Call of Duty®: Black Ops Cold War"
     ],
+    "assign_in_voice": true,
     "in_voice_role_id": "831948388689903636",
     "commands": {
         "rank": {
             "free_ranks": ["minecraft", "valorant"]
         },
         "secret_santa": {
-            "active": false
+            "active": false,
+            "role": "770707823629697025"
         }
     }
 }
