@@ -11,6 +11,7 @@
     "license": "GNU GPLv3",
     "dependencies": {
         "@discordjs/opus": "^0.5.3",
+        "@discordjs/rest": "^0.1.0-canary.0",
         "@discordjs/voice": "^0.5.3",
         "@types/node": "^15.12.2",
         "axios": "^0.21.1",
