@@ -12,6 +12,7 @@
     "dependencies": {
         "@discordjs/opus": "^0.6.0",
         "@discordjs/voice": "^0.6.0",
+        "@discordjs/rest": "^0.1.0-canary.0",
         "@types/node": "^15.12.2",
         "axios": "^0.21.1",
         "console-stamp": "^3.0.2",
