@@ -140,16 +140,16 @@ export default async function onMessage(message: Discord.Message) {
             message.reply("Voice commands are temporarily disabled");
             return;
 
-            // check if the bot is already talking
-            if (!botVoiceReady) {
-                message.reply(
-                    "I'm currently busy. Try again in a few seconds.",
-                );
-                return;
-            }
-            botVoiceReady = false;
-            await cmd.execute(message, args);
-            botVoiceReady = true;
+            // // check if the bot is already talking
+            // if (!botVoiceReady) {
+            //     message.reply(
+            //         "I'm currently busy. Try again in a few seconds.",
+            //     );
+            //     return;
+            // }
+            // botVoiceReady = false;
+            // await cmd.execute(message, args);
+            // botVoiceReady = true;
         } else {
             cmd.execute(message, args);
         }
