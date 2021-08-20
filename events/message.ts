@@ -136,6 +136,10 @@ export default async function onMessage(message: Discord.Message) {
         }
 
         if (cmd.requireVoice) {
+            // voice commands are temporarily disabled
+            message.reply("Voice commands are temporarily disabled");
+            return;
+
             // check if the bot is already talking
             if (!botVoiceReady) {
                 message.reply(

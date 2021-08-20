@@ -4,7 +4,6 @@ import fs from "fs";
 import path from "path";
 import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
-import * as log from "../utilities/log";
 import StreamManager from "../utilities/streamManager";
 
 // play.ts
