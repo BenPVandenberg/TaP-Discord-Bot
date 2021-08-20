@@ -1,8 +1,8 @@
 import assert from "assert";
 import Discord from "discord.js";
 import config from "../config.json";
-import { isAdmin } from "../utilities/sql";
 import * as log from "../utilities/log";
+import { isAdmin } from "../utilities/sql";
 
 // addrank.ts
 // ========
