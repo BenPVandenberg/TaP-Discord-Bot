@@ -7,7 +7,7 @@ import * as colors from "../utilities/colors";
 import { Command } from "../utilities/types";
 import config from "../config.json";
 
-// let botVoiceReady = true;
+let botVoiceReady = true;
 
 const botCommands: Command[] = [];
 
@@ -136,20 +136,16 @@ export default async function onMessage(message: Discord.Message) {
         }
 
         if (cmd.requireVoice) {
-            // voice commands are temporarily disabled
-            message.reply("Voice commands are temporarily disabled");
-            return;
-
-            // // check if the bot is already talking
-            // if (!botVoiceReady) {
-            //     message.reply(
-            //         "I'm currently busy. Try again in a few seconds.",
-            //     );
-            //     return;
-            // }
-            // botVoiceReady = false;
-            // await cmd.execute(message, args);
-            // botVoiceReady = true;
+            // check if the bot is already talking
+            if (!botVoiceReady) {
+                message.reply(
+                    "I'm currently busy. Try again in a few seconds.",
+                );
+                return;
+            }
+            botVoiceReady = false;
+            await cmd.execute(message, args);
+            botVoiceReady = true;
         } else {
             cmd.execute(message, args);
         }
