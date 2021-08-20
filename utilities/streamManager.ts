@@ -34,12 +34,13 @@ export default abstract class StreamManager {
         const now = new Date();
         if (
             this.currentConnection &&
-            this.timeToLeave! < now &&
-            // only executed if others are true
-            this.killConnection()
+            this.timeToLeave &&
+            this.timeToLeave < now
         ) {
             console.log("Disconnecting due to timeout");
-            return true;
+
+            // return if we killed the connection
+            return this.killConnection();
         }
         return false;
     }
