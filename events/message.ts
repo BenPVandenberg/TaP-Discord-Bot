@@ -7,7 +7,7 @@ import * as colors from "../utilities/colors";
 import { Command } from "../utilities/types";
 import config from "../config.json";
 
-let botVoiceReady = true;
+// let botVoiceReady = true;
 
 const botCommands: Command[] = [];
 
