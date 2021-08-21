@@ -81,9 +81,7 @@ process.on("unhandledRejection", async (error) => {
 
 // register comands
 const commands = [];
-const commandFiles = fs
-    .readdirSync("./commands")
-    .filter((file) => file === "echo.ts");
+const commandFiles = fs.readdirSync("./commands");
 
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
