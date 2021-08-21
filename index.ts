@@ -1,7 +1,11 @@
 require("dotenv").config();
 require("console-stamp")(console, { pattern: "dd/mm/yyyy HH:MM:ss.l" });
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
 import { Client, Constants, Intents } from "discord.js";
+import fs from "fs";
 import onGuildMemberAdd from "./events/guildMemberAdd";
+import onInteractionCreate from "./events/interactionCreate";
 import onMessage from "./events/message";
 import onMessageReactionAdd from "./events/messageReactionAdd";
 import onPresenceUpdate from "./events/presenceUpdate";
@@ -40,6 +44,8 @@ PARAMETER      TYPE           DESCRIPTION
 message        Message        The created message    */
 bot.on(Events.MESSAGE_CREATE, onMessage);
 
+bot.on(Events.INTERACTION_CREATE, onInteractionCreate);
+
 /* Emitted whenever a user joins a guild.
 PARAMETER     TYPE               DESCRIPTION
 member        GuildMember        The member that has joined a guild    */
@@ -72,6 +78,43 @@ process.on("unhandledRejection", async (error) => {
     log.logToDiscord(`unhandledRejection: ${error}`, log.ERROR);
     console.error("Unhandled promise rejection:", error);
 });
+
+// register comands
+const commands = [];
+const commandFiles = fs
+    .readdirSync("./commands")
+    .filter((file) => file === "echo.ts");
+
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    commands.push(command.data.toJSON());
+}
+
+const token = process.env.DISCORD_LOGIN_TOKEN;
+
+(async () => {
+    try {
+        if (!token || !process.env.APPLICATION_ID || !process.env.GUILD_ID) {
+            throw new Error("Required environment variables not set.");
+        }
+        const rest = new REST({ version: "9" }).setToken(token);
+        console.log("Started refreshing application (/) commands.");
+
+        await rest.put(
+            Routes.applicationGuildCommands(
+                process.env.APPLICATION_ID,
+                process.env.GUILD_ID,
+            ),
+            {
+                body: commands,
+            },
+        );
+
+        console.log("Successfully reloaded application (/) commands.");
+    } catch (error) {
+        console.error(error);
+    }
+})();
 
 // init maintainance loop on separate thread
 startMaintainance();
