@@ -8,16 +8,16 @@ export default async function onGuildMemberAdd(member: Discord.GuildMember) {
         member.guild.channels.cache.find((ch) => ch.name === "general"),
     );
 
-    const rulesString =
-        "1. Be wary of the wild DeadAss + Grim, they DO bite! \n" +
+    const infoString =
+        "1. Be wary of the wild greenlizid11 + Grim, they DO bite! \n" +
         "2. This is NOT a democracy (RIP ur free will) \n" +
-        '3. The President is "not racist" -President \n' +
+        '3. "The President is not racist" -President \n' +
         "4. Add game ranks by using .ranks \n" +
         "BONUS: .play gbtm ;)";
 
     // Send the message, mentioning the member
     generalChannel.send(
-        `Welcome to the server, ${member.toString()}.\n` + rulesString,
+        `Welcome to the server, ${member.toString()}.\n` + infoString,
     );
 
     await sql.verifyUser(member);

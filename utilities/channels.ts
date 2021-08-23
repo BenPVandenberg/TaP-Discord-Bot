@@ -32,7 +32,7 @@ export function toVoiceChannel(channel: Discord.Channel | undefined | null) {
         return null;
     }
 
-    // convert to textchannel
+    // convert to voicechannel
     if (
         !((channel): channel is Discord.VoiceChannel =>
             channel.type === "GUILD_VOICE")(channel)
