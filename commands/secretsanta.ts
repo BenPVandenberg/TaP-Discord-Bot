@@ -29,7 +29,7 @@ module.exports = {
         ); // secret santa role
 
         const textChannel = channels.toTextChannel(
-            interaction.guild.channels.cache.get(secretSantaConfig.role),
+            interaction.guild.channels.cache.get(secretSantaConfig.channel),
         ); // secret santa text channel
 
         assert(roleToAdd);
@@ -38,7 +38,7 @@ module.exports = {
         // if member already has the role
         if (interaction.member.roles.cache.has(roleToAdd.id)) {
             await interaction.member.roles.remove(roleToAdd);
-            textChannel.send(`${interaction.member} has left.`);
+            textChannel.send(`${interaction.member.toString()} has left.`);
             return interaction.reply({
                 content: "You have left the secret santa.",
                 ephemeral: true,
@@ -49,7 +49,7 @@ module.exports = {
         else {
             await interaction.member.roles.add(roleToAdd);
             textChannel.send(
-                `${interaction.member} has joined the Secret Santa!`,
+                `${interaction.member.toString()} has joined the Secret Santa!`,
             );
             return interaction.reply({
                 content:

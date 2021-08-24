@@ -19,9 +19,8 @@ module.exports = {
     async execute(interaction: CommandInteraction) {
         const rUser = interaction.options.getUser("user");
         assert(rUser);
-        assert(interaction.guild);
-        const rMember = interaction.guild.members.cache.get(rUser.id);
-        assert(rMember);
+        const rMember = interaction.options.getMember("user");
+        assert(rMember instanceof Discord.GuildMember);
 
         const micon = rUser.avatarURL();
         assert(micon);

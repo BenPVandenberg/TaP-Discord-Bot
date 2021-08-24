@@ -80,23 +80,21 @@ process.on("unhandledRejection", async (error) => {
 });
 
 // register comands
-const commands = [];
-const commandFiles = fs.readdirSync("./commands");
-
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    commands.push(command.data.toJSON());
-}
-
-const token = process.env.DISCORD_LOGIN_TOKEN;
-
 (async () => {
+    const commands = [];
+    const commandFiles = fs.readdirSync("./commands");
+
+    for (const file of commandFiles) {
+        const command = require(`./commands/${file}`);
+        commands.push(command.data.toJSON());
+    }
+
+    const token = process.env.DISCORD_LOGIN_TOKEN;
     try {
         if (!token || !process.env.APPLICATION_ID || !process.env.GUILD_ID) {
             throw new Error("Required environment variables not set.");
         }
         const rest = new REST({ version: "9" }).setToken(token);
-        console.log("Started refreshing application (/) commands.");
 
         await rest.put(
             Routes.applicationGuildCommands(
@@ -111,6 +109,7 @@ const token = process.env.DISCORD_LOGIN_TOKEN;
         console.log("Successfully reloaded application (/) commands.");
     } catch (error) {
         console.error(error);
+        log.logToDiscord(error, log.WARNING);
     }
 })();
 
