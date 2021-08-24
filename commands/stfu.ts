@@ -2,14 +2,13 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import assert from "assert";
 import Discord, { CommandInteraction } from "discord.js";
 import path from "path";
+import { getAudioDir } from "../utilities/audio";
 import * as channels from "../utilities/channels";
 import StreamManager from "../utilities/streamManager";
-import { getAudioDir } from "../utilities/audio";
 // stfu.ts
 // ========
 module.exports = {
     name: "stfu",
-    description: "Lets a user know they really need to stfu",
     admin: false,
     requireVoice: true,
     data: new SlashCommandBuilder()
@@ -31,7 +30,7 @@ module.exports = {
         const originalChannel = memberToStfu.voice.channel;
         // ensure member_to_stfu is in a voice channel
         if (!originalChannel) {
-            return interaction.reply({
+            return await interaction.reply({
                 content: "user is not in a voice channel.",
                 ephemeral: true,
             });
@@ -55,15 +54,14 @@ module.exports = {
 
         // verify we got a channel to move to
         if (eligibleChannel === null) {
-            return interaction.reply({
+            return await interaction.reply({
                 content: "user is not in a voice channel.",
                 ephemeral: true,
             });
         }
 
-        interaction.reply({
-            content: "Success",
-            ephemeral: true,
+        await interaction.reply({
+            content: `Told ${memberToStfu.nickname} to stfu.`,
         });
 
         // the magic

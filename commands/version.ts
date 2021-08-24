@@ -11,6 +11,6 @@ module.exports = {
         .setName("version")
         .setDescription("Displays bot version"),
     async execute(interaction: CommandInteraction) {
-        interaction.reply(`v${version}`);
+        await interaction.reply(`v${version}`);
     },
 };

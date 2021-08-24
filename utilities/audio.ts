@@ -51,7 +51,7 @@ export async function sendSoundList(
             soundList.addField("-------------------------", embed, true);
     });
 
-    return interaction.reply({
+    return await interaction.reply({
         embeds: [soundList],
     });
 }

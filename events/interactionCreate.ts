@@ -30,7 +30,7 @@ export default async function onInteractionCreate(
 
     // ensure voice is ready
     if (commandObj.requireVoice && !botVoiceReady) {
-        return interaction.reply({
+        return await interaction.reply({
             content: "I'm busy rn, try in a few sec.",
             ephemeral: true,
         });
@@ -42,7 +42,7 @@ export default async function onInteractionCreate(
         interaction.member instanceof Discord.GuildMember &&
         !sql.isAdmin(interaction.member)
     ) {
-        return interaction.reply({
+        return await interaction.reply({
             content: "You're not my boss.",
             ephemeral: true,
         });
@@ -52,7 +52,7 @@ export default async function onInteractionCreate(
         await commandObj.execute(interaction);
     } catch (error) {
         console.error(error);
-        return interaction.reply({
+        return await interaction.reply({
             content: "There was an error while executing this command!",
             ephemeral: true,
         });

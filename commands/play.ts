@@ -38,7 +38,7 @@ module.exports = {
         // check that the user is in a voice channel
         const voiceChannel = toVoiceChannel(interaction.member.voice.channel);
         if (!voiceChannel) {
-            return interaction.reply({
+            return await interaction.reply({
                 content: "Please join a voice channel first!",
                 ephemeral: true,
             });
@@ -48,7 +48,7 @@ module.exports = {
         const audioDir = audio.getAudioDir();
         const filePath = path.join(audioDir, `${soundName}.mp3`);
         if (!fs.existsSync(filePath)) {
-            return interaction.reply({
+            return await interaction.reply({
                 content: `Sound file ${soundName} not found`,
                 ephemeral: true,
             });

@@ -50,6 +50,6 @@ module.exports = {
             .addField("Joined at", rMember.joinedAt.toLocaleString()) // When they joined
             .addField("Roles", rolesDisplay);
 
-        interaction.reply({ embeds: [memberEmbed] });
+        await interaction.reply({ embeds: [memberEmbed] });
     },
 };
