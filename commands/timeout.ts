@@ -1,37 +1,46 @@
+import { SlashCommandBuilder } from "@discordjs/builders";
 import assert from "assert";
-import Discord from "discord.js";
+import Discord, { CommandInteraction } from "discord.js";
 import path from "path";
+import { getAudioDir } from "../utilities/audio";
 import * as channels from "../utilities/channels";
 import StreamManager from "../utilities/streamManager";
 // timeout.ts
 // ========
 module.exports = {
     name: "timeout",
-    description: "Moves the user to their own channel for 1 min",
     admin: false,
     requireVoice: true,
-    async execute(message: Discord.Message) {
-        // @ts-ignore
-        const userToTimeout = message.mentions.members.values().next().value;
+    data: new SlashCommandBuilder()
+        .setName("timeout")
+        .setDescription("Moves the user to their own channel for 1 min")
+        .addUserOption((user) =>
+            user
+                .setName("user")
+                .setDescription("User to stfu")
+                .setRequired(true),
+        ),
+    async execute(interaction: CommandInteraction) {
+        const userToTimeout = interaction.options.getUser("user");
+        assert(userToTimeout);
+        assert(interaction.guild);
+        const memberToTimeout = interaction.guild.members.cache.get(
+            userToTimeout.id,
+        );
+        assert(memberToTimeout);
 
-        // verify the user @'d someone
-        if (userToTimeout === undefined) {
-            message.reply("usage is .timeout @user");
-            return;
-        }
-
-        const memberToTimeout = userToTimeout.presence.member;
         const originalChannel = memberToTimeout.voice.channel;
-
         // ensure member_to_stfu is in a voice channel
         if (!originalChannel) {
-            message.reply("user is not in a voice channel.");
-            return;
+            return await interaction.reply({
+                content: "User is not in a voice channel.",
+                ephemeral: true,
+            });
         }
+        assert(originalChannel instanceof Discord.VoiceChannel);
 
         // find a channel to move user to
-        assert(message.guild);
-        const channelList = message.guild.channels.cache;
+        const channelList = interaction.guild.channels.cache;
         let eligibleChannel: Discord.VoiceChannel | null = null;
         for (const [, channel] of channelList.entries()) {
             if (["Muahahahahahah"].includes(channel.name)) {
@@ -41,15 +50,20 @@ module.exports = {
         }
 
         // verify we got a channel to move to
-        if (eligibleChannel === null) {
-            message.reply("there arn't any eligible channels atm.");
-            return;
+        if (!eligibleChannel) {
+            return await interaction.reply({
+                content: "There arn't any eligible channels atm.",
+                ephemeral: true,
+            });
         }
 
+        await interaction.reply({
+            content: `Timed out ${memberToTimeout.nickname}`,
+        });
+
         // the magic
-        message.react("👍");
         memberToTimeout.voice.setChannel(eligibleChannel);
-        const audioDir = process.env.AUDIO_DIR ?? "./audio/";
+        const audioDir = getAudioDir();
         await StreamManager.playMP3(
             eligibleChannel,
             path.join(audioDir, "timeout.mp3"),
