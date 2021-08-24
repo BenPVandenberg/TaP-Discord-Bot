@@ -1,33 +1,46 @@
 import assert from "assert";
-import Discord from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import Discord, { CommandInteraction } from "discord.js";
 
 // poll.ts
 // ========
 module.exports = {
     name: "poll",
-    description: "creates a poll",
     admin: false,
     requireVoice: false,
-    async execute(message: Discord.Message, args: string[]) {
-        assert(message.member);
-        message.delete();
+    data: new SlashCommandBuilder()
+        .setName("poll")
+        .setDescription("creates a poll")
+        .addStringOption((option) =>
+            option
+                .setName("title")
+                .setDescription("Title of the poll")
+                .setRequired(true),
+        ),
+    // .addChannelOption((option) =>
+    //     option.setName("target").setDescription("Channel to send the poll"),
+    // )
+    async execute(interaction: CommandInteraction) {
+        assert(interaction.member instanceof Discord.GuildMember);
 
-        if (!args.length) {
-            return message.reply("A poll message is required");
-        }
-
-        const pollDescription = args.join(" ");
+        const title = interaction.options.getString("title");
+        // const target = interaction.options.getChannel("target");
 
         const pollEmbed = new Discord.MessageEmbed()
-            .setTitle(`**${pollDescription}**`)
-            .setColor(message.member.displayHexColor)
-            .setFooter(`Asked By: ${message.member.displayName}`);
+            .setTitle(`**${title}**`)
+            .setColor(interaction.member.displayHexColor)
+            .setFooter(`Asked By: ${interaction.member.displayName}`);
 
-        return message.channel
-            .send({ embeds: [pollEmbed] })
-            .then(async (pollMessage) => {
-                await pollMessage.react("👍");
-                await pollMessage.react("👎");
-            });
+        assert(interaction.channel instanceof Discord.TextChannel);
+
+        interaction.reply({ content: "Creating poll...", ephemeral: true });
+
+        const pollMessage = await interaction.channel.send({
+            embeds: [pollEmbed],
+        });
+        await pollMessage.react("👍");
+        await pollMessage.react("👎");
+
+        interaction.editReply({ content: "Poll created!" });
     },
 };
