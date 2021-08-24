@@ -1,45 +1,61 @@
-import Discord from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
 import assert from "assert";
-import * as channels from "../utilities/channels";
+import Discord, { CommandInteraction } from "discord.js";
 import config from "../config.json";
+import * as channels from "../utilities/channels";
 // secretsanta.ts
 // ========
 module.exports = {
     name: "secretsanta",
-    description: "adds or removes sombody from secret santa",
     admin: false,
     requireVoice: false,
-    async execute(message: Discord.Message) {
+    data: new SlashCommandBuilder()
+        .setName("secretsanta")
+        .setDescription("adds or removes sombody from secret santa"),
+    async execute(interaction: CommandInteraction) {
         const secretSantaConfig = config.commands.secret_santa;
 
         if (!secretSantaConfig.active) {
-            message.reply("sorry you cannot join at this time.");
+            interaction.reply({
+                content: "Sorry you cannot join at this time.",
+                ephemeral: true,
+            });
             return;
         }
 
-        assert(message.guild);
-        const roleToAdd = message.guild.roles.cache.get(secretSantaConfig.role); // secret santa role
+        assert(interaction.guild);
+        const roleToAdd = interaction.guild.roles.cache.get(
+            secretSantaConfig.role,
+        ); // secret santa role
 
         const textChannel = channels.toTextChannel(
-            message.guild.channels.cache.get(secretSantaConfig.role),
+            interaction.guild.channels.cache.get(secretSantaConfig.role),
         ); // secret santa text channel
 
-        assert(message.member);
         assert(roleToAdd);
+        assert(interaction.member instanceof Discord.GuildMember);
+
         // if member already has the role
-        if (message.member.roles.cache.has(roleToAdd.id)) {
-            message.member.roles.remove(roleToAdd).then(() => {
-                textChannel.send(`${message.member} has left.`);
+        if (interaction.member.roles.cache.has(roleToAdd.id)) {
+            await interaction.member.roles.remove(roleToAdd);
+            textChannel.send(`${interaction.member} has left.`);
+            return interaction.reply({
+                content: "You have left the secret santa.",
+                ephemeral: true,
             });
         }
+
         // if member doesn't have the role
         else {
-            message.member.roles.add(roleToAdd).then(() => {
-                textChannel.send(
-                    `${message.member} has joined the Secret Santa!`,
-                );
+            await interaction.member.roles.add(roleToAdd);
+            textChannel.send(
+                `${interaction.member} has joined the Secret Santa!`,
+            );
+            return interaction.reply({
+                content:
+                    "You have joined the secret santa. (Use the same command to leave)",
+                ephemeral: true,
             });
         }
-        message.react("👍");
     },
 };
