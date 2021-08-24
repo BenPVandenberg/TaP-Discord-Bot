@@ -1,6 +1,7 @@
 import Discord from "discord.js";
 import fs from "fs";
 import * as sql from "../utilities/sql";
+import * as log from "../utilities/log";
 import { Command } from "../utilities/types";
 
 let botVoiceReady = true;
@@ -52,6 +53,7 @@ export default async function onInteractionCreate(
         await commandObj.execute(interaction);
     } catch (error) {
         console.error(error);
+        log.logToDiscord(error, log.ERROR);
         return await interaction.reply({
             content: "There was an error while executing this command!",
             ephemeral: true,
