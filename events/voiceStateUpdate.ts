@@ -6,7 +6,7 @@ import config from "../config.json";
 
 export default async function onVoiceStateUpdate(
     oldMember: Discord.VoiceState,
-    newMember: Discord.VoiceState,
+    newMember: Discord.VoiceState
 ) {
     const sessionID = newMember.sessionId ?? oldMember.sessionId;
 
@@ -14,7 +14,7 @@ export default async function onVoiceStateUpdate(
     if (!sessionID) {
         log.logToDiscord(
             "voiceStateUpdate: No Session for both states",
-            log.WARNING,
+            log.WARNING
         );
         log.logToDiscord(`${{ oldMember, newMember }}`, log.DEBUG);
         return;
@@ -29,14 +29,14 @@ export default async function onVoiceStateUpdate(
     if (newMember.member.user.bot) return;
 
     const inVoiceRole = await newMember.guild.roles.fetch(
-        config.in_voice_role_id,
+        config.in_voice_role_id
     );
 
     // send an error if we cant find the role
     if (!inVoiceRole) {
         log.logToDiscord(
             `Cant find role ${config.in_voice_role_id}`,
-            log.WARNING,
+            log.WARNING
         );
     }
 
@@ -45,7 +45,7 @@ export default async function onVoiceStateUpdate(
         await sql.dbCloseVoiceLog(
             newMember.member,
             oldMember.channelId,
-            sessionID,
+            sessionID
         );
 
         // remove in voice role
@@ -62,7 +62,7 @@ export default async function onVoiceStateUpdate(
             newMember.member,
             newMember.channelId,
             newMember.channel.name,
-            sessionID,
+            sessionID
         );
 
         // add the invoice role
@@ -81,14 +81,14 @@ export default async function onVoiceStateUpdate(
         await sql.dbCloseVoiceLog(
             newMember.member,
             oldMember.channelId,
-            sessionID,
+            sessionID
         );
         assert(newMember.channel);
         await sql.dbMakeVoiceLog(
             newMember.member,
             newMember.channelId,
             newMember.channel.name,
-            sessionID,
+            sessionID
         );
     }
 }

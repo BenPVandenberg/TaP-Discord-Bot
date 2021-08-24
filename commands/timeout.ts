@@ -18,14 +18,14 @@ module.exports = {
             user
                 .setName("user")
                 .setDescription("User to stfu")
-                .setRequired(true),
+                .setRequired(true)
         ),
     async execute(interaction: CommandInteraction) {
         const userToTimeout = interaction.options.getUser("user");
         assert(userToTimeout);
         assert(interaction.guild);
         const memberToTimeout = interaction.guild.members.cache.get(
-            userToTimeout.id,
+            userToTimeout.id
         );
         assert(memberToTimeout);
 
@@ -66,7 +66,7 @@ module.exports = {
         const audioDir = getAudioDir();
         await StreamManager.playMP3(
             eligibleChannel,
-            path.join(audioDir, "timeout.mp3"),
+            path.join(audioDir, "timeout.mp3")
         );
         memberToTimeout.voice.setChannel(originalChannel);
     },

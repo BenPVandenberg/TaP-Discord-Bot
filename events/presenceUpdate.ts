@@ -6,7 +6,7 @@ import config from "../config.json";
 
 export default async function onPresenceUpdate(
     oldMember: Discord.Presence | null,
-    newMember: Discord.Presence,
+    newMember: Discord.Presence
 ) {
     // Assert member is not null
     if (!newMember.member) {
@@ -25,11 +25,11 @@ export default async function onPresenceUpdate(
     // remove any activities that aren't a game
     const newActivities = newMember.activities.filter(
         (act) =>
-            act.type === "PLAYING" && !config.ignore_games.includes(act.name),
+            act.type === "PLAYING" && !config.ignore_games.includes(act.name)
     );
     const oldActivities = oldMember.activities.filter(
         (act) =>
-            act.type === "PLAYING" && !config.ignore_games.includes(act.name),
+            act.type === "PLAYING" && !config.ignore_games.includes(act.name)
     );
 
     for (const game of oldActivities) {

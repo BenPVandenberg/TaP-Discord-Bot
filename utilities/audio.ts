@@ -11,7 +11,7 @@ export function getAudioDir() {
 
 export async function sendSoundList(
     interaction: CommandInteraction,
-    audioDir?: string,
+    audioDir?: string
 ) {
     if (!audioDir) {
         audioDir = getAudioDir();
@@ -28,7 +28,7 @@ export async function sendSoundList(
         .setTitle("__**Available sounds**__")
         .setColor(interaction.member.displayHexColor)
         .setThumbnail(
-            "https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png",
+            "https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png"
         );
 
     // get all current sounds
@@ -40,7 +40,7 @@ export async function sendSoundList(
             !hiddenSounds.includes(curSound)
         ) {
             currentfield = Math.floor(
-                Number(soundIndex) / (allSounds.length / 3),
+                Number(soundIndex) / (allSounds.length / 3)
             );
             embedFields[currentfield] += "-" + curSound + "\n";
         }

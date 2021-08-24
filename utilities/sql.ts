@@ -59,7 +59,7 @@ export async function verifyUser(user: Discord.GuildMember) {
                 user.displayName,
                 user.user.username,
                 user.user.discriminator,
-            ],
+            ]
         );
         await PoolClass.makeSQLQuery(
             "UPDATE User SET " +
@@ -72,7 +72,7 @@ export async function verifyUser(user: Discord.GuildMember) {
                 user.user.username,
                 user.user.discriminator,
                 user.id,
-            ],
+            ]
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -87,17 +87,17 @@ export async function verifyUser(user: Discord.GuildMember) {
  */
 export async function dbMakeSoundLog(
     soundName: string,
-    requestor: Discord.GuildMember,
+    requestor: Discord.GuildMember
 ) {
     try {
         await verifyUser(requestor);
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO Sound (SoundName) VALUES (?);",
-            [soundName],
+            [soundName]
         );
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO PlayLog (Requestor, SoundName) VALUES (?, ?);",
-            [requestor.id, soundName],
+            [requestor.id, soundName]
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -112,21 +112,21 @@ export async function dbMakeSoundLog(
  */
 export async function dbMakeGameLog(
     user: Discord.GuildMember,
-    game: Discord.Activity,
+    game: Discord.Activity
 ) {
     try {
         await verifyUser(user);
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO Game (Title, GameID) VALUES (?, ?);",
-            [game.name.trim(), game.applicationId],
+            [game.name.trim(), game.applicationId]
         );
         await PoolClass.makeSQLQuery(
             "UPDATE Game SET GameID = ? WHERE Title = ? AND GameID IS NULL;",
-            [game.applicationId, game.name.trim()],
+            [game.applicationId, game.name.trim()]
         );
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO GameLog (UserID, Game) VALUES (?, ?);",
-            [user.id, game.name.trim()],
+            [user.id, game.name.trim()]
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -141,7 +141,7 @@ export async function dbMakeGameLog(
  */
 export async function dbCloseGameLog(
     user: Discord.GuildMember,
-    game: Discord.Activity,
+    game: Discord.Activity
 ) {
     try {
         await verifyUser(user);
@@ -156,7 +156,7 @@ export async function dbCloseGameLog(
                 "ORDER BY Start DESC LIMIT 1) AS Sub " +
                 "WHERE (End IS NULL)" +
                 ");",
-            [user.id, game.name.trim()],
+            [user.id, game.name.trim()]
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -175,24 +175,24 @@ export async function dbMakeVoiceLog(
     user: Discord.GuildMember,
     channelID: string,
     channelName: string,
-    sessionID: string,
+    sessionID: string
 ) {
     try {
         await verifyUser(user);
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO VoiceSession (SessionID, UserID) " +
                 "VALUES (?, ?);",
-            [sessionID, user.id],
+            [sessionID, user.id]
         );
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO VoiceChannel (ChannelID, ChannelName) " +
                 "VALUES (?, ?);",
-            [channelID, channelName],
+            [channelID, channelName]
         );
         await PoolClass.makeSQLQuery(
             "INSERT IGNORE INTO VoiceLog (SessionID, ChannelID) " +
                 "VALUES (?, ?);",
-            [sessionID, channelID],
+            [sessionID, channelID]
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -209,7 +209,7 @@ export async function dbMakeVoiceLog(
 export async function dbCloseVoiceLog(
     user: Discord.GuildMember,
     channelID: string,
-    sessionID: string,
+    sessionID: string
 ) {
     try {
         await verifyUser(user);
@@ -223,7 +223,7 @@ export async function dbCloseVoiceLog(
                 "(ChannelID = ?) " +
                 "ORDER BY Start DESC LIMIT 1) AS Sub " +
                 "WHERE (End IS NULL));",
-            [sessionID, channelID],
+            [sessionID, channelID]
         );
     } catch (e) {
         log.logToDiscord(e, log.WARNING);
@@ -237,7 +237,7 @@ export async function dbCloseVoiceLog(
  * @returns if the user is an admin
  */
 export async function isAdmin(
-    user: Discord.GuildMember | null,
+    user: Discord.GuildMember | null
 ): Promise<boolean> {
     if (!user) return false;
     try {
@@ -245,7 +245,7 @@ export async function isAdmin(
 
         const result = await PoolClass.makeSQLQuery(
             "SELECT isAdmin FROM Discord_Bot.User where UserID = ?;",
-            [user.id],
+            [user.id]
         );
         if (result) {
             // @ts-ignore
@@ -267,7 +267,7 @@ export async function isAdmin(
 export async function getHiddenSounds(): Promise<string[]> {
     try {
         const result = await PoolClass.makeSQLQuery(
-            "SELECT SoundName FROM Discord_Bot.Sound where isHidden = True;",
+            "SELECT SoundName FROM Discord_Bot.Sound where isHidden = True;"
         );
 
         const output: string[] = [];
@@ -296,7 +296,7 @@ export async function getSoundVolume(soundName: string): Promise<number> {
     try {
         const result = await PoolClass.makeSQLQuery(
             "SELECT Volume FROM Discord_Bot.Sound where SoundName = ?;",
-            [soundName],
+            [soundName]
         );
         if (result) {
             // @ts-ignore

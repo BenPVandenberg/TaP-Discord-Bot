@@ -25,11 +25,11 @@ module.exports = {
 
         assert(interaction.guild);
         const roleToAdd = interaction.guild.roles.cache.get(
-            secretSantaConfig.role,
+            secretSantaConfig.role
         ); // secret santa role
 
         const textChannel = channels.toTextChannel(
-            interaction.guild.channels.cache.get(secretSantaConfig.channel),
+            interaction.guild.channels.cache.get(secretSantaConfig.channel)
         ); // secret santa text channel
 
         assert(roleToAdd);
@@ -49,7 +49,7 @@ module.exports = {
         else {
             await interaction.member.roles.add(roleToAdd);
             textChannel.send(
-                `${interaction.member.toString()} has joined the Secret Santa!`,
+                `${interaction.member.toString()} has joined the Secret Santa!`
             );
             return interaction.reply({
                 content:

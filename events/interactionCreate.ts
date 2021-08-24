@@ -21,12 +21,12 @@ for (const file of commandFiles) {
 }
 
 export default async function onInteractionCreate(
-    interaction: Discord.Interaction,
+    interaction: Discord.Interaction
 ) {
     if (!interaction.isCommand()) return;
     const { commandName } = interaction;
     const commandObj = botCommands.find(
-        (command) => command.name === commandName,
+        (command) => command.name === commandName
     );
     if (!commandObj) return;
 
@@ -61,7 +61,7 @@ export default async function onInteractionCreate(
     console.log(
         `${interaction.member.displayName} used /${commandName} ${
             optionString !== "" ? "with " + optionString : ""
-        }`,
+        }`
     );
 
     try {

@@ -15,7 +15,7 @@ module.exports = {
             option
                 .setName("title")
                 .setDescription("Title of the poll")
-                .setRequired(true),
+                .setRequired(true)
         ),
     // .addChannelOption((option) =>
     //     option.setName("target").setDescription("Channel to send the poll"),

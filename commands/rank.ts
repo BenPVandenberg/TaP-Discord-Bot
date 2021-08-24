@@ -15,7 +15,7 @@ module.exports = {
         .addSubcommand((subCommand) =>
             subCommand
                 .setName("list")
-                .setDescription("Lists all the available ranks"),
+                .setDescription("Lists all the available ranks")
         )
         .addSubcommand((subCommand) =>
             subCommand
@@ -25,13 +25,13 @@ module.exports = {
                     option
                         .setName("rank")
                         .setDescription("The rank to add")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addUserOption((option) =>
                     option
                         .setName("user")
-                        .setDescription("The user to add the rank to"),
-                ),
+                        .setDescription("The user to add the rank to")
+                )
         )
         .addSubcommand((subCommand) =>
             subCommand
@@ -41,13 +41,13 @@ module.exports = {
                     option
                         .setName("rank")
                         .setDescription("The rank to remove")
-                        .setRequired(true),
+                        .setRequired(true)
                 )
                 .addUserOption((option) =>
                     option
                         .setName("user")
-                        .setDescription("The user to add the rank to"),
-                ),
+                        .setDescription("The user to add the rank to")
+                )
         ),
     async execute(interaction: CommandInteraction) {
         const subCommand = interaction.options.getSubcommand();
@@ -95,7 +95,7 @@ async function listRanks(interaction: CommandInteraction) {
  */
 async function editRank(
     interaction: CommandInteraction,
-    operation: "add" | "remove",
+    operation: "add" | "remove"
 ) {
     const rankConfig = config.commands.rank;
 
@@ -134,7 +134,7 @@ async function editRank(
         // add rank to user
         await memberToEdit.roles.add(
             rankToAdd,
-            `${interaction.user.username} added rank with /rank add`,
+            `${interaction.user.username} added rank with /rank add`
         );
         return await interaction.reply({
             content: `Added ${rankToAdd.name} to ${memberToEdit.toString()}`,
@@ -151,7 +151,7 @@ async function editRank(
         // remove rank from user
         await memberToEdit.roles.remove(
             rankToAdd,
-            `${interaction.user.username} removed rank with /rank remove`,
+            `${interaction.user.username} removed rank with /rank remove`
         );
         return await interaction.reply({
             content: `Removed ${

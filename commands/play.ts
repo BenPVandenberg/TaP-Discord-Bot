@@ -21,7 +21,7 @@ module.exports = {
             option
                 .setName("sound")
                 .setDescription("The name of the sound to play")
-                .setRequired(true),
+                .setRequired(true)
         ),
     async execute(interaction: CommandInteraction) {
         let soundName = interaction.options.getString("sound");
@@ -29,7 +29,7 @@ module.exports = {
 
         assert(
             interaction.member instanceof Discord.GuildMember,
-            "member must be a guild member",
+            "member must be a guild member"
         );
 
         // put arg to lowercase

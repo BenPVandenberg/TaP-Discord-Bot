@@ -5,7 +5,7 @@ import * as sql from "../utilities/sql";
 export default async function onGuildMemberAdd(member: Discord.GuildMember) {
     // Send the message to a designated channel on a server
     const generalChannel = channels.toTextChannel(
-        member.guild.channels.cache.find((ch) => ch.name === "general"),
+        member.guild.channels.cache.find((ch) => ch.name === "general")
     );
 
     // get greenlizid11's and grim's display names
@@ -19,7 +19,7 @@ export default async function onGuildMemberAdd(member: Discord.GuildMember) {
 
     // Send the message, mentioning the member
     generalChannel.send(
-        `Welcome to the server, ${member.toString()}.\n` + infoString,
+        `Welcome to the server, ${member.toString()}.\n` + infoString
     );
 
     // Add the member to the database

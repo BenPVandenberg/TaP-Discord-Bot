@@ -14,7 +14,7 @@ module.exports = {
             option
                 .setName("user")
                 .setDescription("The user to get info of")
-                .setRequired(true),
+                .setRequired(true)
         ),
     async execute(interaction: CommandInteraction) {
         const rUser = interaction.options.getUser("user");

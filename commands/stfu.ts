@@ -18,7 +18,7 @@ module.exports = {
             user
                 .setName("user")
                 .setDescription("User to stfu")
-                .setRequired(true),
+                .setRequired(true)
         ),
     async execute(interaction: CommandInteraction) {
         const userToStfu = interaction.options.getUser("user");
@@ -73,7 +73,7 @@ module.exports = {
         const audioDir = getAudioDir();
         await StreamManager.playMP3(
             eligibleChannel,
-            path.join(audioDir, soundToPlay),
+            path.join(audioDir, soundToPlay)
         );
         memberToStfu.voice.setChannel(originalChannel);
     },

@@ -9,10 +9,10 @@ export default async function onMessage(message: Discord.Message) {
     if (!message.guild) {
         if (!message.author.bot) {
             log.logToDiscord(
-                `Private Message from <@${message.author.id}>: ${message.content}`,
+                `Private Message from <@${message.author.id}>: ${message.content}`
             );
             message.reply(
-                "Wow someone actually messaged me... don't like it, fuck off!",
+                "Wow someone actually messaged me... don't like it, fuck off!"
             );
         }
         return;
@@ -24,7 +24,7 @@ export default async function onMessage(message: Discord.Message) {
         log.logToDiscord(
             'Unable to get role "674039470084849691"\n' +
                 "Formally chief of military tactics'",
-            log.WARNING,
+            log.WARNING
         );
         return;
     }
@@ -48,10 +48,10 @@ export default async function onMessage(message: Discord.Message) {
         log.logToDiscord(
             `<@${message.author}> tried to use bot command "${message.content}"` +
                 ` in a non command channel ${curChannel.toString()}`,
-            log.INFO,
+            log.INFO
         );
         message.author.send(
-            `Oi! Bot commands are not allowed in ${message.channel.toString()}.`,
+            `Oi! Bot commands are not allowed in ${message.channel.toString()}.`
         );
         message.delete();
     }
@@ -66,7 +66,7 @@ export default async function onMessage(message: Discord.Message) {
     ) {
         log.logToDiscord(
             `Restricted bot <@${message.author}> is talking in #${currentChannel.name}`,
-            log.INFO,
+            log.INFO
         );
         message.delete();
     }

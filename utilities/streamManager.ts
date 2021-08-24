@@ -22,7 +22,7 @@ export default abstract class StreamManager {
         const now = new Date();
         // time to leave is voice_timeout_min min after last activity
         this.timeToLeave = new Date(
-            now.getTime() + config.voice_timeout_min * 60000,
+            now.getTime() + config.voice_timeout_min * 60000
         );
     }
 
@@ -52,7 +52,7 @@ export default abstract class StreamManager {
      */
     private static async streamResource(
         resource: AudioResource,
-        channel: VoiceChannel,
+        channel: VoiceChannel
     ) {
         // connection is not guaranteed to still be connected
         this.currentConnection = joinVoiceChannel({
@@ -80,7 +80,7 @@ export default abstract class StreamManager {
     public static async playMP3(
         channel: VoiceChannel,
         filePath: string,
-        volume: number = 1,
+        volume: number = 1
     ) {
         const resource = createAudioResource(filePath, {
             inputType: StreamType.Arbitrary,

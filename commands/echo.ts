@@ -14,12 +14,12 @@ module.exports = {
             option
                 .setName("message")
                 .setDescription("The message to send")
-                .setRequired(true),
+                .setRequired(true)
         )
         .addChannelOption((option) =>
             option
                 .setName("target")
-                .setDescription("Channel to echo the message to"),
+                .setDescription("Channel to echo the message to")
         ),
     async execute(interaction: CommandInteraction) {
         const message = interaction.options.getString("message");
