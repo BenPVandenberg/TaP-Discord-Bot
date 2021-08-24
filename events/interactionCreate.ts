@@ -1,7 +1,8 @@
+import assert from "assert";
 import Discord from "discord.js";
 import fs from "fs";
-import * as sql from "../utilities/sql";
 import * as log from "../utilities/log";
+import * as sql from "../utilities/sql";
 import { Command } from "../utilities/types";
 
 let botVoiceReady = true;
@@ -48,6 +49,20 @@ export default async function onInteractionCreate(
             ephemeral: true,
         });
     }
+
+    // log command
+    let optionString = "";
+    if (interaction.options) {
+        optionString = interaction.options.data
+            .map((option) => `${option.name}: ${option.value}`)
+            .join(", ");
+    }
+    assert(interaction.member instanceof Discord.GuildMember);
+    console.log(
+        `${interaction.member.displayName} used /${commandName} ${
+            optionString !== "" ? "with " + optionString : ""
+        }`,
+    );
 
     try {
         await commandObj.execute(interaction);
