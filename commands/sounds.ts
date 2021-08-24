@@ -1,16 +1,16 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import { version } from "../package.json";
+import { sendSoundList } from "../utilities/audio";
 // version.ts
 // ========
 module.exports = {
-    name: "version",
+    name: "sounds",
     admin: false,
     requireVoice: false,
     data: new SlashCommandBuilder()
-        .setName("version")
-        .setDescription("Displays bot version"),
+        .setName("sounds")
+        .setDescription("Show list of current sounds."),
     async execute(interaction: CommandInteraction) {
-        await interaction.reply(`v${version}`);
+        return await sendSoundList(interaction);
     },
 };

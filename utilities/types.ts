@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
-import Discord from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { CommandInteraction } from "discord.js";
 
 export interface Command {
     name: string;
-    description: string;
     requireVoice: boolean;
     admin: boolean;
-    alias?: string[];
-    execute: (message: Discord.Message, args: string[]) => Promise<void>;
+    data: SlashCommandBuilder;
+    execute: (interaction: CommandInteraction) => Promise<void>;
 }

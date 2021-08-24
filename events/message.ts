@@ -1,30 +1,11 @@
-import assert from "assert";
 import Discord from "discord.js";
-import fs from "fs";
-import * as log from "../utilities/log";
-import * as sql from "../utilities/sql";
-import * as colors from "../utilities/colors";
-import { Command } from "../utilities/types";
 import config from "../config.json";
-
-let botVoiceReady = true;
-
-const botCommands: Command[] = [];
-
-// find all commands
-const commandFiles = fs
-    .readdirSync("./commands")
-    .filter((file) => file.endsWith(".ts"));
-
-// add commands to bot
-for (const file of commandFiles) {
-    const command: Command = require(`../commands/${file}`);
-    botCommands.push(command);
-}
+import * as colors from "../utilities/colors";
+import * as log from "../utilities/log";
 
 export default async function onMessage(message: Discord.Message) {
     // easter egg for dms
-    // nested if required to guarantee guild isn't null
+    // BUG: this is not working with discordjs v13
     if (!message.guild) {
         if (!message.author.bot) {
             log.logToDiscord(
@@ -88,70 +69,5 @@ export default async function onMessage(message: Discord.Message) {
             log.INFO,
         );
         message.delete();
-    }
-
-    if (!message.content.trim().startsWith(config.prefix)) {
-        // check if it is a command for us, if not break
-        return;
-    }
-
-    // isolate command and args
-    const args = message.content.slice(config.prefix.length).trim().split(" ");
-    let command = args.shift();
-
-    // ensure the command isn't just a /
-    assert(typeof command === "string");
-    command = command.toLowerCase();
-
-    // check if the bot has the command
-    let cmd: Command | null = null;
-    for (const currentCommand of botCommands) {
-        // check if command matches name or any alias
-        if (
-            currentCommand.name === command ||
-            (currentCommand.alias && currentCommand.alias.includes(command))
-        ) {
-            cmd = currentCommand;
-        }
-    }
-
-    // if no command found return
-    if (!cmd) return;
-
-    // log command received
-    assert(message.member instanceof Discord.GuildMember);
-    console.log(
-        `Command Received from ${message.member.user.username}: ${message.content}`,
-    );
-
-    try {
-        // check if cmd requires admin and if user is admin
-        if (cmd.admin) {
-            const userIsAdmin = await sql.isAdmin(message.member);
-            if (!userIsAdmin) {
-                // user doesn't have permissions to run this command
-                message.reply("You must be an admin to run this command");
-                return;
-            }
-        }
-
-        if (cmd.requireVoice) {
-            // check if the bot is already talking
-            if (!botVoiceReady) {
-                message.reply(
-                    "I'm currently busy. Try again in a few seconds.",
-                );
-                return;
-            }
-            botVoiceReady = false;
-            await cmd.execute(message, args);
-            botVoiceReady = true;
-        } else {
-            cmd.execute(message, args);
-        }
-    } catch (error) {
-        console.error(error);
-        message.reply("there was an error trying to execute that command!");
-        log.logToDiscord(error, log.ERROR);
     }
 }

@@ -1,37 +1,44 @@
+import { SlashCommandBuilder } from "@discordjs/builders";
 import assert from "assert";
-import Discord from "discord.js";
+import Discord, { CommandInteraction } from "discord.js";
 import path from "path";
+import { getAudioDir } from "../utilities/audio";
 import * as channels from "../utilities/channels";
 import StreamManager from "../utilities/streamManager";
 // stfu.ts
 // ========
 module.exports = {
     name: "stfu",
-    description: "Lets a user know they really need to stfu",
     admin: false,
     requireVoice: true,
-    async execute(message: Discord.Message) {
-        // @ts-ignore
-        const userToStfu = message.mentions.members.values().next().value;
+    data: new SlashCommandBuilder()
+        .setName("stfu")
+        .setDescription("Lets someone know they really need to stfu")
+        .addUserOption((user) =>
+            user
+                .setName("user")
+                .setDescription("User to stfu")
+                .setRequired(true),
+        ),
+    async execute(interaction: CommandInteraction) {
+        const userToStfu = interaction.options.getUser("user");
+        assert(userToStfu);
+        assert(interaction.guild);
+        const memberToStfu = interaction.guild.members.cache.get(userToStfu.id);
+        assert(memberToStfu);
 
-        // verify the user @'d someone
-        if (userToStfu === undefined) {
-            message.reply("usage is .stfu @user");
-            return;
-        }
-
-        const memberToStfu = userToStfu.presence.member;
         const originalChannel = memberToStfu.voice.channel;
-
         // ensure member_to_stfu is in a voice channel
         if (!originalChannel) {
-            message.reply("user is not in a voice channel.");
-            return;
+            return await interaction.reply({
+                content: "user is not in a voice channel.",
+                ephemeral: true,
+            });
         }
+        assert(originalChannel instanceof Discord.VoiceChannel);
 
         // find a channel to move user to
-        assert(message.guild);
-        const channelList = message.guild.channels.cache;
+        const channelList = interaction.guild.channels.cache;
         let eligibleChannel: Discord.VoiceChannel | null = null;
         // eslint-disable-next-line no-unused-vars
         for (const [_channelID, channel] of channelList.entries()) {
@@ -47,18 +54,23 @@ module.exports = {
 
         // verify we got a channel to move to
         if (eligibleChannel === null) {
-            message.reply("there arn't any eligible channels atm.");
-            return;
+            return await interaction.reply({
+                content: "user is not in a voice channel.",
+                ephemeral: true,
+            });
         }
 
+        await interaction.reply({
+            content: `Told ${memberToStfu.nickname} to stfu.`,
+        });
+
         // the magic
-        message.react("👍");
         memberToStfu.voice.setChannel(eligibleChannel);
 
         // join and play yt audio
         const randomIndex = Math.floor(Math.random() * 3);
         const soundToPlay = `stfu${randomIndex}.mp3`;
-        const audioDir = process.env.AUDIO_DIR ?? "./audio/";
+        const audioDir = getAudioDir();
         await StreamManager.playMP3(
             eligibleChannel,
             path.join(audioDir, soundToPlay),

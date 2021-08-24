@@ -1,7 +1,9 @@
+import { SlashCommandBuilder } from "@discordjs/builders";
 import assert from "assert";
-import Discord from "discord.js";
+import Discord, { CommandInteraction } from "discord.js";
 import fs from "fs";
 import path from "path";
+import * as audio from "../utilities/audio";
 import { toVoiceChannel } from "../utilities/channels";
 import * as sql from "../utilities/sql";
 import StreamManager from "../utilities/streamManager";
@@ -10,85 +12,61 @@ import StreamManager from "../utilities/streamManager";
 // ========
 module.exports = {
     name: "play",
-    description: "plays a audio clip",
-    alias: ["p", "sound", "sounds"],
     admin: false,
     requireVoice: true,
-    async execute(message: Discord.Message, args: string[]) {
-        const audioDir =
-            process.env.AUDIO_DIR && process.env.AUDIO_DIR.trim() !== ""
-                ? process.env.AUDIO_DIR
-                : "./audio/";
+    data: new SlashCommandBuilder()
+        .setName("play")
+        .setDescription("Plays a audio clip")
+        .addStringOption((option) =>
+            option
+                .setName("sound")
+                .setDescription("The name of the sound to play")
+                .setRequired(true),
+        ),
+    async execute(interaction: CommandInteraction) {
+        let soundName = interaction.options.getString("sound");
+        assert(soundName, "sound name is required");
 
-        // put arg to lowercase if it exists
-        try {
-            // if this doesn't exist then this will throw an error
-            const soundName = args[0].toLowerCase();
-            assert(message.member);
+        assert(
+            interaction.member instanceof Discord.GuildMember,
+            "member must be a guild member",
+        );
 
-            // check that the user is in a voice channel
-            const voiceChannel = toVoiceChannel(message.member.voice.channel);
-            if (!voiceChannel) {
-                return message.reply("please join a voice channel first!");
-            }
+        // put arg to lowercase
+        soundName = soundName.toLowerCase();
 
-            const filePath = path.join(audioDir, `${soundName}.mp3`);
-            // check if file exists
-            if (!fs.existsSync(filePath)) {
-                throw "not a valid sound";
-            }
-
-            // user in channel and sound is valid
-            message.react("👍");
-
-            const volume = await sql.getSoundVolume(soundName);
-
-            // join and play audio
-            await StreamManager.playMP3(voiceChannel, filePath, volume);
-
-            // sound played successfully, therefore update database
-            await sql.dbMakeSoundLog(soundName, message.member);
-        } catch (e) {
-            assert(message.member);
-            const allSounds = fs.readdirSync(audioDir);
-            const hiddenSounds = await sql.getHiddenSounds();
-            const embedFields: string[] = ["", "", ""];
-            let currentfield: number = 0;
-            const soundList: Discord.MessageEmbed = new Discord.MessageEmbed()
-                .setTitle("__**Available sounds**__")
-                .setColor(message.member.displayHexColor)
-                .setThumbnail(
-                    "https://img2.pngio.com/white-speaker-icon-computer-icons-sound-symbol-audio-free-png-audio-clips-png-910_512.png",
-                );
-
-            // get all current sounds
-            for (const soundIndex in allSounds) {
-                const curSound = allSounds[soundIndex].slice(0, -4);
-
-                if (
-                    allSounds[soundIndex].endsWith(".mp3") &&
-                    !hiddenSounds.includes(curSound)
-                ) {
-                    currentfield = Math.floor(
-                        // @ts-ignore: soundIndex is a number
-                        soundIndex / (allSounds.length / 3),
-                    );
-                    embedFields[currentfield] += "-" + curSound + "\n";
-                }
-            }
-
-            embedFields.forEach((embed) => {
-                if (embed !== "")
-                    soundList.addField(
-                        "-------------------------",
-                        embed,
-                        true,
-                    );
-            });
-
-            message.channel.send({
-                embeds: [soundList],
+        // check that the user is in a voice channel
+        const voiceChannel = toVoiceChannel(interaction.member.voice.channel);
+        if (!voiceChannel) {
+            return await interaction.reply({
+                content: "Please join a voice channel first!",
+                ephemeral: true,
             });
         }
+
+        // check if file exists
+        const audioDir = audio.getAudioDir();
+        const filePath = path.join(audioDir, `${soundName}.mp3`);
+        if (!fs.existsSync(filePath)) {
+            return await interaction.reply({
+                content: `Sound file ${soundName} not found`,
+                ephemeral: true,
+            });
+            // if requested this will send the sound list to the user
+            // return await audio.sendSoundList(interaction);
+        }
+
+        // notify user that the sound is being played
+        await interaction.reply({
+            content: `Playing ${soundName}`,
+        });
+
+        const volume = await sql.getSoundVolume(soundName);
+
+        // join and play audio
+        await StreamManager.playMP3(voiceChannel, filePath, volume);
+
+        // sound played successfully, therefore update database
+        await sql.dbMakeSoundLog(soundName, interaction.member);
     },
 };

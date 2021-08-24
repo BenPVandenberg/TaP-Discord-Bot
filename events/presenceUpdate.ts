@@ -32,8 +32,6 @@ export default async function onPresenceUpdate(
             act.type === "PLAYING" && !config.ignore_games.includes(act.name),
     );
 
-    // TODO: Need a way to put identical games together in the db
-
     for (const game of oldActivities) {
         // look for app in new_activities
         const search = newActivities.find((app) => app.name === game.name);

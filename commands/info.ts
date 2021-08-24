@@ -1,32 +1,30 @@
-import Discord from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
 import assert from "assert";
+import Discord, { CommandInteraction } from "discord.js";
 // info.ts
 // ========
 module.exports = {
     name: "info",
-    description: "gets info of a user",
     admin: false,
     requireVoice: false,
-    async execute(message: Discord.Message, args: string[]) {
-        let rMember; // Takes the user mentioned, or the ID of a user
-        assert(message.guild);
+    data: new SlashCommandBuilder()
+        .setName("info")
+        .setDescription("gets info of a user")
+        .addUserOption((option) =>
+            option
+                .setName("user")
+                .setDescription("The user to get info of")
+                .setRequired(true),
+        ),
+    async execute(interaction: CommandInteraction) {
+        const rUser = interaction.options.getUser("user");
+        assert(rUser);
+        assert(interaction.guild);
+        const rMember = interaction.guild.members.cache.get(rUser.id);
+        assert(rMember);
 
-        try {
-            rMember =
-                message.mentions.members?.first() ??
-                // @ts-ignore ts(2345)
-                message.guild.members.cache.get(args[0]);
-            assert(rMember);
-        } catch (e) {
-            return message.reply("usage: .info <@user | userid>");
-        }
-
-        // if there is no user mentioned, or provided, it will say this
-        if (!rMember) {
-            return message.reply("Who that user? I dunno him.");
-        }
-        const rUser = rMember.user;
-        const micon = `https://cdn.discordapp.com/avatars/${rMember.id}/${rUser.avatar}`;
+        const micon = rUser.avatarURL();
+        assert(micon);
 
         let rolesDisplay;
         try {
@@ -34,7 +32,7 @@ module.exports = {
                 // @ts-ignore
                 rMember._roles
                     // @ts-ignore
-                    .map((r) => `${message.guild.roles.cache.get(r).name}`)
+                    .map((r) => `${interaction.guild.roles.cache.get(r).name}`)
                     .join(" | ") || "\u200B";
         } catch (e) {
             rolesDisplay = "\u200B";
@@ -52,6 +50,6 @@ module.exports = {
             .addField("Joined at", rMember.joinedAt.toLocaleString()) // When they joined
             .addField("Roles", rolesDisplay);
 
-        message.channel.send({ embeds: [memberEmbed] });
+        await interaction.reply({ embeds: [memberEmbed] });
     },
 };
