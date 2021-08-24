@@ -17,10 +17,9 @@ module.exports = {
                 .setRequired(true),
         ),
     async execute(interaction: CommandInteraction) {
-        assert(interaction.guild);
-
         const rUser = interaction.options.getUser("user");
         assert(rUser);
+        assert(interaction.guild);
         const rMember = interaction.guild.members.cache.get(rUser.id);
         assert(rMember);
 
