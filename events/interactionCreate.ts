@@ -51,18 +51,7 @@ export default async function onInteractionCreate(
     }
 
     // log command
-    let optionString = "";
-    if (interaction.options) {
-        optionString = interaction.options.data
-            .map((option) => `${option.name}: ${option.value}`)
-            .join(", ");
-    }
-    assert(interaction.member instanceof Discord.GuildMember);
-    console.log(
-        `${interaction.member.displayName} used /${commandName} ${
-            optionString !== "" ? "with " + optionString : ""
-        }`
-    );
+    console.log(logInteraction(interaction));
 
     try {
         await commandObj.execute(interaction);
@@ -74,4 +63,47 @@ export default async function onInteractionCreate(
             ephemeral: true,
         });
     }
+}
+
+function logInteraction(interaction: Discord.CommandInteraction) {
+    /**
+     * Recursively log the command options
+     * @param options
+     * @returns {string} representing all specified options
+     */
+    function optionToText(
+        options: Readonly<Discord.CommandInteractionOption[] | undefined>
+    ): string {
+        // exit condition
+        if (!options) {
+            return "";
+        }
+
+        let optionText = "";
+
+        options.forEach((option) => {
+            if (option.value) {
+                // here if option is a value option
+                optionText += `${option.name}:${option.value} `;
+            } else {
+                // here if option is a sub command
+                optionText += `${option.name} `;
+                if (option.options) {
+                    optionText += optionToText(option.options);
+                }
+            }
+        });
+
+        return optionText;
+    }
+
+    // generate options string
+    const optionString = optionToText(interaction.options.data);
+
+    assert(interaction.member instanceof Discord.GuildMember);
+    const logString = `${interaction.user.username} used /${
+        interaction.commandName
+    } ${optionString !== "" ? "with " + optionString : ""}`;
+
+    return logString.trim();
 }
