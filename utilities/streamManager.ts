@@ -58,8 +58,7 @@ export default abstract class StreamManager {
         this.currentConnection = joinVoiceChannel({
             channelId: channel.id,
             guildId: channel.guild.id,
-            // @ts-ignore
-            adapterCreator: channel.guild.voiceAdapterCreator as unknown,
+            adapterCreator: channel.guild.voiceAdapterCreator,
             selfDeaf: true,
         });
 

@@ -5,7 +5,6 @@ import * as log from "../utilities/log";
 
 export default async function onMessage(message: Discord.Message) {
     // easter egg for dms
-    // BUG: this is not working with discordjs v13
     if (!message.guild) {
         if (!message.author.bot) {
             log.logToDiscord(

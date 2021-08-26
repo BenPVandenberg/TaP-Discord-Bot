@@ -278,7 +278,6 @@ export async function getHiddenSounds(): Promise<string[]> {
             });
         }
 
-        // @ts-ignore
         return output;
     } catch (e) {
         log.logToDiscord(e, log.WARNING);

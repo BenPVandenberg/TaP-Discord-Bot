@@ -32,6 +32,7 @@ const bot = new Client({
         Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
         Intents.FLAGS.DIRECT_MESSAGE_TYPING,
     ],
+    partials: ["CHANNEL"],
 });
 
 /* Emitted when the client becomes ready to start working.    */
@@ -79,7 +80,7 @@ process.on("unhandledRejection", async (error) => {
     console.error("Unhandled promise rejection:", error);
 });
 
-// register comands
+// register slash comands
 (async () => {
     const commands = [];
     const commandFiles = fs.readdirSync("./commands");
@@ -99,11 +100,11 @@ process.on("unhandledRejection", async (error) => {
         await rest.put(
             Routes.applicationGuildCommands(
                 process.env.APPLICATION_ID,
-                process.env.GUILD_ID,
+                process.env.GUILD_ID
             ),
             {
                 body: commands,
-            },
+            }
         );
 
         console.log("Successfully reloaded application (/) commands.");
