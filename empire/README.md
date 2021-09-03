@@ -4,12 +4,7 @@
 
 ## Run Instructions
 
-To run the bot, you need to have a discord app set up.
-
-1. Copy the `.env.example` to a `.env` file.
-2. Fill the required fields in the `.env` file.
-3. Go over the `config.json` and update it to reflect your server.
-4. Run `npm install` and `npm start`.
+Refer to the README.md in the root of the repository.
 
 ## Development
 
