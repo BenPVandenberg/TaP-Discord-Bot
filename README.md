@@ -1,23 +1,40 @@
 # Custom Discord Bot
 
-  First attempt at a discord bot, it runs on an AWS EC2 Service.
+  First attempt at a discord bot. It is a bot make for a private server of friends.
 
-  To connect with .pem key run `ssh -i "AWS_BOT_KEY.pem" ubuntu@ec2-3-16-203-154.us-east-2.compute.amazonaws.com`
+## Run Instructions
 
-## Format
+To run the bot, you need to have a discord app set up.
 
-  The code in the index.js shouldn't need to be changed much (if at all) as it's very dynamic.
-  To add a command simply add a new .js file to the commands folder, make sure to follow the format of existing files.
+1. Copy the `.env.example` to a `.env` file.
+2. Fill the required fields in the `.env` file.
+3. Go over the `config.json` and update it to reflect your server.
+4. Run `npm install` and `npm start`.
 
-## AWS Interaction
+## Development
 
-### How to start/stop the service
+### Repo Structure
 
-    1. Connect to the service through ssh
-    2. Run "cd Custom-Discord-Bot/"
-    3. From here run "npm start/stop" respectively
+  The repo is structured for easy future expansion
 
-## Security
+- The code in the index.ts shouldn't need to be changed much (if at all), it's main job is to
+  route an incoming event to the correct listener.
+- To add a new command, add a .ts file to the commands folder that follows the structure of
+  the other commands.
+- The events folder is where all the discord event listeners are stored.
+- The utilities folder is where any functions that are used by multiple commands are stored.
+- Configuration Storage
+  - `config.json`: This file contains configuration for the nature of the bot.
+  - `.env`: This file contains variables that give the bot access to external resources.
 
-  Due to security purposes we are using dotenv to keep our login tokens off the repo if we ever want to make it public.
-  To get your copy of the .pem key and .env file please message Rollin#3406 on discord
+### Environment
+
+Recommended that you use VS code for development with the extentions recommended by
+the `.vscode\extensions.json` file.
+
+### Submitting new code
+
+- Test any new code before pushing it to the repo.
+- Make a new branch for new features and make a pull request to the master branch.
+- (Optional) Add a Github issue/feature request and assign it to yourself before
+  starting work.
