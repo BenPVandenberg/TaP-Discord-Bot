@@ -32,7 +32,7 @@ const uploadSound = async (sound: File, ownerID: string) => {
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" },
-            },
+            }
         );
     } catch (err) {
         return err;

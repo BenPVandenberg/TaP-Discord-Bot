@@ -11,7 +11,7 @@ describe("<Login />", () => {
                 <Router>
                     <Login />
                 </Router>
-            </Provider>,
+            </Provider>
         );
     });
 
@@ -21,7 +21,7 @@ describe("<Login />", () => {
                 <Router>
                     <Login />
                 </Router>
-            </Provider>,
+            </Provider>
         );
 
         const errorText = getByRole("heading", {

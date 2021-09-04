@@ -7,7 +7,7 @@ describe("<Home />", () => {
         render(
             <Router>
                 <Home />
-            </Router>,
+            </Router>
         );
     });
 
@@ -15,7 +15,7 @@ describe("<Home />", () => {
         const { getByRole } = render(
             <Router>
                 <Home />
-            </Router>,
+            </Router>
         );
         const homeHeader = getByRole("heading", {
             name: /home/i,

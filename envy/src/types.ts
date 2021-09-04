@@ -1,4 +1,4 @@
-interface TimeLog {
+export interface TimeLog {
     userID: number;
     username: string;
     start: Date;

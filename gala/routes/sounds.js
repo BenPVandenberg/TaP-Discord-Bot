@@ -29,7 +29,7 @@ router.get(
         });
 
         res.status(200).send(rtnDataArr);
-    }),
+    })
 );
 
 // update the properties of a sound
@@ -61,7 +61,7 @@ router.put(
 
         // verify user is an admin
         const [validUsers] = await sql.query(
-            "SELECT UserID FROM Discord_Bot.User where isAdmin = true;",
+            "SELECT UserID FROM Discord_Bot.User where isAdmin = true;"
         );
         const userIsValid = validUsers.some((el) => el.UserID === userID);
 
@@ -77,17 +77,17 @@ router.put(
         if (volume !== undefined && hidden !== undefined) {
             [sqlResponse] = await sql.query(
                 "UPDATE Sound SET Volume = ?, isHidden = ? WHERE (SoundName = ?);",
-                [volume, hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
+                [volume, hidden == true ? 1 : 0, soundName] // eslint-disable-line eqeqeq
             );
         } else if (volume !== undefined) {
             [sqlResponse] = await sql.query(
                 "UPDATE Sound SET Volume = ? WHERE (SoundName = ?);",
-                [volume, soundName],
+                [volume, soundName]
             );
         } else if (hidden !== undefined) {
             [sqlResponse] = await sql.query(
                 "UPDATE Sound SET isHidden = ? WHERE (SoundName = ?);",
-                [hidden == true ? 1 : 0, soundName], // eslint-disable-line eqeqeq
+                [hidden == true ? 1 : 0, soundName] // eslint-disable-line eqeqeq
             );
         }
 
@@ -97,7 +97,7 @@ router.put(
         }
 
         res.status(200).send();
-    }),
+    })
 );
 
 // upload a new sound to the bot
@@ -117,7 +117,7 @@ router.post(
         }
 
         const [validUsers] = await sql.query(
-            "SELECT UserID FROM Discord_Bot.User;",
+            "SELECT UserID FROM Discord_Bot.User;"
         );
 
         // eslint-disable-next-line eqeqeq
@@ -144,7 +144,7 @@ router.post(
 
         const fullFilePath = path.join(
             process.env.SOUNDS_DIR,
-            myFile.name.toLowerCase(),
+            myFile.name.toLowerCase()
         );
 
         // check if file already exists
@@ -157,7 +157,7 @@ router.post(
         try {
             await sql.query(
                 `INSERT INTO Sound (SoundName, UploadDate, Owner) VALUES (?, CONVERT_TZ(NOW(), 'UTC', 'America/New_York'), ?);`,
-                [localName, userID || null],
+                [localName, userID || null]
             );
         } catch (err) {
             if (err.code === "ER_DUP_ENTRY") {
@@ -182,7 +182,7 @@ router.post(
             fileName: myFile.name.toLowerCase(),
             name: localName,
         });
-    }),
+    })
 );
 
 module.exports = router;

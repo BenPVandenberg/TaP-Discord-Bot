@@ -15,7 +15,7 @@ export default function Login() {
     // check for errors from backend
     const errorParam = new URLSearchParams(window.location.search).get("error");
     const errorDescription = new URLSearchParams(window.location.search).get(
-        "error_description",
+        "error_description"
     );
 
     if (errorParam) {
@@ -28,10 +28,10 @@ export default function Login() {
     // STEP 2
     // get tokens from url search pararms
     const accessToken = new URLSearchParams(window.location.search).get(
-        "access_token",
+        "access_token"
     );
     const refreshToken = new URLSearchParams(window.location.search).get(
-        "refresh_token",
+        "refresh_token"
     );
 
     if (accessToken && refreshToken) {

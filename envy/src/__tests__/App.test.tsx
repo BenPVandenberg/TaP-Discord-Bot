@@ -11,7 +11,7 @@ describe("<App />", () => {
                 <Router>
                     <App />
                 </Router>
-            </Provider>,
+            </Provider>
         );
     });
 });
