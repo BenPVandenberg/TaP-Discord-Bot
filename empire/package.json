@@ -1,14 +1,13 @@
 {
-    "name": "custom-discord-bot",
-    "version": "2.2.3",
+    "name": "empire",
+    "author": "Ben Vandenberg",
+    "version": "2.2.4",
     "description": "First attempt at a discord bot",
-    "main": "index.ts",
+    "license": "GNU GPLv3",
+    "private": true,
     "scripts": {
-        "pm2": "pm2 start --name Discord_Bot npm -- start",
         "start": "ts-node ."
     },
-    "author": "Ben Vandenberg",
-    "license": "GNU GPLv3",
     "dependencies": {
         "@discordjs/opus": "^0.6.0",
         "@discordjs/rest": "^0.1.0-canary.0",
