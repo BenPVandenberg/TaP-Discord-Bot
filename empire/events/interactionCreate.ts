@@ -39,11 +39,9 @@ export default async function onInteractionCreate(
     }
 
     // verify user is allowed to use command
-    if (
-        commandObj.admin &&
-        interaction.member instanceof Discord.GuildMember &&
-        !sql.isAdmin(interaction.member)
-    ) {
+    assert(interaction.member instanceof Discord.GuildMember);
+    const userIsAdmin = await sql.isAdmin(interaction.member);
+    if (commandObj.admin && !userIsAdmin) {
         return await interaction.reply({
             content: "You're not my boss.",
             ephemeral: true,
