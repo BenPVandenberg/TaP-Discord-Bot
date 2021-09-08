@@ -75,21 +75,6 @@ const voiceLogCols: Column[] = [
     },
 ];
 
-function convertDateToUTC(date: Date | null) {
-    if (date === null) {
-        return null;
-    }
-
-    return new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate(),
-        date.getUTCHours(),
-        date.getUTCMinutes(),
-        date.getUTCSeconds()
-    );
-}
-
 export default function Data() {
     const user: UserState = useAppSelector((state) => state.user);
     const [tableView, setTableView] = useState<"game" | "voice">("game");
@@ -164,23 +149,22 @@ export default function Data() {
             });
         }
 
-        const convertDataToDates = (log: TimeLog) => {
-            const start = convertDateToUTC(new Date(log.start));
+        const convertDataForDisplay = (log: TimeLog) => {
+            const start = new Date(log.start);
             if (start) {
-                log.start = start;
+                log.start = start.toLocaleString();
             }
             if (log.end) {
-                const end = convertDateToUTC(new Date(log.end));
+                const end = new Date(log.end);
                 if (end) {
-                    log.end = end;
+                    log.end = end.toLocaleString();
                 }
             }
         };
 
         // convert Start and End to date objects
-        // BUG: the game table is not displaying correctly
-        gameResponse.forEach(convertDataToDates);
-        voiceResponse.forEach(convertDataToDates);
+        gameResponse.forEach(convertDataForDisplay);
+        voiceResponse.forEach(convertDataForDisplay);
 
         setGameLogs(gameResponse);
         setVoiceLogs(voiceResponse);
