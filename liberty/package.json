@@ -1,14 +1,13 @@
 {
-    "name": "menu-api-express-ts",
+    "name": "liberty",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "description": "Backend API for the T&P Discord bot",
     "scripts": {
         "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts"
     },
     "keywords": [],
     "author": "",
-    "license": "ISC",
+    "license": "GNU GPLv3",
     "dependencies": {
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
