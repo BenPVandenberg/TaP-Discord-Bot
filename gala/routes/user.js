@@ -14,6 +14,10 @@ const userExists = async (id) => {
 };
 
 function createDateAsUTC(date) {
+    if (!date) {
+        return null;
+    }
+
     return new Date(
         Date.UTC(
             date.getFullYear(),
@@ -154,8 +158,8 @@ router.get(
                 userID: element.UserID,
                 username: element.Username,
                 channel: element.Channel,
-                start: element.Start.toLocaleString(),
-                end: element.End ? element.End.toLocaleString() : element.End,
+                start: createDateAsUTC(element.Start),
+                end: createDateAsUTC(element.End),
             });
         });
 
