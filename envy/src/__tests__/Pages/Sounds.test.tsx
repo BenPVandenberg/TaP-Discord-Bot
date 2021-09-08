@@ -8,7 +8,7 @@ describe("<Sounds />", () => {
         render(
             <Provider store={store}>
                 <Sounds />
-            </Provider>,
+            </Provider>
         );
     });
 
@@ -16,7 +16,7 @@ describe("<Sounds />", () => {
         const { getByRole } = render(
             <Provider store={store}>
                 <Sounds />
-            </Provider>,
+            </Provider>
         );
 
         const header = getByRole("heading", {

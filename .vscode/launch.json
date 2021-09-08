@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "command": "npm start",
+            "name": "empire",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/empire"
+        },
+        {
+            "name": "envy",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/envy/src"
+        },
+        {
+            "command": "npm start",
+            "name": "gala",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/gala"
+        }
+    ]
+}

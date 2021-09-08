@@ -62,7 +62,7 @@ export async function refreshTokens() {
     try {
         response = await axios.get(
             process.env.REACT_APP_BACKEND_ADDRESS + "/auth/refresh",
-            config,
+            config
         );
         setTokens(response.data.access_token, response.data.refresh_token);
     } catch (err) {
@@ -94,7 +94,7 @@ export async function revokeToken() {
     try {
         await axios.get(
             process.env.REACT_APP_BACKEND_ADDRESS + "/auth/revoke",
-            config,
+            config
         );
     } catch (err) {
         if (!err.isAxiosError) {

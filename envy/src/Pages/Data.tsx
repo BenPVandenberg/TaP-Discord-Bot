@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DataTable, { Column } from "../Components/DataTable";
 import { useAppSelector } from "../store/hooks";
-import { GameLog, UserState, VoiceLog } from "../types";
+import { GameLog, UserState, VoiceLog, TimeLog } from "../types";
 
 // used to prevent Swal popups when not on the page
 let clientOnPage = true;
@@ -107,14 +107,14 @@ export default function Data() {
         Swal.showLoading();
 
         // run queries for game and voice data
-        let gameResponse = { data: [] };
-        let voiceResponse = { data: [] };
+        let gameResponse: GameLog[] = [];
+        let voiceResponse: VoiceLog[] = [];
         try {
             // if we got a username then find an id
             if (inputType === "username") {
                 const searchResponse = await axios.get(
                     process.env.REACT_APP_BACKEND_ADDRESS + "/user/search",
-                    { params: { username: user } },
+                    { params: { username: user } }
                 );
 
                 user = searchResponse.data.userID;
@@ -123,16 +123,15 @@ export default function Data() {
             // now with user id get the logs from the backend
             const response = await Promise.all([
                 axios.get(
-                    process.env.REACT_APP_BACKEND_ADDRESS +
-                        `/user/${user}/game`,
+                    process.env.REACT_APP_BACKEND_ADDRESS + `/user/${user}/game`
                 ),
                 axios.get(
                     process.env.REACT_APP_BACKEND_ADDRESS +
-                        `/user/${user}/voice`,
+                        `/user/${user}/voice`
                 ),
             ]);
-            gameResponse = response[0];
-            voiceResponse = response[1];
+            gameResponse = response[0].data;
+            voiceResponse = response[1].data;
         } catch (err) {
             // check if user still on page (may have left due to async)
             if (!clientOnPage) return;
@@ -150,18 +149,31 @@ export default function Data() {
             });
         }
 
-        setGameLogs(gameResponse.data);
-        setVoiceLogs(voiceResponse.data);
+        const convertDataForDisplay = (log: TimeLog) => {
+            const start = new Date(log.start);
+            if (start) {
+                log.start = start.toLocaleString();
+            }
+            if (log.end) {
+                const end = new Date(log.end);
+                if (end) {
+                    log.end = end.toLocaleString();
+                }
+            }
+        };
+
+        // convert Start and End to date objects
+        gameResponse.forEach(convertDataForDisplay);
+        voiceResponse.forEach(convertDataForDisplay);
+
+        setGameLogs(gameResponse);
+        setVoiceLogs(voiceResponse);
 
         // stop loading
         if (!errorOccurred) Swal.close();
 
         // if no data on user
-        if (
-            !gameResponse.data.length &&
-            !voiceResponse.data.length &&
-            !errorOccurred
-        ) {
+        if (!gameResponse.length && !voiceResponse.length && !errorOccurred) {
             Swal.fire({
                 title: `No results for this ${inputType}`,
                 icon: "error",

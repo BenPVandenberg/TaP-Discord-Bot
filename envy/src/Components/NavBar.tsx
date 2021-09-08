@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => {
             "&:hover": {
                 background: theme.palette.primary.main,
                 color: theme.palette.getContrastText(
-                    theme.palette.primary.main,
+                    theme.palette.primary.main
                 ),
                 cursor: "pointer",
             },

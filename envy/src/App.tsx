@@ -36,7 +36,7 @@ const darkTheme = responsiveFontSizes(
         typography: {
             fontFamily: "Roboto",
         },
-    }),
+    })
 );
 
 const useStyles = makeStyles((theme) => ({

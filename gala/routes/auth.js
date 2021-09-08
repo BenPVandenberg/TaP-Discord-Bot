@@ -19,10 +19,10 @@ router.get(
     asyncHandler(async (req, res) => {
         res.redirect(
             `https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify&response_type=code&redirect_uri=${encodeURIComponent(
-                redirect,
-            )}`,
+                redirect
+            )}`
         );
-    }),
+    })
 );
 
 // the callback from discords login
@@ -33,7 +33,7 @@ router.get(
             return res.redirect(
                 `${process.env.FRONTEND_URL}/login` +
                     `?error=${req.query.error}` +
-                    `&error_description=${req.query.error_description}`,
+                    `&error_description=${req.query.error_description}`
             );
         }
         const { code } = req.query;
@@ -58,9 +58,9 @@ router.get(
         res.redirect(
             `${process.env.FRONTEND_URL}/login` +
                 `?access_token=${json.access_token}` +
-                `&refresh_token=${json.refresh_token}`,
+                `&refresh_token=${json.refresh_token}`
         );
-    }),
+    })
 );
 
 // using a refresh token get a new access token
@@ -85,7 +85,7 @@ router.get(
             access_token: resObj.access_token,
             refresh_token: resObj.refresh_token,
         });
-    }),
+    })
 );
 
 // revoke access to current refresh + access token
@@ -105,11 +105,11 @@ router.get(
             {
                 method: "POST",
                 body: formData,
-            },
+            }
         );
 
         res.status(data.status).send();
-    }),
+    })
 );
 
 module.exports = router;

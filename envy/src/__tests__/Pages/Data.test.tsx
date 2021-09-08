@@ -8,14 +8,14 @@ describe("<Data />", () => {
         render(
             <Provider store={store}>
                 <Data />
-            </Provider>,
+            </Provider>
         );
     });
     test("welcome header present", () => {
         const { getByRole } = render(
             <Provider store={store}>
                 <Data />
-            </Provider>,
+            </Provider>
         );
         const dataHeader = getByRole("heading", {
             name: /data lookup/i,

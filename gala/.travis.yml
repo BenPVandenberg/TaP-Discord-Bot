@@ -1,10 +1,10 @@
 sudo: required
 language: generic
 services:
-  - docker
+    - docker
 
 before_install:
-  - docker build -t benpv/bot-backend:latest .
+    - docker build -t benpv/bot-backend:latest .
 
 script:
-  - exit 0
+    - exit 0

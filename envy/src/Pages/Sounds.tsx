@@ -49,7 +49,7 @@ export default function Sounds() {
         // get /play statistics
         try {
             const response = await axios.get(
-                process.env.REACT_APP_BACKEND_ADDRESS + "/sounds",
+                process.env.REACT_APP_BACKEND_ADDRESS + "/sounds"
             );
             soundsSQL = response.data;
         } catch (err) {
@@ -99,7 +99,7 @@ export default function Sounds() {
         const soundName = newAllSounds[rowIndex].name;
         await axios.put(
             process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
-            { user: user.id, volume: value },
+            { user: user.id, volume: value }
         );
 
         Swal.fire({
@@ -127,7 +127,7 @@ export default function Sounds() {
         const soundName = newAllSounds[rowIndex].name;
         await axios.put(
             process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/" + soundName,
-            { user: user.id, hidden: value ? 1 : 0 },
+            { user: user.id, hidden: value ? 1 : 0 }
         );
 
         Swal.fire({
