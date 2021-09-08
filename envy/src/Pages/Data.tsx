@@ -178,6 +178,7 @@ export default function Data() {
         };
 
         // convert Start and End to date objects
+        // BUG: the game table is not displaying correctly
         gameResponse.forEach(convertDataToDates);
         voiceResponse.forEach(convertDataToDates);
 

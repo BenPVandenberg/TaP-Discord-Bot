@@ -113,8 +113,6 @@ export default function SoundUpload() {
                     }
                 });
             } else {
-                // FIXME if u cancel a upload and go to redo it, you must refresh. (Due to onChange)
-                // temp fix
                 window.location.reload();
             }
         });
