@@ -20,6 +20,7 @@ function isCorrectSoundName(name: string) {
     return name.indexOf(" ") === -1;
 }
 
+// TODO: make an interface for the T&P api
 // will upload the provided sound to the backend and declare the owner
 async function uploadSound(sound: File, ownerID: string) {
     const formData = new FormData();
