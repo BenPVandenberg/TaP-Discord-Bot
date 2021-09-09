@@ -16,6 +16,8 @@
     # Default build command.
     command = "npm run build"
 
+    ignore = "exit 1"
+
 [[redirects]]
     from = "/*"
     to = "/index.html"
