@@ -65,9 +65,9 @@ export async function refreshTokens() {
             config
         );
         setTokens(response.data.access_token, response.data.refresh_token);
-    } catch (err) {
+    } catch (err: any) {
         if (err.isAxiosError) {
-            // the tokens is invalid therefore get rid of them
+            // the tokens are invalid therefore get rid of them
             clearTokens();
         } else {
             throw err;
@@ -96,7 +96,7 @@ export async function revokeToken() {
             process.env.REACT_APP_BACKEND_ADDRESS + "/auth/revoke",
             config
         );
-    } catch (err) {
+    } catch (err: any) {
         if (!err.isAxiosError) {
             throw err;
         }
