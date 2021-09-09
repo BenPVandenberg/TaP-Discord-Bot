@@ -15,29 +15,38 @@ const useStyles = makeStyles((theme) => {
 });
 
 // given a string will check if the sound name is valid
-const isCorrectSoundName = (name: string) => {
+function isCorrectSoundName(name: string) {
     // name valid if no spaces
     return name.indexOf(" ") === -1;
-};
+}
 
 // will upload the provided sound to the backend and declare the owner
-const uploadSound = async (sound: File, ownerID: string) => {
+async function uploadSound(sound: File, ownerID: string) {
     const formData = new FormData();
     formData.append("file", sound);
     formData.append("user", ownerID);
 
     try {
-        return await axios.post(
+        const response = await axios.post(
             process.env.REACT_APP_BACKEND_ADDRESS + "/sounds/upload",
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" },
             }
         );
-    } catch (err) {
-        return err;
+        if (response.status === 201) {
+            return true;
+        } else {
+            throw new Error("Unknown Error Occurred, Please report this bug");
+        }
+    } catch (error: any) {
+        let errorMessage = "Unable to reach T&P API";
+        if (error.response.data !== undefined) {
+            errorMessage = error.response.data.msg || error.response.statusText;
+        }
+        throw new Error(errorMessage);
     }
-};
+}
 
 export default function SoundUpload() {
     const userID = useAppSelector((state) => state.user.id);
@@ -62,60 +71,55 @@ export default function SoundUpload() {
         }
 
         // open dialog with user to confirm upload
-        await Swal.fire({
+        const { isConfirmed } = await Swal.fire({
             title: `Create sound "${name}"?`,
             icon: "question",
             confirmButtonText: "Send It!",
             showDenyButton: true,
             reverseButtons: true,
-        }).then(({ isConfirmed }) => {
-            if (isConfirmed) {
-                // show loading screen while uploading sound
-                Swal.fire({
-                    title: "Uploading...",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    allowEnterKey: false,
-                });
-                Swal.showLoading();
-
-                // upload sound
-                uploadSound(file, userID).then((res) => {
-                    // close the loading screen
-                    Swal.close();
-                    // successful upload
-                    if (res.status === 201) {
-                        Swal.fire({
-                            toast: true,
-                            icon: "success",
-                            title: `Sound ${res.data.name} uploaded!`,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 10000,
-                            timerProgressBar: true,
-                        });
-                    }
-                    // server gave us error code
-                    else if (res.response !== undefined) {
-                        Swal.fire({
-                            title: res.response.data.msg || res.message,
-                            icon: "error",
-                        });
-                    }
-                    // sever error (unable to reach)
-                    else {
-                        Swal.fire({
-                            title: "Unable to reach server",
-                            icon: "error",
-                        });
-                        console.error(res.stack);
-                    }
-                });
-            } else {
-                window.location.reload();
-            }
         });
+
+        if (isConfirmed) {
+            // show loading screen while uploading sound
+            Swal.fire({
+                title: "Uploading...",
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false,
+            });
+            Swal.showLoading();
+
+            try {
+                // upload sound
+                const uploadSuccessful = await uploadSound(file, userID);
+                // successful upload
+                if (uploadSuccessful) {
+                    Swal.fire({
+                        toast: true,
+                        icon: "success",
+                        title: `Sound ${name} uploaded!`,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 10000,
+                        timerProgressBar: true,
+                    });
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    // server gave us error code
+                    Swal.fire({
+                        title: error.message,
+                        icon: "error",
+                    });
+                } else {
+                    // only expecting Error objects, if not, something unexpected went wrong
+                    throw error;
+                }
+            }
+        } else {
+            window.location.reload();
+        }
     };
 
     const classes = useStyles();

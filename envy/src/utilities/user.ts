@@ -31,7 +31,7 @@ async function fetchUserInfo(): Promise<UserState | null> {
             process.env.REACT_APP_BACKEND_ADDRESS! +
                 `/user/${discordResponse.data.id}`
         );
-    } catch (err) {
+    } catch (err: any) {
         if (err.isAxiosError) return null;
         else throw err;
     }

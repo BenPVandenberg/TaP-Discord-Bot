@@ -52,7 +52,7 @@ export default function Sounds() {
                 process.env.REACT_APP_BACKEND_ADDRESS + "/sounds"
             );
             soundsSQL = response.data;
-        } catch (err) {
+        } catch (err: any) {
             // possible that client left page, do a check
             if (!clientOnPage) return;
 

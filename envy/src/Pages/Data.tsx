@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import DataTable, { Column } from "../Components/DataTable";
 import { useAppSelector } from "../store/hooks";
-import { GameLog, UserState, VoiceLog, TimeLog } from "../types";
+import { GameLog, TimeLog, UserState, VoiceLog } from "../types";
 
 // used to prevent Swal popups when not on the page
 let clientOnPage = true;
@@ -132,7 +132,7 @@ export default function Data() {
             ]);
             gameResponse = response[0].data;
             voiceResponse = response[1].data;
-        } catch (err) {
+        } catch (err: any) {
             // check if user still on page (may have left due to async)
             if (!clientOnPage) return;
             errorOccurred = true;
