@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const asyncHandler = require("express-async-handler");
 const sql = require("../utilities/sql");
+const fetch = require("node-fetch");
 
 const router = express.Router();
 
@@ -175,6 +176,23 @@ router.post(
                     msg: "Error occurred: Unable to move file to bot dir",
                 });
             }
+        });
+
+        // Successful upload
+
+        // log to discord webhook
+        fetch(process.env.DISCORD_LOG_WEBHOOK, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                content: `New sound uploaded: ${localName}`,
+                username: "T&P Web App Logs",
+                // eslint-disable-next-line camelcase
+                avatar_url:
+                    "https://icons-for-free.com/iconfiles/png/512/info-131964752893297302.png",
+            }),
         });
 
         // returning the response with file name

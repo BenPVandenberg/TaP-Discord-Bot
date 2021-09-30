@@ -12,6 +12,8 @@
 | gala     | Express backend |
 | opal     |           mySQL |
 
+[Diagram](https://app.codesee.io/maps/public/b456bb10-2200-11ec-b66b-9b8baa89bcde)
+
 ## How to run locally
 
 ### Empire

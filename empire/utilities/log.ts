@@ -23,7 +23,7 @@ export function logToDiscord(message: any, level: 0 | 1 | 2 | 3 = 0) {
     // if no webhook then don't do anything
     if (!discordWebhook) return;
 
-    const notifyRollin = level >= WARNING ? "<@142668923660140544> " : "";
+    const notifyRollin = level >= ERROR ? "<@142668923660140544> " : "";
     axios.post(discordWebhook, {
         content: `${notifyRollin}${levelText[level]}: ${message}`,
         avatar_url: levelIcon[level], // eslint-disable-line camelcase
