@@ -18,7 +18,7 @@
             "free_ranks": ["minecraft", "valorant", "new world"]
         },
         "secret_santa": {
-            "active": true,
+            "active": false,
             "role": "770707823629697025",
             "channel": "907737572975984662"
         }
