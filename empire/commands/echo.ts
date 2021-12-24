@@ -5,7 +5,7 @@ import { CommandInteraction, TextChannel } from "discord.js";
 // ========
 module.exports = {
     name: "echo",
-    admin: true,
+    admin: false,
     requireVoice: false,
     data: new SlashCommandBuilder()
         .setName("echo")
