@@ -47,12 +47,16 @@ async function uploadSound(sound: File, ownerID: string) {
         if (response.status === 201) {
             return true;
         } else {
-            throw new Error("Unknown Error Occurred, Please report this bug");
+            throw new Error(
+                "Unknown Error Occurred, Please report this bug on the project's github page"
+            );
         }
     } catch (error: any) {
         let errorMessage = "Unable to reach T&P API";
-        if (error.response.data !== undefined) {
-            errorMessage = error.response.data.msg || error.response.statusText;
+        if (error.response && error.response.data) {
+            errorMessage = "API Error: ";
+            errorMessage +=
+                error.response.data.msg || error.response.statusText;
         }
         throw new Error(errorMessage);
     }
