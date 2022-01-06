@@ -16,8 +16,17 @@ const useStyles = makeStyles((theme) => {
 
 // given a string will check if the sound name is valid
 function isCorrectSoundName(name: string) {
-    // name valid if no spaces
-    return name.indexOf(" ") === -1;
+    return (
+        // max length of the sound name is 20
+        name.length < 20 &&
+        // no spaces
+        !name.includes(" ") &&
+        // only one dot
+        name.includes(".") &&
+        name.split(".").length === 2 &&
+        // no special characters
+        !/[^a-zA-Z0-9.]/.test(name)
+    );
 }
 
 // TODO: make an interface for the T&P api
@@ -63,7 +72,7 @@ export default function SoundUpload() {
 
         // verify sound name is correct
         const name = file.name.split(".")[0].toLowerCase();
-        if (!isCorrectSoundName(name)) {
+        if (!isCorrectSoundName(file.name)) {
             Swal.fire({
                 title: "Invalid Sound Name",
                 text: "A sound name cannot contain a space",
