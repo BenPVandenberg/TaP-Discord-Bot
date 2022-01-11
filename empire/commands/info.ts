@@ -18,7 +18,11 @@ module.exports = {
         ),
     async execute(interaction: CommandInteraction) {
         const rUser = interaction.options.getUser("user");
-        assert(rUser);
+        if (!rUser) {
+            interaction.reply("That user is no longer in this server");
+            return;
+        }
+
         const rMember = interaction.options.getMember("user");
         assert(rMember instanceof Discord.GuildMember);
 

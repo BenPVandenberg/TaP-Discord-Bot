@@ -97,7 +97,7 @@ async function editRank(
     interaction: CommandInteraction,
     operation: "add" | "remove"
 ) {
-    const rankConfig = config.commands.rank;
+    const freeRanks = config.commands.rank.free_ranks;
 
     // check if user issuing command is an admin
     assert(interaction.member instanceof Discord.GuildMember);
@@ -115,7 +115,7 @@ async function editRank(
     assert(rankToAdd instanceof Discord.Role);
 
     // check if rank is free, or if user is admin
-    if (!rankConfig.free_ranks.includes(rankToAdd.name) && !userIsAdmin) {
+    if (!freeRanks.includes(rankToAdd.name.toLowerCase()) && !userIsAdmin) {
         await interaction.reply({
             content: `${rankToAdd.name} is not a role I can assign.`,
             ephemeral: true,
