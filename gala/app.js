@@ -23,13 +23,12 @@ app.use(
         extended: true,
     })
 );
-// app.use(cors({ origin: ["https://tandp.me"], optionsSuccessStatus: 200 }));
-app.use(cors());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(
     fileUpload({
         limits: { fieldSize: 50 * 1024 * 1024 },
         abortOnLimit: true,
-        // useTempFiles: true,
+        useTempFiles: true,
     })
 );
 
