@@ -53,12 +53,14 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500);
 });
 
+// Http Server
 // app.listen(process.env.PORT || 5000, () => {
 //     console.log(
 //         `Example app listening at http://localhost:${process.env.PORT || 5000}`
 //     );
 // });
 
+// Https Server
 const server = https.createServer(
     {
         key: fs.readFileSync(process.env.SERVER_KEY),

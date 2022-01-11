@@ -171,6 +171,9 @@ router.post(
                 [localName, userID || null]
             );
         } catch (err) {
+            // delete the file if the query fails
+            fs.unlinkSync(fullFilePath);
+
             if (err.code === "ER_DUP_ENTRY") {
                 return res
                     .status(409)
@@ -182,7 +185,7 @@ router.post(
         // Successful upload
 
         // log to discord webhook
-        await fetch(process.env.DISCORD_LOG_WEBHOOK, {
+        fetch(process.env.DISCORD_LOG_WEBHOOK, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
