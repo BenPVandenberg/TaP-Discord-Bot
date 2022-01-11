@@ -15,19 +15,11 @@ const userRouter = require("./routes/user");
 const app = express();
 
 app.use(logger("dev"));
-app.use(bodyParser.json({ limit: "10mb", extended: true }));
-app.use(
-    bodyParser.urlencoded({
-        limit: "10mb",
-        parameterLimit: 100000,
-        extended: true,
-    })
-);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(
     fileUpload({
-        limits: { fieldSize: 50 * 1024 * 1024 },
-        abortOnLimit: true,
         useTempFiles: true,
     })
 );
