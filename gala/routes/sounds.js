@@ -14,8 +14,7 @@ router.get(
         const rtnDataArr = [];
         const [rows] = await sql.query("SELECT * FROM Discord_Bot.SoundStats;");
         if (rows.length === 0) {
-            res.status(400).send({ msg: "DB reporting no sounds" });
-            return;
+            return res.status(400).send({ msg: "DB reporting no sounds" });
         }
 
         rows.forEach((element) => {
@@ -29,7 +28,7 @@ router.get(
             });
         });
 
-        res.status(200).send(rtnDataArr);
+        return res.status(200).send(rtnDataArr);
     })
 );
 
@@ -94,10 +93,10 @@ router.put(
 
         // check changes were made
         if (!sqlResponse.affectedRows) {
-            res.status(404).send({ msg: "Sound doesn't exist" });
+            return res.status(404).send({ msg: "Sound doesn't exist" });
         }
 
-        res.status(200).send();
+        return res.status(200).send();
     })
 );
 
@@ -154,10 +153,21 @@ router.post(
         }
 
         const localName = myFile.name.slice(0, -4).toLowerCase();
+
+        // all checks are done now to add the sound
+        // mv() method places the file inside public directory
+        try {
+            await myFile.mv(fullFilePath);
+        } catch (err) {
+            return res.status(500).send({
+                msg: "Unable to move file to sound directory",
+            });
+        }
+
         // add sound to the db
         try {
             await sql.query(
-                `INSERT INTO Sound (SoundName, UploadDate, Owner) VALUES (?, CONVERT_TZ(NOW(), 'UTC', 'America/New_York'), ?);`,
+                `INSERT INTO Sound (SoundName, Owner) VALUES (?, ?);`,
                 [localName, userID || null]
             );
         } catch (err) {
@@ -166,22 +176,13 @@ router.post(
                     .status(409)
                     .send({ msg: "That file already exists in the database" });
             }
+            return res.status(409).send({ msg: err.message });
         }
-
-        // all checks are done now to add the sound
-        // mv() method places the file inside public directory
-        myFile.mv(fullFilePath, (err) => {
-            if (err) {
-                return res.status(500).send({
-                    msg: "Error occurred: Unable to move file to bot dir",
-                });
-            }
-        });
 
         // Successful upload
 
         // log to discord webhook
-        fetch(process.env.DISCORD_LOG_WEBHOOK, {
+        await fetch(process.env.DISCORD_LOG_WEBHOOK, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
