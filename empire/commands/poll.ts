@@ -2,6 +2,35 @@ import assert from "assert";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import Discord, { CommandInteraction } from "discord.js";
 
+const OPTION_LETTERS = [
+    "🇦",
+    "🇧",
+    "🇨",
+    "🇩",
+    "🇪",
+    "🇫",
+    "🇬",
+    "🇭",
+    "🇮",
+    "🇯",
+    "🇰",
+    "🇱",
+    "🇲",
+    "🇳",
+    "🇴",
+    "🇵",
+    "🇶",
+    "🇷",
+    "🇸",
+    "🇹",
+    "🇺",
+    "🇻",
+    "🇼",
+    "🇽",
+    "🇾",
+    "🇿",
+];
+
 // poll.ts
 // ========
 module.exports = {
@@ -16,31 +45,66 @@ module.exports = {
                 .setName("title")
                 .setDescription("Title of the poll")
                 .setRequired(true)
+        )
+        .addStringOption((option) =>
+            option
+                .setName("options")
+                .setDescription("A semi-collon separated list of options")
+                .setRequired(false)
         ),
-    // .addChannelOption((option) =>
-    //     option.setName("target").setDescription("Channel to send the poll"),
-    // )
     async execute(interaction: CommandInteraction) {
         assert(interaction.member instanceof Discord.GuildMember);
 
         const title = interaction.options.getString("title");
-        // const target = interaction.options.getChannel("target");
+        const options = interaction.options.getString("options");
 
         const pollEmbed = new Discord.MessageEmbed()
             .setTitle(`**${title}**`)
             .setColor(interaction.member.displayHexColor)
             .setFooter(`Asked By: ${interaction.member.displayName}`);
 
-        assert(interaction.channel instanceof Discord.TextChannel);
+        assert(interaction.channel);
 
-        interaction.reply({ content: "Creating poll...", ephemeral: true });
+        interaction.reply({
+            content: "Creating poll...",
+            ephemeral: true,
+        });
+
+        let optionsArray = undefined;
+        if (options) {
+            optionsArray = options
+                .split(";")
+                .filter((o) => o.trim().length > 0);
+
+            if (optionsArray.length > OPTION_LETTERS.length) {
+                interaction.reply({
+                    content: `Too many options! (Max ${OPTION_LETTERS.length})`,
+                    ephemeral: true,
+                });
+                return;
+            }
+
+            const description = optionsArray
+                .map((option, index) => {
+                    return `${OPTION_LETTERS[index]} ${option}`;
+                })
+                .join("\n");
+
+            pollEmbed.setDescription(description);
+        }
 
         const pollMessage = await interaction.channel.send({
             embeds: [pollEmbed],
         });
-        await pollMessage.react("👍");
-        await pollMessage.react("👎");
 
+        if (optionsArray) {
+            optionsArray.forEach((option, index) => {
+                pollMessage.react(OPTION_LETTERS[index]);
+            });
+        } else {
+            await pollMessage.react("👍");
+            await pollMessage.react("👎");
+        }
         interaction.editReply({ content: "Poll created!" });
     },
 };
