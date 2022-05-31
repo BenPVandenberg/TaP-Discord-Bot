@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+Sitemap: https://tandp.me/sitemap.xml
+
