@@ -3,7 +3,6 @@
     "author": "Ben Vandenberg",
     "version": "2.2.6",
     "description": "First attempt at a discord bot",
-    "license": "GNU GPLv3",
     "private": true,
     "scripts": {
         "start": "ts-node ."

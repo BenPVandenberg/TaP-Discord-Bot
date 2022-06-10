@@ -2,7 +2,6 @@
     "name": "gala",
     "version": "0.1.0",
     "author": "Ben Vandenberg",
-    "license": "GNU GPLv3",
     "private": true,
     "scripts": {
         "start": "node app.js",
