@@ -2,7 +2,6 @@ import assert from "assert";
 import Discord from "discord.js";
 import * as log from "../utilities/log";
 import * as sql from "../utilities/sql";
-import config from "../config.json";
 
 export default async function onVoiceStateUpdate(
     oldMember: Discord.VoiceState,
@@ -28,18 +27,6 @@ export default async function onVoiceStateUpdate(
     // if a bot
     if (newMember.member.user.bot) return;
 
-    const inVoiceRole = await newMember.guild.roles.fetch(
-        config.in_voice_role_id
-    );
-
-    // send an error if we cant find the role
-    if (!inVoiceRole) {
-        log.logToDiscord(
-            `Cant find role ${config.in_voice_role_id}`,
-            log.WARNING
-        );
-    }
-
     if (oldMember.channelId !== null && newMember.channelId === null) {
         // leave event
         await sql.dbCloseVoiceLog(
@@ -47,11 +34,6 @@ export default async function onVoiceStateUpdate(
             oldMember.channelId,
             sessionID
         );
-
-        // remove in voice role
-        if (inVoiceRole) {
-            newMember.member.roles.remove(inVoiceRole);
-        }
     } else if (oldMember.channelId === null && newMember.channelId !== null) {
         // Join event
         assert(newMember.channel);
@@ -61,11 +43,6 @@ export default async function onVoiceStateUpdate(
             newMember.channel.name,
             sessionID
         );
-
-        // add the invoice role
-        if (inVoiceRole && config.assign_in_voice) {
-            newMember.member.roles.add(inVoiceRole);
-        }
     } else if (
         oldMember.channelId !== null &&
         newMember.channelId !== null &&
