@@ -1,24 +1,19 @@
-import { makeStyles } from "@material-ui/core/styles";
-import notFoundPicture from "../assets/404_image.png";
+import { redirect } from 'react-router-dom';
+import notFoundPicture from 'assets/404_image.png';
+import { ContentSC } from './NotFound.style';
 
-const useStyles = makeStyles((theme) => {
-    return {
-        wrapper: {
-            // Following need to be specified to center correctly
-            textAlign: "center",
-            margin: "auto",
-            // end of required values
-            width: "75%",
-        },
-    };
-});
+export const NOT_FOUND_PATH = 'not_found';
 
 export default function NotFound() {
-    const classes = useStyles();
-    return (
-        <div className={classes.wrapper}>
-            <h1>404 Not Found</h1>
-            <img src={notFoundPicture} alt="404 not found meme" />
-        </div>
-    );
+  return (
+    <ContentSC>
+      <h1>404 Not Found</h1>
+      <img src={notFoundPicture} alt="404 not found meme" />
+    </ContentSC>
+  );
+}
+
+export function NotFoundRedirect() {
+  redirect(`/${NOT_FOUND_PATH}`, 404);
+  return <></>;
 }

@@ -1,25 +1,26 @@
 {
-    "maintainance_loop_min": 1,
-    "voice_timeout_min": 5,
-    "command_channels": [
-        "522935673964199936",
-        "740332251103101048",
-        "831947692179062795"
-    ],
-    "restricted_bots": ["547905866255433758", "184405311681986560"],
-    "ignore_games": [
-        "Divinity: Original Sin 2",
-        "Call of Duty®: Black Ops Cold War"
-    ],
-    "assign_in_voice": false,
-    "commands": {
-        "rank": {
-            "free_ranks": ["minecraft", "valorant", "vr"]
-        },
-        "secret_santa": {
-            "active": false,
-            "role": "770707823629697025",
-            "channel": "907737572975984662"
-        }
+  "maintainance_loop_min": 1,
+  "voice_timeout_min": 5,
+  "kick_loop_min": 5,
+  "command_channels": [
+    "522935673964199936",
+    "740332251103101048",
+    "831947692179062795"
+  ],
+  "restricted_bots": ["547905866255433758", "184405311681986560"],
+  "ignore_games": [
+    "Divinity: Original Sin 2",
+    "Call of Duty®: Black Ops Cold War"
+  ],
+  "assign_in_voice": false,
+  "commands": {
+    "rank": {
+      "free_ranks": ["minecraft", "valorant", "vr"]
+    },
+    "secret_santa": {
+      "active": false,
+      "role": "770707823629697025",
+      "channel": "907737572975984662"
     }
+  }
 }
