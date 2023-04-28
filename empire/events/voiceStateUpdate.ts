@@ -2,6 +2,9 @@ import assert from 'assert';
 import Discord from 'discord.js';
 import * as log from '../utilities/log';
 import * as sql from '../utilities/sql';
+import * as audio from '../utilities/audio';
+import StreamManager from '../utilities/streamManager';
+import path from 'path';
 
 export default async function onVoiceStateUpdate(
   oldMember: Discord.VoiceState,
@@ -39,6 +42,19 @@ export default async function onVoiceStateUpdate(
       newMember.channel.name,
       sessionID
     );
+
+    try {
+      if (
+        newMember.channel instanceof Discord.VoiceChannel &&
+        newMember.id === '227596121126600704'
+      ) {
+        const audioDir = audio.getAudioDir();
+        const filePath = path.join(audioDir, 'yo.mp3');
+        await StreamManager.playMP3(newMember.channel, filePath);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   } else if (
     oldMember.channelId !== null &&
     newMember.channelId !== null &&
