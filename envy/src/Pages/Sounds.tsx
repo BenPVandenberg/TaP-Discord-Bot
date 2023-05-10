@@ -1,9 +1,9 @@
 import { Box, Grid, Paper, useTheme } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Sound, { SoundValidationError } from 'classes/Sound';
-import SoundAdmin from 'components/SoundAdmin';
-import SoundInfo from 'components/SoundInfo';
-import SoundUpload from 'components/SoundUpload';
+import SoundAdmin from 'Components/SoundAdmin';
+import SoundInfo from 'Components/SoundInfo';
+import SoundUpload from 'Components/SoundUpload';
 import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { authGetViewer } from 'recoil/auth';

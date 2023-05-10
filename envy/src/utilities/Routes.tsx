@@ -1,15 +1,15 @@
-import Home from 'pages/Home';
+import Home from 'Pages/Home';
 import { FaHome, FaMusic } from 'react-icons/fa';
 import { TPath } from 'constants/Types';
-import Sounds from 'pages/Sounds';
-import Data from 'pages/Data';
+import Sounds from 'Pages/Sounds';
+import Data from 'Pages/Data';
 import { ImDatabase } from 'react-icons/im';
-import Suggest from 'pages/Suggest';
+import Suggest from 'Pages/Suggest';
 import { IoSend } from 'react-icons/io5';
-import NotFound, { NotFoundRedirect, NOT_FOUND_PATH } from 'pages/NotFound';
+import NotFound, { NotFoundRedirect, NOT_FOUND_PATH } from 'Pages/NotFound';
 import { Route, Routes } from 'react-router-dom';
-import Login from 'pages/Login';
-import { NavEntryType } from 'components/NavBar';
+import Login from 'Pages/Login';
+import { NavEntryType } from 'Components/NavBar';
 
 export const ROUTES: TPath[] = [
   {

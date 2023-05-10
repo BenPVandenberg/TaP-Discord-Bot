@@ -1,4 +1,4 @@
-import AuthLoader from 'components/AuthLoader';
+import AuthLoader from 'Components/AuthLoader';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
