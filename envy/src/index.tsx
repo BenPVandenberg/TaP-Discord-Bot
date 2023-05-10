@@ -1,16 +1,20 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
-import App from "./App";
-import "./index.css";
-import store from "./store";
+import AuthLoader from 'Components/AuthLoader';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
+import App from './App';
+import './index.css';
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Router>
-            <App />
-        </Router>
-    </Provider>,
-    document.getElementById("root")
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(
+  <React.StrictMode>
+    <RecoilRoot>
+      <AuthLoader />
+      <Router>
+        <App />
+      </Router>
+    </RecoilRoot>
+  </React.StrictMode>
 );
