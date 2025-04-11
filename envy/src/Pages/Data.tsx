@@ -1,268 +1,252 @@
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import DataTable, { Column } from "../Components/DataTable";
-import { useAppSelector } from "../store/hooks";
-import { GameLog, TimeLog, UserState, VoiceLog } from "../types";
+import { Box, Paper, ToggleButton } from '@mui/material';
+import User from 'classes/User';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { authGetViewer } from 'recoil/auth';
+import { GameLog, TimeLog, VoiceLog } from 'requests/GalaResponseTypes';
+import { useSearchParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import {
+  ContentSC,
+  TextFieldSC,
+  TitleSC,
+  ToggleButtonGroupSC,
+} from './Data.style';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 // used to prevent Swal popups when not on the page
 let clientOnPage = true;
 
-const useStyles = makeStyles((theme) => {
-    return {
-        wrapper: {
-            textAlign: "center",
-            margin: "auto",
-        },
-        title: {
-            marginBottom: "20px",
-        },
-        textInput: {
-            marginBottom: "20px",
-            width: "50%",
-            minWidth: "165px",
-        },
-        buttonGroup: {
-            marginBottom: "20px",
-        },
-        dataTable: {
-            margin: "auto",
-            minWidth: "430px",
-            maxWidth: "1000px",
-        },
-    };
-});
+type TableType = 'game' | 'voice';
 
-const gameLogCols: Column[] = [
-    {
-        title: "Username",
-        value: "username",
-    },
-    {
-        title: "Game",
-        value: "game",
-    },
-    {
-        title: "Start",
-        value: "start",
-    },
-    {
-        title: "End",
-        value: "end",
-    },
+const gameLogCols: GridColDef<any, GameLog>[] = [
+  {
+    field: 'username',
+    headerName: 'Username',
+    width: 120,
+    hideable: false,
+  },
+  {
+    field: 'game',
+    headerName: 'Game',
+    width: 300,
+    hideable: false,
+  },
+  {
+    field: 'start',
+    headerName: 'Start',
+    width: 175,
+    hideable: false,
+  },
+  {
+    field: 'end',
+    headerName: 'End',
+    width: 175,
+    hideable: false,
+  },
 ];
 
-const voiceLogCols: Column[] = [
-    {
-        title: "Username",
-        value: "username",
-    },
-    {
-        title: "Channel",
-        value: "channel",
-    },
-    {
-        title: "Start",
-        value: "start",
-    },
-    {
-        title: "End",
-        value: "end",
-    },
+const voiceLogCols: GridColDef[] = [
+  {
+    field: 'username',
+    headerName: 'Username',
+    width: 120,
+    hideable: false,
+  },
+  {
+    field: 'channel',
+    headerName: 'Channel',
+    width: 300,
+    hideable: false,
+  },
+  {
+    field: 'start',
+    headerName: 'Start',
+    width: 175,
+    hideable: false,
+  },
+  {
+    field: 'end',
+    headerName: 'End',
+    width: 175,
+    hideable: false,
+  },
 ];
 
 export default function Data() {
-    const user: UserState = useAppSelector((state) => state.user);
-    const [tableView, setTableView] = useState<"game" | "voice">("game");
-    const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
-    const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
-    const [userId, setUserId] = useState<string>("");
+  const vc = useRecoilValue(authGetViewer);
+  let [searchParams, setSearchParams] = useSearchParams();
+  const type = searchParams.get('type') === 'voice' ? 'voice' : 'game';
 
-    /**
-     * This function will update the data on the visible table
-     * @param user User's ID or username
-     */
-    const fetchLogs = async (user: string) => {
-        // verify we have a string
-        if (!user) return;
+  const [tableView, setTableView] = useState<TableType>(type);
+  const [userId, setUserId] = useState<string>(
+    searchParams.get('user') ?? vc?.username ?? ''
+  );
+  const [gameLogs, setGameLogs] = useState<GameLog[]>([]);
+  const [voiceLogs, setVoiceLogs] = useState<VoiceLog[]>([]);
+  const [pageCount, setPageCount] = useState<number>(100);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  /**
+   * This function will update the data on the visible table
+   * @param user User's ID or username
+   */
+  const fetchLogs = async (user: string) => {
+    // verify we have a string
+    if (!user) return;
+    if (!clientOnPage) return;
+    let errorOccurred = false;
+
+    setSearchParams({
+      type: tableView,
+      user: user,
+    });
+
+    // learn if we have a username or id
+    const inputType: 'ID' | 'USERNAME' =
+      user === '' || isNaN(Number(user)) ? 'USERNAME' : 'ID';
+
+    // show loading
+    Swal.fire({
+      title: 'Loading logs from server',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+    });
+    Swal.showLoading();
+
+    // run queries for game and voice data
+    let gameResponse: GameLog[] = [];
+    let voiceResponse: VoiceLog[] = [];
+    try {
+      const userEnt = await User.gen(inputType, user);
+
+      [gameResponse, voiceResponse] = await Promise.all([
+        userEnt.genGameLogs(),
+        userEnt.genVoiceLogs(),
+      ]);
+    } catch (err: any) {
+      errorOccurred = true;
+      if (err instanceof Error) {
+        // check if user still on page (may have left due to async)
         if (!clientOnPage) return;
-        let errorOccurred = false;
-
-        // learn if we have a username or id
-        const inputType: "userID" | "username" = isNaN(Number(user))
-            ? "username"
-            : "userID";
-
-        // show loading
-        Swal.fire({
-            title: "Loading logs from server",
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false,
+        await Swal.fire({
+          title: `Error getting logs`,
+          text: err.message,
+          icon: 'error',
         });
-        Swal.showLoading();
+      }
+    }
 
-        // run queries for game and voice data
-        let gameResponse: GameLog[] = [];
-        let voiceResponse: VoiceLog[] = [];
-        try {
-            // if we got a username then find an id
-            if (inputType === "username") {
-                const searchResponse = await axios.get(
-                    process.env.REACT_APP_BACKEND_ADDRESS + "/user/search",
-                    { params: { username: user } }
-                );
-
-                user = searchResponse.data.userID;
-            }
-
-            // now with user id get the logs from the backend
-            const response = await Promise.all([
-                axios.get(
-                    process.env.REACT_APP_BACKEND_ADDRESS + `/user/${user}/game`
-                ),
-                axios.get(
-                    process.env.REACT_APP_BACKEND_ADDRESS +
-                        `/user/${user}/voice`
-                ),
-            ]);
-            gameResponse = response[0].data;
-            voiceResponse = response[1].data;
-        } catch (err: any) {
-            // check if user still on page (may have left due to async)
-            if (!clientOnPage) return;
-            errorOccurred = true;
-
-            const errorText: string = err.response
-                ? err.response.data.msg || `HTTP Code ${err.response.status}`
-                : `Cant reach ${err.config.url}`;
-
-            // an error returned for one of the queries
-            Swal.fire({
-                title: `Error with the server`,
-                text: errorText,
-                icon: "error",
-            });
+    const convertDataForDisplay = (log: TimeLog) => {
+      const start = new Date(log.start);
+      if (start) {
+        log.start = start.toLocaleString();
+      }
+      if (log.end) {
+        const end = new Date(log.end);
+        if (end) {
+          log.end = end.toLocaleString();
         }
-
-        const convertDataForDisplay = (log: TimeLog) => {
-            const start = new Date(log.start);
-            if (start) {
-                log.start = start.toLocaleString();
-            }
-            if (log.end) {
-                const end = new Date(log.end);
-                if (end) {
-                    log.end = end.toLocaleString();
-                }
-            }
-        };
-
-        // convert Start and End to date objects
-        gameResponse.forEach(convertDataForDisplay);
-        voiceResponse.forEach(convertDataForDisplay);
-
-        setGameLogs(gameResponse);
-        setVoiceLogs(voiceResponse);
-
-        // stop loading
-        if (!errorOccurred) Swal.close();
-
-        // if no data on user
-        if (!gameResponse.length && !voiceResponse.length && !errorOccurred) {
-            Swal.fire({
-                title: `No results for this ${inputType}`,
-                icon: "error",
-            });
-        }
+      }
     };
 
-    // if the user is logged in, set the box to their user name and fetch logs
-    useEffect(() => {
-        clientOnPage = true;
-        // if logged in then the username is present
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        setUserId(user.isLoggedIn ? user.username! : userId);
+    // convert Start and End to date objects
+    gameResponse.forEach(convertDataForDisplay);
+    voiceResponse.forEach(convertDataForDisplay);
 
-        if (user.isLoggedIn && user.id) {
-            fetchLogs(user.id);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.isLoggedIn, user.id]);
+    setGameLogs(gameResponse);
+    setVoiceLogs(voiceResponse);
 
-    useEffect(() => {
-        // called on mount
-        clientOnPage = true;
+    // stop loading
+    if (!errorOccurred) Swal.close();
 
-        // called on unmount
-        return () => {
-            clientOnPage = false;
-            Swal.close();
-        };
-    }, []);
+    // if no data on user
+    if (!gameResponse.length && !voiceResponse.length && !errorOccurred) {
+      await Swal.fire({
+        title: `No results for this ${inputType}`,
+        icon: 'error',
+      });
+    }
+  };
 
-    const classes = useStyles();
-    return (
-        <div className={classes.wrapper}>
-            {/* header */}
-            <h1 className={classes.title}>Data Lookup</h1>
+  useEffect(() => {
+    setSearchParams({
+      type: tableView,
+      user: userId,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setSearchParams, tableView]);
 
-            {/* username/userID input field */}
-            <div>
-                <TextField
-                    className={classes.textInput}
-                    label="User ID or Username"
-                    fullWidth
-                    variant="outlined"
-                    value={userId}
-                    onChange={(event) => setUserId(event.target.value)}
-                    onKeyPress={(event) => {
-                        if (event.key === "Enter") fetchLogs(userId);
-                    }}
-                />
-            </div>
+  useEffect(() => {
+    if (!userId && vc) {
+      setUserId(vc.username);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vc]);
 
-            {/* buttons to switch between voice and game logs view */}
-            <div>
-                <ToggleButtonGroup
-                    value={tableView}
-                    className={classes.buttonGroup}
-                    color="primary"
-                    exclusive
-                    onChange={(_event, newTableView) => {
-                        setTableView(newTableView);
-                    }}
-                >
-                    <ToggleButton value="game">Game</ToggleButton>
-                    <ToggleButton value="voice">Voice</ToggleButton>
-                </ToggleButtonGroup>
-            </div>
+  useEffect(() => {
+    // called on mount
+    clientOnPage = true;
+    fetchLogs(userId);
 
-            {/* game table view */}
-            {gameLogs.length && tableView === "game" ? (
-                <div>
-                    <DataTable
-                        tableProps={{ className: classes.dataTable }}
-                        columns={gameLogCols}
-                        rows={gameLogs}
-                    ></DataTable>
-                </div>
-            ) : null}
+    // called on unmount
+    return () => {
+      clientOnPage = false;
+      Swal.close();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-            {/* voice table view */}
-            {voiceLogs.length && tableView === "voice" ? (
-                <div>
-                    <DataTable
-                        tableProps={{ className: classes.dataTable }}
-                        columns={voiceLogCols}
-                        rows={voiceLogs}
-                    ></DataTable>
-                </div>
-            ) : null}
-        </div>
-    );
+  return (
+    <ContentSC>
+      <TitleSC>Data Lookup</TitleSC>
+      <TextFieldSC
+        label="User ID or Username"
+        fullWidth
+        variant="outlined"
+        value={userId}
+        onChange={(event) => setUserId(event.target.value)}
+        onKeyPress={(event) => {
+          if (event.key === 'Enter') fetchLogs(userId);
+        }}
+      />
+
+      <ToggleButtonGroupSC
+        value={tableView}
+        color="primary"
+        exclusive
+        onChange={(_event, newTableView) => {
+          setTableView(newTableView);
+        }}
+      >
+        <ToggleButton value="game">Game</ToggleButton>
+        <ToggleButton value="voice">Voice</ToggleButton>
+      </ToggleButtonGroupSC>
+
+      <Box sx={{ height: 620, width: 'max' }} component={Paper}>
+        {tableView === 'game' ? (
+          <DataGrid
+            rows={gameLogs}
+            columns={gameLogCols}
+            loading={loading}
+            pageSize={pageCount}
+            onPageSizeChange={setPageCount}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            hideFooterSelectedRowCount
+          />
+        ) : (
+          <DataGrid
+            rows={voiceLogs}
+            columns={voiceLogCols}
+            loading={loading}
+            pageSize={pageCount}
+            onPageSizeChange={setPageCount}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            hideFooterSelectedRowCount
+          />
+        )}
+      </Box>
+    </ContentSC>
+  );
 }

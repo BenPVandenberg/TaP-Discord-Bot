@@ -1,131 +1,111 @@
-import { makeStyles } from "@material-ui/core/styles";
-import { BiLogIn, BiLogOut } from "react-icons/bi/";
-import { FaHome, FaMusic } from "react-icons/fa";
-import { ImDatabase } from "react-icons/im";
-import { IoSend } from "react-icons/io5";
-import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { logOut } from "../store/User/user.actions";
-import { UserState } from "../types";
-import { logOutUser } from "../utilities/user";
+import { styled } from '@mui/material';
+import { TStyledProps } from 'constants/Types';
+import { IconType } from 'react-icons';
+import { BiLogIn, BiLogOut } from 'react-icons/bi/';
+import { Link, To } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => {
-    return {
-        appLogo: {
-            height: "93.688px",
-            pointerEvents: "none",
-            marginTop: "10px",
-            marginBottom: "30px",
-            borderRadius: "50%",
-        },
-        aLink: {
-            textDecoration: "none",
-        },
-        navEntry: {
-            paddingTop: "10px",
-            color: theme.palette.getContrastText("#1b1e21"),
-            "&:hover": {
-                background: theme.palette.primary.main,
-                color: theme.palette.getContrastText(
-                    theme.palette.primary.main
-                ),
-                cursor: "pointer",
-            },
-        },
-        profileNavEntry: {
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            color: theme.palette.getContrastText("#1b1e21"),
-            "&:hover": {},
-        },
-        profilePicture: {
-            borderRadius: "50%",
-            height: "55px",
-        },
-    };
-});
+const AppLogoSC = styled('img')(({ theme }) => ({
+  height: '85.688px',
+  width: '90%',
+  marginTop: '20px',
+  marginBottom: '15px',
+  borderRadius: '25%',
+  alignSelf: 'center',
+}));
+const LinkSC = styled(Link)(({ theme }) => ({
+  textDecoration: 'none',
+}));
+const NavEntrySC = styled('div')(({ theme }) => ({
+  padding: '10px 0px',
+  color: theme.palette.getContrastText('#1b1e21'),
+  '&:hover': {
+    background: theme.palette.primary.main,
+    color: theme.palette.getContrastText(theme.palette.primary.main),
+    cursor: 'pointer',
+  },
+}));
+const NavEntryTextSC = styled('p')(({ theme }) => ({
+  margin: '0',
+}));
+const ProfileNavEntrySC = styled('div')(({ theme }) => ({
+  marginTop: 'auto',
+  color: theme.palette.getContrastText('#1b1e21'),
+}));
+const ProfilePictureSC = styled('img')(({ theme }) => ({
+  borderRadius: '50%',
+  height: '55px',
+}));
+const UsernameSC = styled('p')(({ theme }) => ({
+  marginTop: 0,
+  marginBottom: 10,
+}));
 
-export default function NavBar() {
-    const user: UserState = useAppSelector((state) => state.user);
-    const dispatch = useAppDispatch();
-    const classes = useStyles();
+export type Props = {
+  logoSrc: string;
+  entries: NavEntryType[];
+  viewer: {
+    username: string;
+    profilePicture: URL;
+  } | null;
+  onLogin?: () => void;
+  onLogout?: () => void;
+};
 
-    const logout = () => {
-        logOutUser();
-        dispatch(logOut());
-    };
+export type NavEntryType = {
+  label: string;
+  href: To;
+  icon: IconType;
+};
 
-    // the bottom most button that will either sign you in or out
-    let accountButton;
+export default function NavBar({
+  logoSrc,
+  entries,
+  viewer,
+  onLogin,
+  onLogout,
+  className,
+}: Props & TStyledProps) {
+  const loginButton = onLogin ? (
+    <NavEntrySC onClick={onLogin}>
+      <BiLogIn size={35} />
+      <NavEntryTextSC>Log In</NavEntryTextSC>
+    </NavEntrySC>
+  ) : null;
+  const logoutButton = onLogout ? (
+    <NavEntrySC onClick={onLogout}>
+      <BiLogOut size={35} />
+      <NavEntryTextSC>Log Out</NavEntryTextSC>
+    </NavEntrySC>
+  ) : null;
 
-    if (user.isLoggedIn) {
-        accountButton = (
-            <div>
-                {/* login button */}
-                <div className={classes.navEntry} onClick={logout}>
-                    <BiLogOut size={35} />
-                    <p>Log Out</p>
-                </div>
+  const accountButton = viewer ? logoutButton : loginButton;
 
-                {/* we have a user, indicate that they are logged in with a profile photo */}
-                <div className={classes.profileNavEntry}>
-                    <img
-                        className={classes.profilePicture}
-                        src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`}
-                        alt="profile"
-                    />
-                    <p>{user.username}</p>
-                </div>
-            </div>
+  return (
+    <div className={className}>
+      <AppLogoSC src={logoSrc} alt="logo" />
+
+      {entries.map((entry) => {
+        return (
+          <LinkSC to={entry.href} key={entry.label}>
+            <NavEntrySC>
+              <entry.icon size={30} />
+              <NavEntryTextSC>{entry.label}</NavEntryTextSC>
+            </NavEntrySC>
+          </LinkSC>
         );
-    } else {
-        accountButton = (
-            <a
-                href={process.env.REACT_APP_BACKEND_ADDRESS + "/auth/login"}
-                className={classes.aLink}
-            >
-                <div className={classes.navEntry}>
-                    <BiLogIn size={35} />
-                    <p>Log In</p>
-                </div>
-            </a>
-        );
-    }
+      })}
 
-    return (
-        <div>
-            <img
-                src="/favicon-104x104.png"
-                className={classes.appLogo}
-                alt="logo"
-            />
+      {accountButton}
 
-            <Link to={"/"} className={classes.aLink}>
-                <div className={classes.navEntry}>
-                    <FaHome size={35} />
-                    <p>Home</p>
-                </div>
-            </Link>
-            <Link to={"/sounds"} className={classes.aLink}>
-                <div className={classes.navEntry}>
-                    <FaMusic size={35} />
-                    <p>Sounds</p>
-                </div>
-            </Link>
-            <Link to={"/data"} className={classes.aLink}>
-                <div className={classes.navEntry}>
-                    <ImDatabase size={35} />
-                    <p>Data</p>
-                </div>
-            </Link>
-            <Link to={"/suggest"} className={classes.aLink}>
-                <div className={classes.navEntry}>
-                    <IoSend size={35} />
-                    <p>Suggest</p>
-                </div>
-            </Link>
-            {accountButton}
-        </div>
-    );
+      {viewer && (
+        <ProfileNavEntrySC>
+          <ProfilePictureSC
+            src={viewer.profilePicture.href}
+            alt="profile picture"
+          />
+          <UsernameSC>{viewer.username}</UsernameSC>
+        </ProfileNavEntrySC>
+      )}
+    </div>
+  );
 }

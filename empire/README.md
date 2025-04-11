@@ -13,9 +13,9 @@ Refer to the README.md in the root of the repository.
 The repo is structured for easy future expansion
 
 - The code in the index.ts shouldn't need to be changed much (if at all), it's main job is to
-    route an incoming event to the correct listener.
+  route an incoming event to the correct listener.
 - To add a new command, add a .ts file to the commands folder that follows the structure of
-    the other commands.
+  the other commands.
 - The events folder is where all the discord event listeners are stored.
 - The utilities folder is where any functions that are used by multiple commands are stored.
 - Configuration Storage
@@ -32,4 +32,4 @@ the `.vscode\extensions.json` file.
 - Test any new code before pushing it to the repo.
 - Make a new branch for new features and make a pull request to the master branch.
 - (Optional) Add a Github issue/feature request and assign it to yourself before
-    starting work.
+  starting work.

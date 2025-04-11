@@ -1,13 +1,14 @@
 {
-    "cSpell.words": [
-        "creds",
-        "discordjs",
-        "eqeqeq",
-        "greenlizid",
-        "grim's",
-        "pngcliparthotdoghamburgerfrenchf",
-        "Swal",
-        "testid",
-        "tweetnacl"
-    ]
+  "cSpell.words": [
+    "creds",
+    "discordjs",
+    "eqeqeq",
+    "greenlizid",
+    "grim's",
+    "pngcliparthotdoghamburgerfrenchf",
+    "Swal",
+    "testid",
+    "tweetnacl"
+  ],
+  "conventionalCommits.scopes": ["empire", "envy", "gala", "opal"]
 }
